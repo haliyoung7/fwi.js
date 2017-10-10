@@ -1,6 +1,6 @@
 import { FWI } from './fwi_core';
 
-export class Template {
+class Template {
   constructor() {
 
   }
@@ -89,3 +89,5 @@ export class Template {
     FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
   }
 }
+
+module.exports = Template;

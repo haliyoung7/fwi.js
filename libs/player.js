@@ -1,6 +1,6 @@
 import { FWI } from './fwi_core';
 
-export class Player{
+class Player{
   constructor() {
 
   }
@@ -180,3 +180,5 @@ export class Player{
   }
 
 }
+
+module.exports = Player;

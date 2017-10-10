@@ -1,6 +1,6 @@
 import { Player } from './player';
 
-export class Helpers {
+class Helpers {
 
     constructor() {
 
@@ -21,3 +21,5 @@ export class Helpers {
 
     }
 }
+
+module.exports = Helpers;

@@ -2,7 +2,7 @@
   "name": "fwijs",
   "version": "0.0.2",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
-  "main": "index.js",
+  "main": "./libs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,4 +22,4 @@
     "url": "https://github.com/fourwindsinteractive/fwi.js/issues"
   },
   "homepage": "https://github.com/fourwindsinteractive/fwi.js#readme"
-}
+
