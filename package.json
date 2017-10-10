@@ -1,0 +1,25 @@
+{
+  "name": "fwi.js",
+  "version": "0.0.1",
+  "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fourwindsinteractive/fwi.js.git"
+  },
+  "keywords": [
+    "fwi",
+    "four",
+    "winds",
+    "interactive"
+  ],
+  "author": "Erin O'Connell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fourwindsinteractive/fwi.js/issues"
+  },
+  "homepage": "https://github.com/fourwindsinteractive/fwi.js#readme"
+}
