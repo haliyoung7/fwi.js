@@ -2,13 +2,13 @@
   "name": "fwify",
   "version": "0.0.1",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
-  "main": "index.js",
+  "main": "./libs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fourwindsinteractive/fwi.js.git"
+    "url": "git+https://github.com/fourwindsinteractive/fwify.git"
   },
   "keywords": [
     "fwi",
