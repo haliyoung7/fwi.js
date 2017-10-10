@@ -1,5 +1,5 @@
 {
-  "name": "fwify",
+  "name": "fwijs",
   "version": "0.0.2",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
   "main": "./libs",
