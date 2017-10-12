@@ -159,7 +159,7 @@ class Player{
       }
 
       catch(e) {
-        log.error(e);
+        //log.error(e);
       };
 
       for (let [k,v] of o) {
@@ -724,7 +724,6 @@ class Region {
      * @return {Void}
      */
     moveTo(end_pos, duration = 1000, type = 'linear') {
-        //log.info('pathTo called, calling _animateRegionInit');
         this._animateRegionInit(end_pos, duration, type, 'position');
     }
 
@@ -747,7 +746,7 @@ class Region {
      * @return {Void}
      */
     _animateRegionInit(end_coords, duration, type, animation_type) {
-        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');
+
 
         let delta_x;
         let delta_y;
@@ -761,12 +760,9 @@ class Region {
         }
 
         else if (animation_type == 'size') {
-            //log.info('in the size animation tyype chooser init');
             delta_x = end_coords[0] - this.current_size[0];
             delta_y = end_coords[1] - this.current_size[1];
         };
-
-        //log.debug({startTime: start_time, endTime:end_time, deltaX:delta_x, deltaY: delta_y, duration: duration, type: type, animation_type: animation_type});
 
         this._animateRegion(end_coords,delta_x,delta_y,start_time,end_time,duration,type, animation_type);
     }
@@ -783,7 +779,6 @@ class Region {
      * @return {Void}
      */
     _animateRegion(end_coords,cX,cY,start_time,end_time,d,type, animation_type) {
-        //log.info('Inside main animation loop');
 
         let next_pos_x;
         let next_pos_y;
@@ -793,13 +788,8 @@ class Region {
         const now = new Date().getTime();
         const t = now - start_time;
 
-        //log.debug('Now: ',now, ' T: ',t);
-
-        //log.debug({cx: cX, cy: cY, startTime: start_time, endTime: end_time, duration: d, type:type})
-
         if (now < end_time) {
 
-            //log.info('inside if loop');
             if (animation_type == 'position') {
                 next_pos_x = easing_types[type](t,this.current_position[0],cX,d);
                 next_pos_y = easing_types[type](t,this.current_position[1],cY,d);
@@ -826,7 +816,6 @@ class Region {
         }
 
         else {
-            //log.debug('inside else, almost over');
 
             if (animation_type == 'position') {
                 this._moveX(end_coords[0]);
@@ -847,29 +836,7 @@ class Region {
     }
 }
 
-class Helpers {
 
-        constructor() {
-
-        }
-
-        static poller(var_name, callback, timeout = 50) {
-
-            if (Player.GetVariable(var_name) != 'Undefined') {
-                callback();
-                Player.SetVariable(var_name, 'Undefined');
-            };
-
-            const timeout_function = () => {
-                Helpers.poller(var_name, callback, timeout);
-            }
-
-            window.setTimeout(timeout_function, timeout);
-
-        }
-}
-
-module.exports = Helpers;
 module.exports = Region;
 module.exports = Content;
 module.exports = Template;
