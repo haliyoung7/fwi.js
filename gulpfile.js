@@ -5,14 +5,18 @@ var source = require('vinyl-source-stream');
 
 gulp.task('build-all', function() {
     return browserify({
-    entries: './example.js',
-    debug: true
+    entries: './index.js',
+    debug: false
     })
     .transform(babelify, {
         presets: ["env"],
         sourceMaps: false
     })
     .bundle()
-    .pipe(source('example_build.js'))
+    .pipe(source('build_index.js'))
     .pipe(gulp.dest('./build/js'));
+});
+
+gulp.task('watch', function(){
+    gulp.watch('./index.js', ['build-all'])
 });

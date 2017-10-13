@@ -1,6 +1,6 @@
 {
   "name": "fwi.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "babelify": "^7.3.0",
     "browserify": "^14.4.0",
     "gulp": "^3.9.1",
+    "log4javascript": "^1.4.15",
     "vinyl-source-stream": "^1.1.0"
   }
 }
