@@ -1,5 +1,3 @@
-exports.easingTypes = easingTypes;
-
 const easingTypes = {
       /**
        * Easing types are different equations to determine the path of a region tween.
@@ -190,3 +188,5 @@ const easingTypes = {
         return this.easeOutBounce(t*2-d, 0, c, d) * .5 + c*.5 + b;
     }
 }
+
+export default easingTypes;

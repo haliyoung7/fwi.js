@@ -1,8 +1,6 @@
 const Template = require('./template.js');
 const easing_types = require('./easing_types.js');
 
-exports.Region = Region;
-
 const _origin_position = new WeakMap();
 const _origin_size = new WeakMap();
 
@@ -247,3 +245,5 @@ class Region {
         };
     }
 }
+
+export default Region;

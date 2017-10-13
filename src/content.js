@@ -1,7 +1,5 @@
 const FWI = require('./fwi_core');
 
-exports.Content = Content;
-
 const _content_name = new WeakMap();
 const _region_name = new WeakMap();
 
@@ -140,3 +138,5 @@ class Content {
 		Content.Stop(this.region_name);
 	}
 }
+
+export default Content;

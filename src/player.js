@@ -1,7 +1,5 @@
 const FWI = require('./fwi_core');
 
-exports.Player = Player;
-
 class Player{
   constructor() {
 
@@ -182,3 +180,5 @@ class Player{
   }
 
 }
+
+export default Player;

@@ -1,7 +1,5 @@
 const FWI = require('./fwi_core');
 
-exports.Template = Template;
-
 class Template {
   constructor() {
 
@@ -91,3 +89,5 @@ class Template {
     FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
   }
 }
+
+export default Template;
