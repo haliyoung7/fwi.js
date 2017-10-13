@@ -1,10 +1,12 @@
-import { Template } from './template';
-import { easingTypes as easing_types } from './easing_types';
+const Template = require('./template.js');
+const easing_types = require('./easing_types.js');
+
+exports.Region = Region;
 
 const _origin_position = new WeakMap();
 const _origin_size = new WeakMap();
 
-export class Region {
+class Region {
 
     /**
      * The init function creates a new region object to keep track of region specific information

@@ -1,6 +1,8 @@
-import { FWI } from './fwi_core';
+const FWI = require('./fwi_core');
 
-export class Template {
+exports.Template = Template;
+
+class Template {
   constructor() {
 
   }

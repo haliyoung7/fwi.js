@@ -1,4 +1,6 @@
-export const easingTypes = {
+exports.easingTypes = easingTypes;
+
+const easingTypes = {
       /**
        * Easing types are different equations to determine the path of a region tween.
        * @param {DateTime|Int} t The amount of time that has passed since the animation began.

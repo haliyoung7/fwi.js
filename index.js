@@ -1,4 +1,4 @@
-const Player = require('./src/player.js');
-const Template = require('./src/template.js');
-const Region = require('./src/region.js');
-const Content = require('./src/content.js');
+module.exports = require('./src/player.js');
+module.exports = require('./src/template.js');
+module.exports = require('./src/region.js');
+module.exports = require('./src/content.js');
