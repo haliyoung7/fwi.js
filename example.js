@@ -23,7 +23,7 @@ const fadeTextOut = () => {
 };
 
 animateFlashCardOut();
-// sleep(5000, animateFlashCardIn);
-// sleep(6500, fadeTextIn);
-// sleep(11000, fadeTextOut);
-// sleep(12000, animateFlashCardOut);
+sleep(5000, animateFlashCardIn);
+sleep(6500, fadeTextIn);
+sleep(11000, fadeTextOut);
+sleep(12000, animateFlashCardOut);

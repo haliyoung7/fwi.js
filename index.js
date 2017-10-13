@@ -1,4 +1,4 @@
-import { Player } from './src/player.js';
-import { Template } from './src/template.js';
-import { Region } from './src/region.js';
-import { Content } from './src/content.js';
+const Player = require('./src/player.js');
+const Template = require('./src/template.js');
+const Region = require('./src/region.js');
+const Content = require('./src/content.js');
