@@ -1,4 +1,4 @@
-import { FWI } from "./fwi_core.js";
+import { FWI } from "./fwi_core";
 
 const _content_name = new WeakMap();
 const _region_name = new WeakMap();

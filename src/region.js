@@ -1,5 +1,5 @@
-import { Template } from "./template.js";
-import { easingTypes } from "./easing_types.js";
+import { Template } from "./template";
+import { easingTypes } from "./easing_types";
 
 const _origin_position = new WeakMap();
 const _origin_size = new WeakMap();
