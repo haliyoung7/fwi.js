@@ -5,7 +5,7 @@ var source = require('vinyl-source-stream');
 
 gulp.task('build-all', function() {
     return browserify({
-    entries: './example.js',
+    entries: './build-index.js',
     debug: false
     })
     .transform(babelify, {
@@ -13,8 +13,8 @@ gulp.task('build-all', function() {
         sourceMaps: false
     })
     .bundle()
-    .pipe(source('build.js'))
-    .pipe(gulp.dest('./build/js'));
+    .pipe(source('index.js'))
+    .pipe(gulp.dest('./'));
 });
 
 gulp.task('watch', function(){
