@@ -3,7 +3,7 @@ const FWI = require('./fwi_core');
 const _content_name = new WeakMap();
 const _region_name = new WeakMap();
 
-class Content {
+export class Content {
 
 	constructor(name, region_name) {
 		_content_name.set(this, name);
@@ -138,5 +138,3 @@ class Content {
 		Content.Stop(this.region_name);
 	}
 }
-
-export default Content;

@@ -1,6 +1,6 @@
 const FWI = require('./fwi_core');
 
-class Player{
+export class Player{
   constructor() {
 
   }
@@ -180,5 +180,3 @@ class Player{
   }
 
 }
-
-export default Player;
