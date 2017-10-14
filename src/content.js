@@ -1,4 +1,4 @@
-const FWI = require('./fwi_core');
+const FWI = require('./fwi_core.js');
 
 const _content_name = new WeakMap();
 const _region_name = new WeakMap();

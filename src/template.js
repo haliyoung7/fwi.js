@@ -1,4 +1,4 @@
-const FWI = require('./fwi_core');
+const FWI = require('./fwi_core.js');
 
 export class Template {
   constructor() {

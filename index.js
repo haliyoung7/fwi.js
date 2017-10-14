@@ -5,6 +5,7 @@ var Player = require('./src/player.js');
 var Template = require('./src/template.js');
 var Content = require('./src/content.js');
 var Region = require('./src/region.js');
+
 },{"./src/content.js":2,"./src/player.js":5,"./src/region.js":6,"./src/template.js":7}],2:[function(require,module,exports){
 'use strict';
 
@@ -18,7 +19,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FWI = require('./fwi_core');
+var FWI = require('./fwi_core.js');
 
 var _content_name = new WeakMap();
 var _region_name = new WeakMap();
@@ -252,7 +253,8 @@ var Content = exports.Content = function () {
 
 	return Content;
 }();
-},{"./fwi_core":4}],3:[function(require,module,exports){
+
+},{"./fwi_core.js":4}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -451,6 +453,7 @@ var easingTypes = exports.easingTypes = {
         return this.easeOutBounce(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
     }
 };
+
 },{}],4:[function(require,module,exports){
 "use strict";
 
@@ -459,6 +462,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 // Load the FWI Javascript base:
 var FWI = exports.FWI = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
+
 },{}],5:[function(require,module,exports){
 'use strict';
 
@@ -472,7 +476,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FWI = require('./fwi_core');
+var FWI = require('./fwi_core.js');
 
 var Player = exports.Player = function () {
   function Player() {
@@ -830,7 +834,8 @@ var Player = exports.Player = function () {
 
   return Player;
 }();
-},{"./fwi_core":4}],6:[function(require,module,exports){
+
+},{"./fwi_core.js":4}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1137,6 +1142,7 @@ var Region = exports.Region = function () {
 
     return Region;
 }();
+
 },{"./easing_types.js":3,"./template.js":7}],7:[function(require,module,exports){
 'use strict';
 
@@ -1148,7 +1154,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FWI = require('./fwi_core');
+var FWI = require('./fwi_core.js');
 
 var Template = exports.Template = function () {
   function Template() {
@@ -1269,4 +1275,5 @@ var Template = exports.Template = function () {
 
   return Template;
 }();
-},{"./fwi_core":4}]},{},[1]);
+
+},{"./fwi_core.js":4}]},{},[1]);

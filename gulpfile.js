@@ -8,10 +8,7 @@ gulp.task('build-all', function() {
     entries: './build-index.js',
     debug: false
     })
-    .transform(babelify, {
-        presets: ["env"],
-        sourceMaps: false
-    })
+    .transform(babelify)
     .bundle()
     .pipe(source('index.js'))
     .pipe(gulp.dest('./'));

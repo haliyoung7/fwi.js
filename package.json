@@ -32,6 +32,6 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "babel":{
-    "presets": [["env",{"targets": {"browsers": ["ie 10-11"]},"modules": "commonjs"}]]
+    "presets": [["env",{"modules": "commonjs"}]]
   }
 }
