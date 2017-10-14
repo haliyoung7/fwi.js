@@ -6,6 +6,13 @@ var Template = require('./src/template.js');
 var Content = require('./src/content.js');
 var Region = require('./src/region.js');
 
+module.exports = {
+    Player: Player,
+    Template: Template,
+    Content: Content,
+    Region: Region
+};
+
 },{"./src/content.js":2,"./src/player.js":5,"./src/region.js":6,"./src/template.js":7}],2:[function(require,module,exports){
 'use strict';
 
