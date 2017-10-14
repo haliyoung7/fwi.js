@@ -1,4 +1,4 @@
-const Player = require('./player');
-const Template = require('./template');
-const Content = require('./content');
-const Region = require('./region');
+import { Player } from "./player.js";
+import { Template } from "./template.js";
+import { Content } from "./content.js";
+import { Region } from "./region.js";

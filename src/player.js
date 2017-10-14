@@ -1,4 +1,4 @@
-import { FWI } from "./fwi_core";
+import { FWI } from "./fwi_core.js";
 
 export class Player{
   constructor() {
