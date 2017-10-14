@@ -1,5 +1,5 @@
-const Template = require('./template.js');
-const easing_types = require('./easing_types.js');
+import { Template } from "./template.js";
+import { easingTypes } from "./easing_types.js";
 
 const _origin_position = new WeakMap();
 const _origin_size = new WeakMap();

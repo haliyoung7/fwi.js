@@ -12,14 +12,15 @@ var Region = require('./src/region.js');
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.Content = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _fwi_core = require('./fwi_core.js');
 
-var FWI = require('./fwi_core.js');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _content_name = new WeakMap();
 var _region_name = new WeakMap();
@@ -112,19 +113,19 @@ var Content = exports.Content = function () {
 	}], [{
 		key: 'GetDetails',
 		value: function GetDetails(name) {
-			return FWI.getURL('content://' + name);
+			return _fwi_core.FWI.getURL('content://' + name);
 		}
 	}, {
 		key: 'Print',
 		value: function Print(region_name, parameters) {
-			FWI.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
 		}
 	}, {
 		key: 'Seek',
 		value: function Seek(region_name, direction) {
 			var wrap = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-			FWI.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
 		}
 	}, {
 		key: 'SetArgument',
@@ -142,7 +143,7 @@ var Content = exports.Content = function () {
 					var k = _ref2[0];
 					var v = _ref2[1];
 
-					FWI.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');
+					_fwi_core.FWI.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -177,7 +178,7 @@ var Content = exports.Content = function () {
 					var k = _ref4[0];
 					var v = _ref4[1];
 
-					FWI.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');
+					_fwi_core.FWI.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');
 				}
 			} catch (err) {
 				_didIteratorError2 = true;
@@ -197,57 +198,57 @@ var Content = exports.Content = function () {
 	}, {
 		key: 'Url',
 		value: function Url(url) {
-			FWI.RunScript('Content.Url(' + url + ');');
+			_fwi_core.FWI.RunScript('Content.Url(' + url + ');');
 		}
 	}, {
 		key: 'UrlAsync',
 		value: function UrlAsync(url) {
-			FWI.RunScript('Content.UrlAsync(' + url + ');');
+			_fwi_core.FWI.RunScript('Content.UrlAsync(' + url + ');');
 		}
 	}, {
 		key: 'Pause',
 		value: function Pause(region_name) {
-			FWI.RunScript('Content[' + region_name + '].Pause();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Pause();');
 		}
 	}, {
 		key: 'Play',
 		value: function Play(region_name) {
-			FWI.RunScript('Content[' + region_name + '].Play();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Play();');
 		}
 	}, {
 		key: 'SeekBy',
 		value: function SeekBy(region_name, value) {
-			FWI.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
 		}
 	}, {
 		key: 'SeekTo',
 		value: function SeekTo(region_name, value) {
-			FWI.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
 		}
 	}, {
 		key: 'Resume',
 		value: function Resume(region_name) {
-			FWI.RunScript('Content[' + region_name + '].Resume();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Resume();');
 		}
 	}, {
 		key: 'SetBalance',
 		value: function SetBalance(region_name, balance) {
-			FWI.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
 		}
 	}, {
 		key: 'SetVolume',
 		value: function SetVolume(region_name, volume) {
-			FWI.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
 		}
 	}, {
 		key: 'Stop',
 		value: function Stop(region_name) {
-			FWI.RunScript('Content[' + region_name + '].Stop();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Stop();');
 		}
 	}, {
 		key: 'HighlightRows',
 		value: function HighlightRows(region_name, row_list) {
-			FWI.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
 		}
 	}]);
 
@@ -469,14 +470,15 @@ var FWI = exports.FWI = window.frameElement ? window.frameElement.parentNode.FWI
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Player = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _fwi_core = require('./fwi_core.js');
 
-var FWI = require('./fwi_core.js');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Player = exports.Player = function () {
   function Player() {
@@ -493,7 +495,7 @@ var Player = exports.Player = function () {
   _createClass(Player, null, [{
     key: 'GetVariable',
     value: function GetVariable(name) {
-      return FWI.MarkupValue('{&var:' + name + '}');
+      return _fwi_core.FWI.MarkupValue('{&var:' + name + '}');
     }
 
     /**
@@ -519,7 +521,7 @@ var Player = exports.Player = function () {
           var k = _ref2[0];
           var v = _ref2[1];
 
-          values.push(FWI.MarkupValue('{&var:' + v + '}'));
+          values.push(_fwi_core.FWI.MarkupValue('{&var:' + v + '}'));
         }
       } catch (err) {
         _didIteratorError = true;
@@ -549,7 +551,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'SetVariable',
     value: function SetVariable(name, value) {
-      FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+      _fwi_core.FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
     }
 
     /**
@@ -574,7 +576,7 @@ var Player = exports.Player = function () {
           var k = _ref4[0];
           var v = _ref4[1];
 
-          FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+          _fwi_core.FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -603,7 +605,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'SetLanguage',
     value: function SetLanguage(languageCode) {
-      FWI.RunScript('Player.SetLanguage(' + languageCode + ');');
+      _fwi_core.FWI.RunScript('Player.SetLanguage(' + languageCode + ');');
     }
 
     /**
@@ -615,7 +617,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'ToggleVariable',
     value: function ToggleVariable(name) {
-      FWI.RunScript('Player.ToggleVariable(' + name + ');');
+      _fwi_core.FWI.RunScript('Player.ToggleVariable(' + name + ');');
     }
 
     /**
@@ -628,7 +630,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'PlayTemplate',
     value: function PlayTemplate(name, templateIndex) {
-      FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
+      _fwi_core.FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
     }
 
     /*
@@ -675,7 +677,7 @@ var Player = exports.Player = function () {
 
       command += ');';
 
-      FWI.RunScript(command);
+      _fwi_core.FWI.RunScript(command);
     }
 
     /*
@@ -686,7 +688,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'ResetIdleTimer',
     value: function ResetIdleTimer() {
-      FWI.RunScript('Player.ResetIdleTimer();');
+      _fwi_core.FWI.RunScript('Player.ResetIdleTimer();');
     }
 
     /*
@@ -697,7 +699,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'Restart',
     value: function Restart() {
-      FWI.RunScript('Player.Restart();');
+      _fwi_core.FWI.RunScript('Player.Restart();');
     }
 
     /*
@@ -756,7 +758,7 @@ var Player = exports.Player = function () {
 
       command += ');';
 
-      FWI.RunScript(command);
+      _fwi_core.FWI.RunScript(command);
     }
 
     /*
@@ -816,7 +818,7 @@ var Player = exports.Player = function () {
 
       command += ');';
 
-      FWI.RunScript(command);
+      _fwi_core.FWI.RunScript(command);
     }
 
     /*
@@ -828,7 +830,7 @@ var Player = exports.Player = function () {
   }, {
     key: 'UnsetVariable',
     value: function UnsetVariable(name) {
-      FWI.RunScript('Player.UnsetVariable(' + name + ');');
+      _fwi_core.FWI.RunScript('Player.UnsetVariable(' + name + ');');
     }
   }]);
 
@@ -836,18 +838,20 @@ var Player = exports.Player = function () {
 }();
 
 },{"./fwi_core.js":4}],6:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Region = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _template = require("./template.js");
 
-var Template = require('./template.js');
-var easing_types = require('./easing_types.js');
+var _easing_types = require("./easing_types.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _origin_position = new WeakMap();
 var _origin_size = new WeakMap();
@@ -884,7 +888,7 @@ var Region = exports.Region = function () {
 
 
     _createClass(Region, [{
-        key: 'resetPosition',
+        key: "resetPosition",
 
 
         /*
@@ -892,8 +896,8 @@ var Region = exports.Region = function () {
          * @return {Void}
          */
         value: function resetPosition() {
-            Template.ClearLeft(this.region_name);
-            Template.ClearTop(this.region_name);
+            _template.Template.ClearLeft(this.region_name);
+            _template.Template.ClearTop(this.region_name);
             this.current_xy = this.originXY;
         }
 
@@ -903,10 +907,10 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: 'resetSize',
+        key: "resetSize",
         value: function resetSize() {
-            Template.ClearHeight(this.region_name);
-            Template.ClearWidth(this.region_name);
+            _template.Template.ClearHeight(this.region_name);
+            _template.Template.ClearWidth(this.region_name);
             this.current_size = this.originSize;
         }
 
@@ -916,7 +920,7 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: 'seek',
+        key: "seek",
         value: function seek(direction) {
             var wrap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
@@ -930,9 +934,9 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: '_moveX',
+        key: "_moveX",
         value: function _moveX(value) {
-            Template.SetLeft(this.region_name, value);
+            _template.Template.SetLeft(this.region_name, value);
         }
 
         /*
@@ -942,9 +946,9 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: '_moveY',
+        key: "_moveY",
         value: function _moveY(value) {
-            Template.SetTop(this.region_name, value);
+            _template.Template.SetTop(this.region_name, value);
         }
 
         /*
@@ -954,9 +958,9 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: '_resizeX',
+        key: "_resizeX",
         value: function _resizeX(value) {
-            Template.SetWidth(this.region_name, value);
+            _template.Template.SetWidth(this.region_name, value);
         }
 
         /*
@@ -966,9 +970,9 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: '_resizeY',
+        key: "_resizeY",
         value: function _resizeY(value) {
-            Template.SetHeight(this.region_name, value);
+            _template.Template.SetHeight(this.region_name, value);
         }
 
         /**
@@ -980,7 +984,7 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: 'moveTo',
+        key: "moveTo",
         value: function moveTo(end_pos) {
             var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
             var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
@@ -998,7 +1002,7 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: 'resize',
+        key: "resize",
         value: function resize(end_size) {
             var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
             var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
@@ -1015,7 +1019,7 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: '_animateRegionInit',
+        key: "_animateRegionInit",
         value: function _animateRegionInit(end_coords, duration, type, animation_type) {
             //log.info('_animateRegionInit called, setting vars and calling _animateRegion');
 
@@ -1052,7 +1056,7 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: '_animateRegion',
+        key: "_animateRegion",
         value: function _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type) {
             //log.info('Inside main animation loop');
 
@@ -1110,7 +1114,7 @@ var Region = exports.Region = function () {
             };
         }
     }, {
-        key: 'originPosition',
+        key: "originPosition",
 
 
         /*
@@ -1127,12 +1131,12 @@ var Region = exports.Region = function () {
          */
 
     }, {
-        key: 'originSize',
+        key: "originSize",
         get: function get() {
             return _origin_size.get(this);
         }
     }], [{
-        key: 'Seek',
+        key: "Seek",
         value: function Seek(region_name, direction) {
             var wrap = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -1149,12 +1153,13 @@ var Region = exports.Region = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Template = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _fwi_core = require('./fwi_core.js');
 
-var FWI = require('./fwi_core.js');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Template = exports.Template = function () {
   function Template() {
@@ -1164,99 +1169,99 @@ var Template = exports.Template = function () {
   _createClass(Template, null, [{
     key: 'PlayContent',
     value: function PlayContent(name, region) {
-      FWI.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
+      _fwi_core.FWI.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
     }
   }, {
     key: 'PopContent',
     value: function PopContent() {
-      FWI.RunScript('Template.PopContent();');
+      _fwi_core.FWI.RunScript('Template.PopContent();');
     }
   }, {
     key: 'PushContent',
     value: function PushContent(content, region) {
       var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
 
-      FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
+      _fwi_core.FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
     }
   }, {
     key: 'Restart',
     value: function Restart() {
-      FWI.RunScript('Template.Restart();');
+      _fwi_core.FWI.RunScript('Template.Restart();');
     }
   }, {
     key: 'SetCanSize',
     value: function SetCanSize(region_name, value) {
-      FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value + ');');
     }
   }, {
     key: 'SetCanDrag',
     value: function SetCanDrag(region_name, value) {
-      FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value + ');');
     }
   }, {
     key: 'SetCanRotate',
     value: function SetCanRotate(region_name, value) {
-      FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value + ');');
     }
   }, {
     key: 'SetLeft',
     value: function SetLeft(region_name, value) {
-      FWI.RunScript('Template.SetLeft(' + region_name + ',' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetLeft(' + region_name + ',' + value + ');');
     }
   }, {
     key: 'SetTop',
     value: function SetTop(region_name, value) {
-      FWI.RunScript('Template.SetTop(' + region_name + ',' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetTop(' + region_name + ',' + value + ');');
     }
   }, {
     key: 'SetWidth',
     value: function SetWidth(region_name, value) {
-      FWI.RunScript('Template.SetWidth(' + region_name + ',' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetWidth(' + region_name + ',' + value + ');');
     }
   }, {
     key: 'SetHeight',
     value: function SetHeight(region_name, value) {
-      FWI.RunScript('Template.SetHeight(' + region_name + ',' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetHeight(' + region_name + ',' + value + ');');
     }
   }, {
     key: 'SetAngle',
     value: function SetAngle(region_name, value) {
-      FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
     }
   }, {
     key: 'ClearLeft',
     value: function ClearLeft(region_name) {
-      FWI.RunScript('Template.ClearLeft(' + region_name + ');');
+      _fwi_core.FWI.RunScript('Template.ClearLeft(' + region_name + ');');
     }
   }, {
     key: 'ClearTop',
     value: function ClearTop(region_name) {
-      FWI.RunScript('Template.ClearTop(' + region_name + ');');
+      _fwi_core.FWI.RunScript('Template.ClearTop(' + region_name + ');');
     }
   }, {
     key: 'ClearWidth',
     value: function ClearWidth(region_name) {
-      FWI.RunScript('Template.ClearWidth(' + region_name + ');');
+      _fwi_core.FWI.RunScript('Template.ClearWidth(' + region_name + ');');
     }
   }, {
     key: 'ClearHeight',
     value: function ClearHeight(region_name) {
-      FWI.RunScript('Template.ClearHeight(' + region_name + ');');
+      _fwi_core.FWI.RunScript('Template.ClearHeight(' + region_name + ');');
     }
   }, {
     key: 'ClearAngle',
     value: function ClearAngle(region_name) {
-      FWI.RunScript('Template.ClearAngle(' + region_name + ');');
+      _fwi_core.FWI.RunScript('Template.ClearAngle(' + region_name + ');');
     }
   }, {
     key: 'SetZIndex',
     value: function SetZIndex(region_name, value) {
-      FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
+      _fwi_core.FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
     }
   }, {
     key: 'ClearZIndex',
     value: function ClearZIndex(region_name) {
-      FWI.RunScript('Template.ClearZIndex(' + region_name + ');');
+      _fwi_core.FWI.RunScript('Template.ClearZIndex(' + region_name + ');');
     }
   }, {
     key: 'SetLinearVelocity',
@@ -1264,12 +1269,12 @@ var Template = exports.Template = function () {
       var Vx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '*';
       var Vy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '*';
 
-      FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
+      _fwi_core.FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
     }
   }, {
     key: 'SetAngularVelocity',
     value: function SetAngularVelocity(region_name, omega) {
-      FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
+      _fwi_core.FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
     }
   }]);
 

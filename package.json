@@ -29,9 +29,17 @@
     "browserify": "^14.4.0",
     "gulp": "^3.9.1",
     "log4javascript": "^1.4.15",
+    "pathmodify": "^0.5.0",
     "vinyl-source-stream": "^1.1.0"
   },
-  "babel":{
-    "presets": [["env",{"modules": "commonjs"}]]
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "modules": "commonjs"
+        }
+      ]
+    ]
   }
 }

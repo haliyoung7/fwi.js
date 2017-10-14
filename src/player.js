@@ -1,4 +1,4 @@
-const FWI = require('./fwi_core.js');
+import { FWI } from "./fwi_core.js";
 
 export class Player{
   constructor() {
