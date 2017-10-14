@@ -5,7 +5,7 @@ var source = require('vinyl-source-stream');
 
 gulp.task('build-all', function() {
     return browserify({
-    entries: './build-index.js',
+    entries: './src/build-index.js',
     debug: false
     })
     .transform(babelify)

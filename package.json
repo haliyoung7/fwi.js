@@ -35,10 +35,7 @@
   "babel": {
     "presets": [
       [
-        "env",
-        {
-          "modules": "commonjs"
-        }
+        "env"
       ]
     ]
   }
