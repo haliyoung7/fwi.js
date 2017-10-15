@@ -2,7 +2,8 @@
   "name": "fwi.js",
   "version": "0.0.10",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
-  "main": "./index.js",
+  "module": "./dist/fwi.es.js",
+  "browser": "./dist/fwi.browser.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,19 +25,10 @@
   "homepage": "https://github.com/fourwindsinteractive/fwi.js#readme",
   "dependencies": {},
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.4.0",
-    "gulp": "^3.9.1",
-    "log4javascript": "^1.4.15",
-    "pathmodify": "^0.5.0",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env"
-      ]
-    ]
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0"
   }
 }
