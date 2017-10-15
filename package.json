@@ -1,6 +1,6 @@
 {
   "name": "fwi.js",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
   "module": "./dist/fwi.es.js",
   "browser": "./dist/fwi.browser.js",
