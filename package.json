@@ -2,7 +2,7 @@
   "name": "fwi.js",
   "version": "0.0.12",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
-  "main": "./index.js",
+  "module": "./dist/fwi.common.js",
   "browser": "./dist/fwi.browser.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
