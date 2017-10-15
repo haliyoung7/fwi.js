@@ -1,6 +1,6 @@
 import { FWI } from "./fwi_core.js";
 
-export class Template {
+export default class Template {
   constructor() {
 
   }

@@ -4,7 +4,7 @@ import { easingTypes } from "./easing_types.js";
 const _origin_position = new WeakMap();
 const _origin_size = new WeakMap();
 
-export class Region {
+export default class Region {
 
     /**
      * The init function creates a new region object to keep track of region specific information

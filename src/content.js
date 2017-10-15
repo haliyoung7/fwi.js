@@ -3,7 +3,7 @@ import { FWI } from "./fwi_core.js";
 const _content_name = new WeakMap();
 const _region_name = new WeakMap();
 
-export class Content {
+export default class Content {
 
 	constructor(name, region_name) {
 		_content_name.set(this, name);
