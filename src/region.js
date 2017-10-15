@@ -200,16 +200,16 @@ export class Region {
 
             //log.info('inside if loop');
             if (animation_type == 'position') {
-                next_pos_x = easing_types[type](t,this.current_position[0],cX,d);
-                next_pos_y = easing_types[type](t,this.current_position[1],cY,d);
+                next_pos_x = easingTypes[type](t,this.current_position[0],cX,d);
+                next_pos_y = easingTypes[type](t,this.current_position[1],cY,d);
 
                 this._moveX(next_pos_x);
                 this._moveY(next_pos_y);
             }
 
             else if (animation_type == 'size') {
-                next_size_x = easing_types[type](t,this.current_size[0],cX,d);
-                next_size_y = easing_types[type](t,this.current_size[1],cY,d);
+                next_size_x = easingTypes[type](t,this.current_size[0],cX,d);
+                next_size_y = easingTypes[type](t,this.current_size[1],cY,d);
 
                 this._resizeX(next_size_x);
                 this._resizeY(next_size_y);
