@@ -1,698 +1,42 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+
+var _player = require("./src/player");
+
+var _template = require("./src/template");
+
+var _content = require("./src/content");
+
+var _region = require("./src/region");
+
+},{"./src/content":2,"./src/player":5,"./src/region":6,"./src/template":7}],2:[function(require,module,exports){
 'use strict';
 
-// Load the FWI Javascript base:
-var FWI$1 = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.Content = undefined;
 
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-  function AsyncGenerator(gen) {
-    var front, back;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
+var _fwi_core = require('./fwi_core.js');
 
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
-
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var slicedToArray = function () {
-  function sliceIterator(arr, i) {
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _e = undefined;
-
-    try {
-      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-        _arr.push(_s.value);
-
-        if (i && _arr.length === i) break;
-      }
-    } catch (err) {
-      _d = true;
-      _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"]) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-
-    return _arr;
-  }
-
-  return function (arr, i) {
-    if (Array.isArray(arr)) {
-      return arr;
-    } else if (Symbol.iterator in Object(arr)) {
-      return sliceIterator(arr, i);
-    } else {
-      throw new TypeError("Invalid attempt to destructure non-iterable instance");
-    }
-  };
-}();
-
-var Player = function () {
-  function Player() {
-    classCallCheck(this, Player);
-  }
-
-  /**
-   * Retrieves the value for a single CM variable.
-   * @param {String} name A variable name to collect
-   * @return {Number|String} An appropriately casted value from the variable
-   */
-
-
-  createClass(Player, null, [{
-    key: 'GetVariable',
-    value: function GetVariable(name) {
-      return FWI$1.MarkupValue('{&var:' + name + '}');
-    }
-
-    /**
-     * Retrieves values for multiple CM variables.
-     * @param {Array} nameArray An array of variable names to collect
-     * @return {Array} An array of values that correspond to the requested variables
-     */
-
-  }, {
-    key: 'GetManyVariables',
-    value: function GetManyVariables(nameArray) {
-      var values = [];
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = nameArray.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _ref = _step.value;
-
-          var _ref2 = slicedToArray(_ref, 2);
-
-          var v = _ref2[1];
-
-          values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return values;
-    }
-
-    /**
-     * Sets a single variable back in CM.
-     * @param {String} name The name of the variable to set
-     * @param {String} value The value of the variable to set
-     * @return {Void}
-     */
-
-  }, {
-    key: 'SetVariable',
-    value: function SetVariable(name, value) {
-      FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
-    }
-
-    /**
-     * Sets multiple variables back in CM.
-     * @param {Object} keyValueDict An object that defines key/value pairs to use
-     * @return {Void}
-     */
-
-  }, {
-    key: 'SetManyVariables',
-    value: function SetManyVariables(keyValueDict) {
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = keyValueDict[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _ref3 = _step2.value;
-
-          var _ref4 = slicedToArray(_ref3, 2);
-
-          var k = _ref4[0];
-          var v = _ref4[1];
-
-          FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      
-    }
-
-    /**
-     * Sets the language of the build.
-     * @param {String} languageCode The language code to use
-     * @return {Void}
-     */
-
-  }, {
-    key: 'SetLanguage',
-    value: function SetLanguage(languageCode) {
-      FWI$1.RunScript('Player.SetLanguage(' + languageCode + ');');
-    }
-
-    /**
-     * Sets the language of the build.
-     * @param {String} languageCode The language code to use
-     * @return {Void}
-     */
-
-  }, {
-    key: 'ToggleVariable',
-    value: function ToggleVariable(name) {
-      FWI$1.RunScript('Player.ToggleVariable(' + name + ');');
-    }
-
-    /**
-     * Plays a template
-     * @param {String} name The name of the template to play
-     * @param {String|Int} templateIndex The position of the desired template instance in the network overview
-     * @return {Void}
-     */
-
-  }, {
-    key: 'PlayTemplate',
-    value: function PlayTemplate(name, templateIndex) {
-      FWI$1.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
-    }
-
-    /*
-     * Runs a shell command
-     * @param {String} command_name The main command, sometimes includes folder path
-     * @param {Array} arg_array Array of args to be submitted to the command
-     * @return {Void}
-     */
-
-  }, {
-    key: 'Command',
-    value: function Command(command_name, arg_array) {
-      var command = 'Player.Command(' + command_name;
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = arg_array.entries()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var _ref5 = _step3.value;
-
-          var _ref6 = slicedToArray(_ref5, 2);
-
-          var v = _ref6[1];
-
-          command = command + ', ' + v;
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      command += ');';
-
-      FWI$1.RunScript(command);
-    }
-
-    /*
-     * Resets the idle timer
-     * @return {Void}
-     */
-
-  }, {
-    key: 'ResetIdleTimer',
-    value: function ResetIdleTimer() {
-      FWI$1.RunScript('Player.ResetIdleTimer();');
-    }
-
-    /*
-     * Restarts the player
-     * @return {Void}
-     */
-
-  }, {
-    key: 'Restart',
-    value: function Restart() {
-      FWI$1.RunScript('Player.Restart();');
-    }
-
-    /*
-     * Sends mail
-     * @param {Obj} o Object that contains all paramters from wiki
-     * {
-     *   to: string dest_address
-     *   cc: string cc_address,
-     *   bcc: string bcc_address,
-     *   subject: string subject,
-     *   from: string sender_address,
-     *   body: string main_message,
-     *   host: string smpt_host,
-     *   username: string smpt_username,
-     *   password: strign smpt_password
-     * }
-     * @return {Void}
-     */
-
-  }, {
-    key: 'SendMail',
-    value: function SendMail(o) {
-      var command = 'Player.SendMail(';
-
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = o[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var _ref7 = _step4.value;
-
-          var _ref8 = slicedToArray(_ref7, 2);
-
-          var k = _ref8[0];
-          var v = _ref8[1];
-
-          command = command + ',' + k + '=' + v;
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-
-      
-
-      command += ');';
-
-      FWI$1.RunScript(command);
-    }
-
-    /*
-     * Text-to-speech
-     * @param {Obj} o Object that contains parameters from the wiki
-     * {
-     *   msg: string text_to_speak,
-     *   Volume: int volume,
-     *   Rate: int rate,
-     *   Voice: string voice
-       }
-     * @return {Void}
-     */
-
-  }, {
-    key: 'Speak',
-    value: function Speak(o) {
-      var command = 'Player.Speak(';
-
-      try {
-        command += o[msg];
-      } catch (e) {
-        log.error(e);
-      }
-
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = o[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var _ref9 = _step5.value;
-
-          var _ref10 = slicedToArray(_ref9, 2);
-
-          var k = _ref10[0];
-          var v = _ref10[1];
-
-          command = k != 'msg' ? command + ',' + k + '=' + v : '';
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-
-      
-
-      command += ');';
-
-      FWI$1.RunScript(command);
-    }
-
-    /*
-     * Unsets a variable
-     * @param {String} name Variable name you wish to clear
-     * @return {Void}
-     */
-
-  }, {
-    key: 'UnsetVariable',
-    value: function UnsetVariable(name) {
-      FWI$1.RunScript('Player.UnsetVariable(' + name + ');');
-    }
-  }]);
-  return Player;
-}();
-
-var Template = function () {
-  function Template() {
-    classCallCheck(this, Template);
-  }
-
-  createClass(Template, null, [{
-    key: 'PlayContent',
-    value: function PlayContent(name, region) {
-      FWI$1.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
-    }
-  }, {
-    key: 'PopContent',
-    value: function PopContent() {
-      FWI$1.RunScript('Template.PopContent();');
-    }
-  }, {
-    key: 'PushContent',
-    value: function PushContent(content, region) {
-      var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
-
-      FWI$1.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
-    }
-  }, {
-    key: 'Restart',
-    value: function Restart() {
-      FWI$1.RunScript('Template.Restart();');
-    }
-  }, {
-    key: 'SetCanSize',
-    value: function SetCanSize(region_name, value) {
-      FWI$1.RunScript('Template.SetCanSize(' + region_name + ', ' + value + ');');
-    }
-  }, {
-    key: 'SetCanDrag',
-    value: function SetCanDrag(region_name, value) {
-      FWI$1.RunScript('Template.SetCanDrag(' + region_name + ', ' + value + ');');
-    }
-  }, {
-    key: 'SetCanRotate',
-    value: function SetCanRotate(region_name, value) {
-      FWI$1.RunScript('Template.SetCanRotate(' + region_name + ', ' + value + ');');
-    }
-  }, {
-    key: 'SetLeft',
-    value: function SetLeft(region_name, value) {
-      FWI$1.RunScript('Template.SetLeft(' + region_name + ',' + value + ');');
-    }
-  }, {
-    key: 'SetTop',
-    value: function SetTop(region_name, value) {
-      FWI$1.RunScript('Template.SetTop(' + region_name + ',' + value + ');');
-    }
-  }, {
-    key: 'SetWidth',
-    value: function SetWidth(region_name, value) {
-      FWI$1.RunScript('Template.SetWidth(' + region_name + ',' + value + ');');
-    }
-  }, {
-    key: 'SetHeight',
-    value: function SetHeight(region_name, value) {
-      FWI$1.RunScript('Template.SetHeight(' + region_name + ',' + value + ');');
-    }
-  }, {
-    key: 'SetAngle',
-    value: function SetAngle(region_name, value) {
-      FWI$1.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
-    }
-  }, {
-    key: 'ClearLeft',
-    value: function ClearLeft(region_name) {
-      FWI$1.RunScript('Template.ClearLeft(' + region_name + ');');
-    }
-  }, {
-    key: 'ClearTop',
-    value: function ClearTop(region_name) {
-      FWI$1.RunScript('Template.ClearTop(' + region_name + ');');
-    }
-  }, {
-    key: 'ClearWidth',
-    value: function ClearWidth(region_name) {
-      FWI$1.RunScript('Template.ClearWidth(' + region_name + ');');
-    }
-  }, {
-    key: 'ClearHeight',
-    value: function ClearHeight(region_name) {
-      FWI$1.RunScript('Template.ClearHeight(' + region_name + ');');
-    }
-  }, {
-    key: 'ClearAngle',
-    value: function ClearAngle(region_name) {
-      FWI$1.RunScript('Template.ClearAngle(' + region_name + ');');
-    }
-  }, {
-    key: 'SetZIndex',
-    value: function SetZIndex(region_name, value) {
-      FWI$1.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
-    }
-  }, {
-    key: 'ClearZIndex',
-    value: function ClearZIndex(region_name) {
-      FWI$1.RunScript('Template.ClearZIndex(' + region_name + ');');
-    }
-  }, {
-    key: 'SetLinearVelocity',
-    value: function SetLinearVelocity(region_name) {
-      var Vx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '*';
-      var Vy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '*';
-
-      FWI$1.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
-    }
-  }, {
-    key: 'SetAngularVelocity',
-    value: function SetAngularVelocity(region_name, omega) {
-      FWI$1.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
-    }
-  }]);
-  return Template;
-}();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _content_name = new WeakMap();
 var _region_name = new WeakMap();
 
-var Content = function () {
+var Content = exports.Content = function () {
 	function Content(name, region_name) {
-		classCallCheck(this, Content);
+		_classCallCheck(this, Content);
 
 		_content_name.set(this, name);
 		_region_name.set(this, region_name);
 	}
 
-	createClass(Content, [{
+	_createClass(Content, [{
 		key: 'getDetails',
 		value: function getDetails() {
 			return Content.GetDetails(this.name);
@@ -761,30 +105,30 @@ var Content = function () {
 		}
 	}, {
 		key: 'name',
-		get: function get$$1() {
+		get: function get() {
 			return _content_name.get(this);
 		}
 	}, {
 		key: 'region_name',
-		get: function get$$1() {
+		get: function get() {
 			return _region_name.get(this);
 		}
 	}], [{
 		key: 'GetDetails',
 		value: function GetDetails(name) {
-			return FWI$1.getURL('content://' + name);
+			return _fwi_core.FWI.getURL('content://' + name);
 		}
 	}, {
 		key: 'Print',
 		value: function Print(region_name, parameters) {
-			FWI$1.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
 		}
 	}, {
 		key: 'Seek',
 		value: function Seek(region_name, direction) {
 			var wrap = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-			FWI$1.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
 		}
 	}, {
 		key: 'SetArgument',
@@ -797,12 +141,12 @@ var Content = function () {
 				for (var _iterator = o[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var _ref = _step.value;
 
-					var _ref2 = slicedToArray(_ref, 2);
+					var _ref2 = _slicedToArray(_ref, 2);
 
 					var k = _ref2[0];
 					var v = _ref2[1];
 
-					FWI$1.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');
+					_fwi_core.FWI.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -819,7 +163,7 @@ var Content = function () {
 				}
 			}
 
-			
+			;
 		}
 	}, {
 		key: 'ShowRoute',
@@ -832,12 +176,12 @@ var Content = function () {
 				for (var _iterator2 = o[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 					var _ref3 = _step2.value;
 
-					var _ref4 = slicedToArray(_ref3, 2);
+					var _ref4 = _slicedToArray(_ref3, 2);
 
 					var k = _ref4[0];
 					var v = _ref4[1];
 
-					FWI$1.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');
+					_fwi_core.FWI.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');
 				}
 			} catch (err) {
 				_didIteratorError2 = true;
@@ -857,63 +201,70 @@ var Content = function () {
 	}, {
 		key: 'Url',
 		value: function Url(url) {
-			FWI$1.RunScript('Content.Url(' + url + ');');
+			_fwi_core.FWI.RunScript('Content.Url(' + url + ');');
 		}
 	}, {
 		key: 'UrlAsync',
 		value: function UrlAsync(url) {
-			FWI$1.RunScript('Content.UrlAsync(' + url + ');');
+			_fwi_core.FWI.RunScript('Content.UrlAsync(' + url + ');');
 		}
 	}, {
 		key: 'Pause',
 		value: function Pause(region_name) {
-			FWI$1.RunScript('Content[' + region_name + '].Pause();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Pause();');
 		}
 	}, {
 		key: 'Play',
 		value: function Play(region_name) {
-			FWI$1.RunScript('Content[' + region_name + '].Play();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Play();');
 		}
 	}, {
 		key: 'SeekBy',
 		value: function SeekBy(region_name, value) {
-			FWI$1.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
 		}
 	}, {
 		key: 'SeekTo',
 		value: function SeekTo(region_name, value) {
-			FWI$1.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
 		}
 	}, {
 		key: 'Resume',
 		value: function Resume(region_name) {
-			FWI$1.RunScript('Content[' + region_name + '].Resume();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Resume();');
 		}
 	}, {
 		key: 'SetBalance',
 		value: function SetBalance(region_name, balance) {
-			FWI$1.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
 		}
 	}, {
 		key: 'SetVolume',
 		value: function SetVolume(region_name, volume) {
-			FWI$1.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
 		}
 	}, {
 		key: 'Stop',
 		value: function Stop(region_name) {
-			FWI$1.RunScript('Content[' + region_name + '].Stop();');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].Stop();');
 		}
 	}, {
 		key: 'HighlightRows',
 		value: function HighlightRows(region_name, row_list) {
-			FWI$1.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
+			_fwi_core.FWI.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
 		}
 	}]);
+
 	return Content;
 }();
 
-var easingTypes = {
+},{"./fwi_core.js":4}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var easingTypes = exports.easingTypes = {
     /**
      * Easing types are different equations to determine the path of a region tween.
      * @param {DateTime|Int} t The amount of time that has passed since the animation began.
@@ -1107,10 +458,408 @@ var easingTypes = {
     }
 };
 
+},{}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// Load the FWI Javascript base:
+var FWI = exports.FWI = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Player = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _fwi_core = require('./fwi_core.js');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Player = exports.Player = function () {
+  function Player() {
+    _classCallCheck(this, Player);
+  }
+
+  /**
+   * Retrieves the value for a single CM variable.
+   * @param {String} name A variable name to collect
+   * @return {Number|String} An appropriately casted value from the variable
+   */
+
+
+  _createClass(Player, null, [{
+    key: 'GetVariable',
+    value: function GetVariable(name) {
+      return _fwi_core.FWI.MarkupValue('{&var:' + name + '}');
+    }
+
+    /**
+     * Retrieves values for multiple CM variables.
+     * @param {Array} nameArray An array of variable names to collect
+     * @return {Array} An array of values that correspond to the requested variables
+     */
+
+  }, {
+    key: 'GetManyVariables',
+    value: function GetManyVariables(nameArray) {
+      var values = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = nameArray.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _ref = _step.value;
+
+          var _ref2 = _slicedToArray(_ref, 2);
+
+          var k = _ref2[0];
+          var v = _ref2[1];
+
+          values.push(_fwi_core.FWI.MarkupValue('{&var:' + v + '}'));
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return values;
+    }
+
+    /**
+     * Sets a single variable back in CM.
+     * @param {String} name The name of the variable to set
+     * @param {String} value The value of the variable to set
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SetVariable',
+    value: function SetVariable(name, value) {
+      _fwi_core.FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+    }
+
+    /**
+     * Sets multiple variables back in CM.
+     * @param {Object} keyValueDict An object that defines key/value pairs to use
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SetManyVariables',
+    value: function SetManyVariables(keyValueDict) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = keyValueDict[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _ref3 = _step2.value;
+
+          var _ref4 = _slicedToArray(_ref3, 2);
+
+          var k = _ref4[0];
+          var v = _ref4[1];
+
+          _fwi_core.FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      ;
+    }
+
+    /**
+     * Sets the language of the build.
+     * @param {String} languageCode The language code to use
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SetLanguage',
+    value: function SetLanguage(languageCode) {
+      _fwi_core.FWI.RunScript('Player.SetLanguage(' + languageCode + ');');
+    }
+
+    /**
+     * Sets the language of the build.
+     * @param {String} languageCode The language code to use
+     * @return {Void}
+     */
+
+  }, {
+    key: 'ToggleVariable',
+    value: function ToggleVariable(name) {
+      _fwi_core.FWI.RunScript('Player.ToggleVariable(' + name + ');');
+    }
+
+    /**
+     * Plays a template
+     * @param {String} name The name of the template to play
+     * @param {String|Int} templateIndex The position of the desired template instance in the network overview
+     * @return {Void}
+     */
+
+  }, {
+    key: 'PlayTemplate',
+    value: function PlayTemplate(name, templateIndex) {
+      _fwi_core.FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
+    }
+
+    /*
+     * Runs a shell command
+     * @param {String} command_name The main command, sometimes includes folder path
+     * @param {Array} arg_array Array of args to be submitted to the command
+     * @return {Void}
+     */
+
+  }, {
+    key: 'Command',
+    value: function Command(command_name, arg_array) {
+      var command = 'Player.Command(' + command_name;
+
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = arg_array.entries()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var _ref5 = _step3.value;
+
+          var _ref6 = _slicedToArray(_ref5, 2);
+
+          var k = _ref6[0];
+          var v = _ref6[1];
+
+          command = command + ', ' + v;
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      command += ');';
+
+      _fwi_core.FWI.RunScript(command);
+    }
+
+    /*
+     * Resets the idle timer
+     * @return {Void}
+     */
+
+  }, {
+    key: 'ResetIdleTimer',
+    value: function ResetIdleTimer() {
+      _fwi_core.FWI.RunScript('Player.ResetIdleTimer();');
+    }
+
+    /*
+     * Restarts the player
+     * @return {Void}
+     */
+
+  }, {
+    key: 'Restart',
+    value: function Restart() {
+      _fwi_core.FWI.RunScript('Player.Restart();');
+    }
+
+    /*
+     * Sends mail
+     * @param {Obj} o Object that contains all paramters from wiki
+     * {
+     *   to: string dest_address
+     *   cc: string cc_address,
+     *   bcc: string bcc_address,
+     *   subject: string subject,
+     *   from: string sender_address,
+     *   body: string main_message,
+     *   host: string smpt_host,
+     *   username: string smpt_username,
+     *   password: strign smpt_password
+     * }
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SendMail',
+    value: function SendMail(o) {
+      var command = 'Player.SendMail(';
+
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = o[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var _ref7 = _step4.value;
+
+          var _ref8 = _slicedToArray(_ref7, 2);
+
+          var k = _ref8[0];
+          var v = _ref8[1];
+
+          command = command + ',' + k + '=' + v;
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      ;
+
+      command += ');';
+
+      _fwi_core.FWI.RunScript(command);
+    }
+
+    /*
+     * Text-to-speech
+     * @param {Obj} o Object that contains parameters from the wiki
+     * {
+     *   msg: string text_to_speak,
+     *   Volume: int volume,
+     *   Rate: int rate,
+     *   Voice: string voice
+       }
+     * @return {Void}
+     */
+
+  }, {
+    key: 'Speak',
+    value: function Speak(o) {
+      var command = 'Player.Speak(';
+
+      try {
+        command += o[msg];
+      } catch (e) {
+        log.error(e);
+      };
+
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = o[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var _ref9 = _step5.value;
+
+          var _ref10 = _slicedToArray(_ref9, 2);
+
+          var k = _ref10[0];
+          var v = _ref10[1];
+
+          command = k != 'msg' ? command + ',' + k + '=' + v : '';
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      ;
+
+      command += ');';
+
+      _fwi_core.FWI.RunScript(command);
+    }
+
+    /*
+     * Unsets a variable
+     * @param {String} name Variable name you wish to clear
+     * @return {Void}
+     */
+
+  }, {
+    key: 'UnsetVariable',
+    value: function UnsetVariable(name) {
+      _fwi_core.FWI.RunScript('Player.UnsetVariable(' + name + ');');
+    }
+  }]);
+
+  return Player;
+}();
+
+},{"./fwi_core.js":4}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Region = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _template = require("./template.js");
+
+var _easing_types = require("./easing_types.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var _origin_position = new WeakMap();
 var _origin_size = new WeakMap();
 
-var Region = function () {
+var Region = exports.Region = function () {
 
     /**
      * The init function creates a new region object to keep track of region specific information
@@ -1122,7 +871,7 @@ var Region = function () {
      * @return {Obj} New region object
      */
     function Region(region_name, template_name, origin_position, origin_size) {
-        classCallCheck(this, Region);
+        _classCallCheck(this, Region);
 
         this.region_name = region_name;
         this.template_name = template_name;
@@ -1141,7 +890,7 @@ var Region = function () {
     */
 
 
-    createClass(Region, [{
+    _createClass(Region, [{
         key: "resetPosition",
 
 
@@ -1150,8 +899,8 @@ var Region = function () {
          * @return {Void}
          */
         value: function resetPosition() {
-            Template.ClearLeft(this.region_name);
-            Template.ClearTop(this.region_name);
+            _template.Template.ClearLeft(this.region_name);
+            _template.Template.ClearTop(this.region_name);
             this.current_xy = this.originXY;
         }
 
@@ -1163,8 +912,8 @@ var Region = function () {
     }, {
         key: "resetSize",
         value: function resetSize() {
-            Template.ClearHeight(this.region_name);
-            Template.ClearWidth(this.region_name);
+            _template.Template.ClearHeight(this.region_name);
+            _template.Template.ClearWidth(this.region_name);
             this.current_size = this.originSize;
         }
 
@@ -1190,7 +939,7 @@ var Region = function () {
     }, {
         key: "_moveX",
         value: function _moveX(value) {
-            Template.SetLeft(this.region_name, value);
+            _template.Template.SetLeft(this.region_name, value);
         }
 
         /*
@@ -1202,7 +951,7 @@ var Region = function () {
     }, {
         key: "_moveY",
         value: function _moveY(value) {
-            Template.SetTop(this.region_name, value);
+            _template.Template.SetTop(this.region_name, value);
         }
 
         /*
@@ -1214,7 +963,7 @@ var Region = function () {
     }, {
         key: "_resizeX",
         value: function _resizeX(value) {
-            Template.SetWidth(this.region_name, value);
+            _template.Template.SetWidth(this.region_name, value);
         }
 
         /*
@@ -1226,7 +975,7 @@ var Region = function () {
     }, {
         key: "_resizeY",
         value: function _resizeY(value) {
-            Template.SetHeight(this.region_name, value);
+            _template.Template.SetHeight(this.region_name, value);
         }
 
         /**
@@ -1290,7 +1039,7 @@ var Region = function () {
                 //log.info('in the size animation tyype chooser init');
                 delta_x = end_coords[0] - this.current_size[0];
                 delta_y = end_coords[1] - this.current_size[1];
-            }
+            };
 
             //log.debug({startTime: start_time, endTime:end_time, deltaX:delta_x, deltaY: delta_y, duration: duration, type: type, animation_type: animation_type});
 
@@ -1333,18 +1082,18 @@ var Region = function () {
 
                 //log.info('inside if loop');
                 if (animation_type == 'position') {
-                    next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);
-                    next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);
+                    next_pos_x = _easing_types.easingTypes[type](t, this.current_position[0], cX, d);
+                    next_pos_y = _easing_types.easingTypes[type](t, this.current_position[1], cY, d);
 
                     this._moveX(next_pos_x);
                     this._moveY(next_pos_y);
                 } else if (animation_type == 'size') {
-                    next_size_x = easingTypes[type](t, this.current_size[0], cX, d);
-                    next_size_y = easingTypes[type](t, this.current_size[1], cY, d);
+                    next_size_x = _easing_types.easingTypes[type](t, this.current_size[0], cX, d);
+                    next_size_y = _easing_types.easingTypes[type](t, this.current_size[1], cY, d);
 
                     this._resizeX(next_size_x);
                     this._resizeY(next_size_y);
-                }
+                };
 
                 var self = this;
 
@@ -1365,7 +1114,7 @@ var Region = function () {
                 }
 
                 return;
-            }
+            };
         }
     }, {
         key: "originPosition",
@@ -1375,7 +1124,7 @@ var Region = function () {
          * getter for the original position
          * @return {Array} Array of original [x,y] position
          */
-        get: function get$$1() {
+        get: function get() {
             return _origin_position.get(this);
         }
 
@@ -1386,7 +1135,7 @@ var Region = function () {
 
     }, {
         key: "originSize",
-        get: function get$$1() {
+        get: function get() {
             return _origin_size.get(this);
         }
     }], [{
@@ -1397,5 +1146,142 @@ var Region = function () {
             FWI.RunScript('Region[' + region_name + '].Seek("' + direction + '", "' + wrap + '");');
         }
     }]);
+
     return Region;
 }();
+
+},{"./easing_types.js":3,"./template.js":7}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Template = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _fwi_core = require('./fwi_core.js');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Template = exports.Template = function () {
+  function Template() {
+    _classCallCheck(this, Template);
+  }
+
+  _createClass(Template, null, [{
+    key: 'PlayContent',
+    value: function PlayContent(name, region) {
+      _fwi_core.FWI.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
+    }
+  }, {
+    key: 'PopContent',
+    value: function PopContent() {
+      _fwi_core.FWI.RunScript('Template.PopContent();');
+    }
+  }, {
+    key: 'PushContent',
+    value: function PushContent(content, region) {
+      var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+
+      _fwi_core.FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
+    }
+  }, {
+    key: 'Restart',
+    value: function Restart() {
+      _fwi_core.FWI.RunScript('Template.Restart();');
+    }
+  }, {
+    key: 'SetCanSize',
+    value: function SetCanSize(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'SetCanDrag',
+    value: function SetCanDrag(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'SetCanRotate',
+    value: function SetCanRotate(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'SetLeft',
+    value: function SetLeft(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetLeft(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetTop',
+    value: function SetTop(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetTop(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetWidth',
+    value: function SetWidth(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetWidth(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetHeight',
+    value: function SetHeight(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetHeight(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetAngle',
+    value: function SetAngle(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'ClearLeft',
+    value: function ClearLeft(region_name) {
+      _fwi_core.FWI.RunScript('Template.ClearLeft(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearTop',
+    value: function ClearTop(region_name) {
+      _fwi_core.FWI.RunScript('Template.ClearTop(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearWidth',
+    value: function ClearWidth(region_name) {
+      _fwi_core.FWI.RunScript('Template.ClearWidth(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearHeight',
+    value: function ClearHeight(region_name) {
+      _fwi_core.FWI.RunScript('Template.ClearHeight(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearAngle',
+    value: function ClearAngle(region_name) {
+      _fwi_core.FWI.RunScript('Template.ClearAngle(' + region_name + ');');
+    }
+  }, {
+    key: 'SetZIndex',
+    value: function SetZIndex(region_name, value) {
+      _fwi_core.FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'ClearZIndex',
+    value: function ClearZIndex(region_name) {
+      _fwi_core.FWI.RunScript('Template.ClearZIndex(' + region_name + ');');
+    }
+  }, {
+    key: 'SetLinearVelocity',
+    value: function SetLinearVelocity(region_name) {
+      var Vx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '*';
+      var Vy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '*';
+
+      _fwi_core.FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
+    }
+  }, {
+    key: 'SetAngularVelocity',
+    value: function SetAngularVelocity(region_name, omega) {
+      _fwi_core.FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
+    }
+  }]);
+
+  return Template;
+}();
+
+},{"./fwi_core.js":4}]},{},[1]);
