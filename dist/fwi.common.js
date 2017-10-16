@@ -3,341 +3,525 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 // Load the FWI Javascript base:
-const FWI$1 = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
+var FWI$1 = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
 
-const _content_name = new WeakMap();
-const _region_name = new WeakMap();
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
 
-class Content {
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
 
-	constructor(name, region_name) {
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+var _content_name = new WeakMap();
+var _region_name = new WeakMap();
+
+var Content = function () {
+	function Content(name, region_name) {
+		classCallCheck(this, Content);
+
 		_content_name.set(this, name);
 		_region_name.set(this, region_name);
 	}
 
-	get name() {
-		return _content_name.get(this);
-	}
-
-	get region_name() {
-		return _region_name.get(this);
-	}
-
-	static GetDetails(name) {
-		return FWI$1.getURL('content://' + name);
-	}
-
-	static Print(region_name, parameters) {
-		FWI$1.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
-	}
-
-	static Seek(region_name, direction, wrap = true) {
-		FWI$1.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
-	}
-
-	static SetArgument(region_name, o) {
-      	for (let [k,v] of o) {
-          	FWI$1.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');
-      	}
-	}
-
-	static ShowRoute(region_name, o) {
-		for (let [k,v] of o) {
-			FWI$1.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');
+	createClass(Content, [{
+		key: 'getDetails',
+		value: function getDetails() {
+			return Content.GetDetails(this.name);
 		}
-	}
+	}, {
+		key: 'print',
+		value: function print(parameters) {
+			Content.Print(this.region_name, parameters);
+		}
+	}, {
+		key: 'seek',
+		value: function seek(direction) {
+			var wrap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-	static Url(url) {
-		FWI$1.RunScript('Content.Url(' + url + ');');
-	}
+			Content.Seek(this.region_name, direction, wrap);
+		}
+	}, {
+		key: 'setArgument',
+		value: function setArgument(o) {
+			Content.SetArgument(this.region_name, o);
+		}
+	}, {
+		key: 'showRoute',
+		value: function showRoute(o) {
+			Content.ShowRoute(this.region_name, o);
+		}
+	}, {
+		key: 'pause',
+		value: function pause() {
+			Content.Pause(this.region_name);
+		}
+	}, {
+		key: 'play',
+		value: function play() {
+			Content.Play(this.region_name);
+		}
+	}, {
+		key: 'seekBy',
+		value: function seekBy(value) {
+			Content.SeekBy(this.region_name, value);
+		}
+	}, {
+		key: 'seekTo',
+		value: function seekTo(value) {
+			Content.SeekTo(this.region_name, value);
+		}
+	}, {
+		key: 'resume',
+		value: function resume() {
+			Content.Resume(this.region_name);
+		}
+	}, {
+		key: 'setBalance',
+		value: function setBalance(balance) {
+			Content.SetBalance(this.region_name, balance);
+		}
+	}, {
+		key: 'setVolume',
+		value: function setVolume(volume) {
+			Content.SetVolume(this.region_name, volume);
+		}
+	}, {
+		key: 'stop',
+		value: function stop() {
+			Content.Stop(this.region_name);
+		}
+	}, {
+		key: 'name',
+		get: function get$$1() {
+			return _content_name.get(this);
+		}
+	}, {
+		key: 'region_name',
+		get: function get$$1() {
+			return _region_name.get(this);
+		}
+	}], [{
+		key: 'GetDetails',
+		value: function GetDetails(name) {
+			return FWI$1.getURL('content://' + name);
+		}
+	}, {
+		key: 'Print',
+		value: function Print(region_name, parameters) {
+			FWI$1.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
+		}
+	}, {
+		key: 'Seek',
+		value: function Seek(region_name, direction) {
+			var wrap = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-	static UrlAsync(url) {
-		FWI$1.RunScript('Content.UrlAsync(' + url + ');');
-	}
+			FWI$1.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
+		}
+	}, {
+		key: 'SetArgument',
+		value: function SetArgument(region_name, o) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
 
-	static Pause(region_name) {
-		FWI$1.RunScript('Content[' + region_name + '].Pause();');
-	}
+			try {
+				for (var _iterator = o[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var _ref = _step.value;
 
-	static Play(region_name) {
-		FWI$1.RunScript('Content[' + region_name + '].Play();');
-	}
+					var _ref2 = slicedToArray(_ref, 2);
 
-	static SeekBy(region_name, value) {
-		FWI$1.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
-	}
+					var k = _ref2[0];
+					var v = _ref2[1];
 
-	static SeekTo(region_name, value) {
-		FWI$1.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
-	}
+					FWI$1.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
 
-	static Resume(region_name) {
-		FWI$1.RunScript('Content[' + region_name + '].Resume();');
-	}
+			
+		}
+	}, {
+		key: 'ShowRoute',
+		value: function ShowRoute(region_name, o) {
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
 
-	static SetBalance(region_name, balance) {
-		FWI$1.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
-	}
+			try {
+				for (var _iterator2 = o[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var _ref3 = _step2.value;
 
-	static SetVolume(region_name, volume) {
-		FWI$1.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
-	}
+					var _ref4 = slicedToArray(_ref3, 2);
 
-	static Stop(region_name) {
-		FWI$1.RunScript('Content[' + region_name + '].Stop();');
-	}
+					var k = _ref4[0];
+					var v = _ref4[1];
 
-	static HighlightRows(region_name, row_list) {
-		FWI$1.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
-	}
+					FWI$1.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');
+				}
+			} catch (err) {
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
+					}
+				} finally {
+					if (_didIteratorError2) {
+						throw _iteratorError2;
+					}
+				}
+			}
+		}
+	}, {
+		key: 'Url',
+		value: function Url(url) {
+			FWI$1.RunScript('Content.Url(' + url + ');');
+		}
+	}, {
+		key: 'UrlAsync',
+		value: function UrlAsync(url) {
+			FWI$1.RunScript('Content.UrlAsync(' + url + ');');
+		}
+	}, {
+		key: 'Pause',
+		value: function Pause(region_name) {
+			FWI$1.RunScript('Content[' + region_name + '].Pause();');
+		}
+	}, {
+		key: 'Play',
+		value: function Play(region_name) {
+			FWI$1.RunScript('Content[' + region_name + '].Play();');
+		}
+	}, {
+		key: 'SeekBy',
+		value: function SeekBy(region_name, value) {
+			FWI$1.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
+		}
+	}, {
+		key: 'SeekTo',
+		value: function SeekTo(region_name, value) {
+			FWI$1.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
+		}
+	}, {
+		key: 'Resume',
+		value: function Resume(region_name) {
+			FWI$1.RunScript('Content[' + region_name + '].Resume();');
+		}
+	}, {
+		key: 'SetBalance',
+		value: function SetBalance(region_name, balance) {
+			FWI$1.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
+		}
+	}, {
+		key: 'SetVolume',
+		value: function SetVolume(region_name, volume) {
+			FWI$1.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
+		}
+	}, {
+		key: 'Stop',
+		value: function Stop(region_name) {
+			FWI$1.RunScript('Content[' + region_name + '].Stop();');
+		}
+	}, {
+		key: 'HighlightRows',
+		value: function HighlightRows(region_name, row_list) {
+			FWI$1.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
+		}
+	}]);
+	return Content;
+}();
 
-	getDetails() {
-		return Content.GetDetails(this.name);
-	}
+var easingTypes = {
+    /**
+     * Easing types are different equations to determine the path of a region tween.
+     * @param {DateTime|Int} t The amount of time that has passed since the animation began.
+     * @param {Int|Float} b The current position of the x or y point of the top left corner of the region
+     * @param {Int|Float} c The total delta for the x or y point from beginning position to the end position
+     * @param {Int} d The total duration of the animation
+     * @return {Float} The next position of the x or y point.
+     */
 
-	print(parameters) {
-		Content.Print(this.region_name, parameters);
-	}
-
-	seek(direction, wrap = true) {
-		Content.Seek(this.region_name, direction, wrap);
-	}
-
-	setArgument(o) {
-		Content.SetArgument(this.region_name, o);
-	}
-
-	showRoute(o) {
-		Content.ShowRoute(this.region_name, o);
-	}
-
-	pause() {
-		Content.Pause(this.region_name);
-	}
-
-	play() {
-		Content.Play(this.region_name);
-	}
-
-	seekBy(value) {
-		Content.SeekBy(this.region_name, value);
-	}
-
-	seekTo(value) {
-		Content.SeekTo(this.region_name, value);
-	}
-
-	resume() {
-		Content.Resume(this.region_name);
-	}
-
-	setBalance(balance) {
-		Content.SetBalance(this.region_name, balance);
-	}
-
-	setVolume(volume) {
-		Content.SetVolume(this.region_name, volume);
-	}
-
-	stop() {
-		Content.Stop(this.region_name);
-	}
-}
-
-const easingTypes = {
-      /**
-       * Easing types are different equations to determine the path of a region tween.
-       * @param {DateTime|Int} t The amount of time that has passed since the animation began.
-       * @param {Int|Float} b The current position of the x or y point of the top left corner of the region
-       * @param {Int|Float} c The total delta for the x or y point from beginning position to the end position
-       * @param {Int} d The total duration of the animation
-       * @return {Float} The next position of the x or y point.
-       */
-
-    linear: function(t,b ,c, d) {
-      return c*t/d + b;
+    linear: function linear(t, b, c, d) {
+        return c * t / d + b;
     },
 
-    easeInQuad: function (t, b, c, d) {
-      t /= d;
-      return c*t*t + b;
-    },
-
-    easeOutQuad: function(t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return c/2*t*t + b;
-        t--;
-        return -c/2 * (t*(t-2) - 1) + b;
-    },
-
-    easeInCubic: function(t, b, c, d) {
+    easeInQuad: function easeInQuad(t, b, c, d) {
         t /= d;
-        return c*t*t*t + b;
+        return c * t * t + b;
     },
 
-    easeOutCubic: function(t, b, c, d) {
+    easeOutQuad: function easeOutQuad(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    },
+
+    easeInCubic: function easeInCubic(t, b, c, d) {
+        t /= d;
+        return c * t * t * t + b;
+    },
+
+    easeOutCubic: function easeOutCubic(t, b, c, d) {
         t /= d;
         t--;
-        return c*(t*t*t + 1) + b;
+        return c * (t * t * t + 1) + b;
     },
 
-    easeInOutCubic: function(t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return c/2*t*t*t + b;
+    easeInOutCubic: function easeInOutCubic(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
         t -= 2;
-        return c/2*(t*t*t + 2) + b;
+        return c / 2 * (t * t * t + 2) + b;
     },
 
-    easeInQuart: function(t, b, c, d) {
+    easeInQuart: function easeInQuart(t, b, c, d) {
         t /= d;
-        return c*t*t*t*t + b;
+        return c * t * t * t * t + b;
     },
 
-    easeOutQuart: function(t, b, c, d) {
+    easeOutQuart: function easeOutQuart(t, b, c, d) {
         t /= d;
         t--;
-        return -c * (t*t*t*t - 1) + b;
+        return -c * (t * t * t * t - 1) + b;
     },
 
-    easeInOutQuart: function(t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return c/2*t*t*t*t + b;
+    easeInOutQuart: function easeInOutQuart(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t * t + b;
         t -= 2;
-        return -c/2 * (t*t*t*t - 2) + b;
+        return -c / 2 * (t * t * t * t - 2) + b;
     },
 
-    easeInQuint: function(t, b, c, d) {
+    easeInQuint: function easeInQuint(t, b, c, d) {
         t /= d;
-        return c*t*t*t*t*t + b;
+        return c * t * t * t * t * t + b;
     },
 
-    easeOutQuint: function(t, b, c, d) {
+    easeOutQuint: function easeOutQuint(t, b, c, d) {
         t /= d;
         t--;
-        return c*(t*t*t*t*t + 1) + b;
+        return c * (t * t * t * t * t + 1) + b;
     },
 
-    easeInOutQuint: function(t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return c/2*t*t*t*t*t + b;
+    easeInOutQuint: function easeInOutQuint(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t * t * t + b;
         t -= 2;
-        return c/2*(t*t*t*t*t + 2) + b;
+        return c / 2 * (t * t * t * t * t + 2) + b;
     },
 
-    easeInSine: function(t, b, c, d) {
-        return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+    easeInSine: function easeInSine(t, b, c, d) {
+        return -c * Math.cos(t / d * (Math.PI / 2)) + c + b;
     },
 
-    easeOutSine: function(t, b, c, d) {
-        return c * Math.sin(t/d * (Math.PI/2)) + b;
+    easeOutSine: function easeOutSine(t, b, c, d) {
+        return c * Math.sin(t / d * (Math.PI / 2)) + b;
     },
 
-    easeInOutSine: function(t, b, c, d) {
-        return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+    easeInOutSine: function easeInOutSine(t, b, c, d) {
+        return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b;
     },
 
-    easeInExpo: function(t, b, c, d) {
-        return c * Math.pow( 2, 10 * (t/d - 1) ) + b;
+    easeInExpo: function easeInExpo(t, b, c, d) {
+        return c * Math.pow(2, 10 * (t / d - 1)) + b;
     },
 
-    easeOutExpo: function(t, b, c, d) {
-        return c * ( -Math.pow( 2, -10 * t/d ) + 1 ) + b;
+    easeOutExpo: function easeOutExpo(t, b, c, d) {
+        return c * (-Math.pow(2, -10 * t / d) + 1) + b;
     },
 
-    easeInOutExpo: function(t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b;
+    easeInOutExpo: function easeInOutExpo(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
         t--;
-        return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
+        return c / 2 * (-Math.pow(2, -10 * t) + 2) + b;
     },
 
-    easeInCirc: function(t, b, c, d) {
+    easeInCirc: function easeInCirc(t, b, c, d) {
         t /= d;
-        return -c * (Math.sqrt(1 - t*t) - 1) + b;
+        return -c * (Math.sqrt(1 - t * t) - 1) + b;
     },
 
-    easeOutCirc: function(t, b, c, d) {
+    easeOutCirc: function easeOutCirc(t, b, c, d) {
         t /= d;
         t--;
-        return c * Math.sqrt(1 - t*t) + b;
+        return c * Math.sqrt(1 - t * t) + b;
     },
 
-    easeInOutCirc: function(t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+    easeInOutCirc: function easeInOutCirc(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return -c / 2 * (Math.sqrt(1 - t * t) - 1) + b;
         t -= 2;
-        return c/2 * (Math.sqrt(1 - t*t) + 1) + b;
+        return c / 2 * (Math.sqrt(1 - t * t) + 1) + b;
     },
 
-    easeInElastic: function(t, b, c, d) {
+    easeInElastic: function easeInElastic(t, b, c, d) {
         var a = 0;
         var p = 0;
-        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
-        if (a < Math.abs(c)) { a=c; var s=p/4; }
-        else var s = p/(2*Math.PI) * Math.asin (c/a);
-        return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+        if (t == 0) return b;if ((t /= d) == 1) return b + c;if (!p) p = d * .3;
+        if (a < Math.abs(c)) {
+            a = c;var s = p / 4;
+        } else var s = p / (2 * Math.PI) * Math.asin(c / a);
+        return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
     },
 
-    easeOutElastic: function(t, b, c, d) {
+    easeOutElastic: function easeOutElastic(t, b, c, d) {
         var a = 0;
         var p = 0;
-        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
-        if (a < Math.abs(c)) { a=c; var s=p/4; }
-        else var s = p/(2*Math.PI) * Math.asin (c/a);
-        return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+        if (t == 0) return b;if ((t /= d) == 1) return b + c;if (!p) p = d * .3;
+        if (a < Math.abs(c)) {
+            a = c;var s = p / 4;
+        } else var s = p / (2 * Math.PI) * Math.asin(c / a);
+        return a * Math.pow(2, -10 * t) * Math.sin((t * d - s) * (2 * Math.PI) / p) + c + b;
     },
 
-    easeInOutElastic: function(t, b, c, d) {
+    easeInOutElastic: function easeInOutElastic(t, b, c, d) {
         var a = 0;
         var p = 0;
-        if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
-        if (a < Math.abs(c)) { a=c; var s=p/4; }
-        else var s = p/(2*Math.PI) * Math.asin (c/a);
-        if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
-        return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+        if (t == 0) return b;if ((t /= d / 2) == 2) return b + c;if (!p) p = d * (.3 * 1.5);
+        if (a < Math.abs(c)) {
+            a = c;var s = p / 4;
+        } else var s = p / (2 * Math.PI) * Math.asin(c / a);
+        if (t < 1) return -.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
+        return a * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p) * .5 + c + b;
     },
 
-    easeInBack: function(t, b, c, d, s) {
+    easeInBack: function easeInBack(t, b, c, d, s) {
         if (s == undefined) s = 1.70158;
-        return c*(t/=d)*t*((s+1)*t - s) + b;
+        return c * (t /= d) * t * ((s + 1) * t - s) + b;
     },
 
-    easeOutBack: function(t, b, c, d, s) {
+    easeOutBack: function easeOutBack(t, b, c, d, s) {
         if (s == undefined) s = 1.70158;
-        return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+        return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
     },
 
-    easeInOutBack: function(t, b, c, d, s) {
+    easeInOutBack: function easeInOutBack(t, b, c, d, s) {
         if (s == undefined) s = 1.70158;
-        if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
-        return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+        if ((t /= d / 2) < 1) return c / 2 * (t * t * (((s *= 1.525) + 1) * t - s)) + b;
+        return c / 2 * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
     },
 
-    easeInBounce: function(t, b, c, d) {
-        return c - this.easeOutBounce(d-t, 0, c, d) + b;
+    easeInBounce: function easeInBounce(t, b, c, d) {
+        return c - this.easeOutBounce(d - t, 0, c, d) + b;
     },
 
-    easeOutBounce: function(t, b, c, d) {
-        if ((t/=d) < (1/2.75)) {
-            return c*(7.5625*t*t) + b;
-        } else if (t < (2/2.75)) {
-            return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
-        } else if (t < (2.5/2.75)) {
-            return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+    easeOutBounce: function easeOutBounce(t, b, c, d) {
+        if ((t /= d) < 1 / 2.75) {
+            return c * (7.5625 * t * t) + b;
+        } else if (t < 2 / 2.75) {
+            return c * (7.5625 * (t -= 1.5 / 2.75) * t + .75) + b;
+        } else if (t < 2.5 / 2.75) {
+            return c * (7.5625 * (t -= 2.25 / 2.75) * t + .9375) + b;
         } else {
-            return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+            return c * (7.5625 * (t -= 2.625 / 2.75) * t + .984375) + b;
         }
     },
 
-    easeInOutBounce: function(t, b, c, d) {
-        if (t < d/2) return this.easeInBounce(t*2, 0, c, d) * .5 + b;
-        return this.easeOutBounce(t*2-d, 0, c, d) * .5 + c*.5 + b;
+    easeInOutBounce: function easeInOutBounce(t, b, c, d) {
+        if (t < d / 2) return this.easeInBounce(t * 2, 0, c, d) * .5 + b;
+        return this.easeOutBounce(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
     }
 };
 
-class Player{
-  constructor() {
-
+var Player = function () {
+  function Player() {
+    classCallCheck(this, Player);
   }
 
   /**
@@ -345,271 +529,475 @@ class Player{
    * @param {String} name A variable name to collect
    * @return {Number|String} An appropriately casted value from the variable
    */
-  static GetVariable(name) {
-    return FWI$1.MarkupValue('{&var:' + name + '}');
-  }
 
-  /**
-   * Retrieves values for multiple CM variables.
-   * @param {Array} nameArray An array of variable names to collect
-   * @return {Array} An array of values that correspond to the requested variables
-   */
-  static GetManyVariables(nameArray) {
-      const values = [];
-      for (let [k,v] of nameArray.entries()) {
-        values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
+
+  createClass(Player, null, [{
+    key: 'GetVariable',
+    value: function GetVariable(name) {
+      return FWI$1.MarkupValue('{&var:' + name + '}');
+    }
+
+    /**
+     * Retrieves values for multiple CM variables.
+     * @param {Array} nameArray An array of variable names to collect
+     * @return {Array} An array of values that correspond to the requested variables
+     */
+
+  }, {
+    key: 'GetManyVariables',
+    value: function GetManyVariables(nameArray) {
+      var values = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = nameArray.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _ref = _step.value;
+
+          var _ref2 = slicedToArray(_ref, 2);
+
+          var k = _ref2[0];
+          var v = _ref2[1];
+
+          values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
+
       return values;
-  }
+    }
 
-  /**
-   * Sets a single variable back in CM.
-   * @param {String} name The name of the variable to set
-   * @param {String} value The value of the variable to set
-   * @return {Void}
-   */
-  static SetVariable(name, value) {
+    /**
+     * Sets a single variable back in CM.
+     * @param {String} name The name of the variable to set
+     * @param {String} value The value of the variable to set
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SetVariable',
+    value: function SetVariable(name, value) {
       FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
-  }
+    }
 
-  /**
-   * Sets multiple variables back in CM.
-   * @param {Object} keyValueDict An object that defines key/value pairs to use
-   * @return {Void}
-   */
-  static SetManyVariables(keyValueDict) {
-      for (let [k, v] of keyValueDict) {
-        FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+    /**
+     * Sets multiple variables back in CM.
+     * @param {Object} keyValueDict An object that defines key/value pairs to use
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SetManyVariables',
+    value: function SetManyVariables(keyValueDict) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = keyValueDict[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _ref3 = _step2.value;
+
+          var _ref4 = slicedToArray(_ref3, 2);
+
+          var k = _ref4[0];
+          var v = _ref4[1];
+
+          FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
       }
-  }
 
-  /**
-   * Sets the language of the build.
-   * @param {String} languageCode The language code to use
-   * @return {Void}
-   */
-  static SetLanguage(languageCode) {
+      
+    }
+
+    /**
+     * Sets the language of the build.
+     * @param {String} languageCode The language code to use
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SetLanguage',
+    value: function SetLanguage(languageCode) {
       FWI$1.RunScript('Player.SetLanguage(' + languageCode + ');');
-  }
+    }
 
-  /**
-   * Sets the language of the build.
-   * @param {String} languageCode The language code to use
-   * @return {Void}
-   */
-  static ToggleVariable(name) {
+    /**
+     * Sets the language of the build.
+     * @param {String} languageCode The language code to use
+     * @return {Void}
+     */
+
+  }, {
+    key: 'ToggleVariable',
+    value: function ToggleVariable(name) {
       FWI$1.RunScript('Player.ToggleVariable(' + name + ');');
-  }
+    }
 
-  /**
-   * Plays a template
-   * @param {String} name The name of the template to play
-   * @param {String|Int} templateIndex The position of the desired template instance in the network overview
-   * @return {Void}
-   */
-  static PlayTemplate(name, templateIndex) {
+    /**
+     * Plays a template
+     * @param {String} name The name of the template to play
+     * @param {String|Int} templateIndex The position of the desired template instance in the network overview
+     * @return {Void}
+     */
+
+  }, {
+    key: 'PlayTemplate',
+    value: function PlayTemplate(name, templateIndex) {
       FWI$1.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
-  }
-
-  /*
-   * Runs a shell command
-   * @param {String} command_name The main command, sometimes includes folder path
-   * @param {Array} arg_array Array of args to be submitted to the command
-   * @return {Void}
-   */
-  static Command(command_name, arg_array) {
-    let command = 'Player.Command(' + command_name;
-
-    for (let [k,v] of arg_array.entries()) {
-      command = command + ', ' + v;
     }
 
-    command += ');';
+    /*
+     * Runs a shell command
+     * @param {String} command_name The main command, sometimes includes folder path
+     * @param {Array} arg_array Array of args to be submitted to the command
+     * @return {Void}
+     */
 
-    FWI$1.RunScript(command);
+  }, {
+    key: 'Command',
+    value: function Command(command_name, arg_array) {
+      var command = 'Player.Command(' + command_name;
 
-  }
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
-  /*
-   * Resets the idle timer
-   * @return {Void}
-   */
-  static ResetIdleTimer() {
-    FWI$1.RunScript('Player.ResetIdleTimer();');
-  }
+      try {
+        for (var _iterator3 = arg_array.entries()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var _ref5 = _step3.value;
 
-  /*
-   * Restarts the player
-   * @return {Void}
-   */
-  static Restart() {
-    FWI$1.RunScript('Player.Restart();');
-  }
+          var _ref6 = slicedToArray(_ref5, 2);
 
-  /*
-   * Sends mail
-   * @param {Obj} o Object that contains all paramters from wiki
-   * {
-   *   to: string dest_address
-   *   cc: string cc_address,
-   *   bcc: string bcc_address,
-   *   subject: string subject,
-   *   from: string sender_address,
-   *   body: string main_message,
-   *   host: string smpt_host,
-   *   username: string smpt_username,
-   *   password: strign smpt_password
-   * }
-   * @return {Void}
-   */
-  static SendMail(o) {
-    let command = 'Player.SendMail(';
+          var k = _ref6[0];
+          var v = _ref6[1];
 
-    for (let [k,v] of o) {
-      command = command + ',' + k + '=' + v;
+          command = command + ', ' + v;
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      command += ');';
+
+      FWI$1.RunScript(command);
     }
 
-    command += ');';
+    /*
+     * Resets the idle timer
+     * @return {Void}
+     */
 
-    FWI$1.RunScript(command);
-  }
-
-  /*
-   * Text-to-speech
-   * @param {Obj} o Object that contains parameters from the wiki
-   * {
-   *   msg: string text_to_speak,
-   *   Volume: int volume,
-   *   Rate: int rate,
-   *   Voice: string voice
-     }
-   * @return {Void}
-   */
-  static Speak(o) {
-    let command = 'Player.Speak(';
-
-    try {
-      command += o[msg];
+  }, {
+    key: 'ResetIdleTimer',
+    value: function ResetIdleTimer() {
+      FWI$1.RunScript('Player.ResetIdleTimer();');
     }
 
-    catch(e) {
-      log.error(e);
+    /*
+     * Restarts the player
+     * @return {Void}
+     */
+
+  }, {
+    key: 'Restart',
+    value: function Restart() {
+      FWI$1.RunScript('Player.Restart();');
     }
 
-    for (let [k,v] of o) {
-      command = (k != 'msg' ? (command + ',' + k + '=' + v) : '');
+    /*
+     * Sends mail
+     * @param {Obj} o Object that contains all paramters from wiki
+     * {
+     *   to: string dest_address
+     *   cc: string cc_address,
+     *   bcc: string bcc_address,
+     *   subject: string subject,
+     *   from: string sender_address,
+     *   body: string main_message,
+     *   host: string smpt_host,
+     *   username: string smpt_username,
+     *   password: strign smpt_password
+     * }
+     * @return {Void}
+     */
+
+  }, {
+    key: 'SendMail',
+    value: function SendMail(o) {
+      var command = 'Player.SendMail(';
+
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = o[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var _ref7 = _step4.value;
+
+          var _ref8 = slicedToArray(_ref7, 2);
+
+          var k = _ref8[0];
+          var v = _ref8[1];
+
+          command = command + ',' + k + '=' + v;
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      
+
+      command += ');';
+
+      FWI$1.RunScript(command);
     }
 
-    command += ');';
+    /*
+     * Text-to-speech
+     * @param {Obj} o Object that contains parameters from the wiki
+     * {
+     *   msg: string text_to_speak,
+     *   Volume: int volume,
+     *   Rate: int rate,
+     *   Voice: string voice
+       }
+     * @return {Void}
+     */
 
-    FWI$1.RunScript(command);
+  }, {
+    key: 'Speak',
+    value: function Speak(o) {
+      var command = 'Player.Speak(';
+
+      try {
+        command += o[msg];
+      } catch (e) {
+        log.error(e);
+      }
+
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = o[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var _ref9 = _step5.value;
+
+          var _ref10 = slicedToArray(_ref9, 2);
+
+          var k = _ref10[0];
+          var v = _ref10[1];
+
+          command = k != 'msg' ? command + ',' + k + '=' + v : '';
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      
+
+      command += ');';
+
+      FWI$1.RunScript(command);
+    }
+
+    /*
+     * Unsets a variable
+     * @param {String} name Variable name you wish to clear
+     * @return {Void}
+     */
+
+  }, {
+    key: 'UnsetVariable',
+    value: function UnsetVariable(name) {
+      FWI$1.RunScript('Player.UnsetVariable(' + name + ');');
+    }
+  }]);
+  return Player;
+}();
+
+var Template = function () {
+  function Template() {
+    classCallCheck(this, Template);
   }
 
-  /*
-   * Unsets a variable
-   * @param {String} name Variable name you wish to clear
-   * @return {Void}
-   */
-  static UnsetVariable(name) {
-    FWI$1.RunScript('Player.UnsetVariable(' + name + ');');
-  }
-
-}
-
-class Template {
-  constructor() {
-
-  }
-
-  static PlayContent(name, region) {
+  createClass(Template, null, [{
+    key: 'PlayContent',
+    value: function PlayContent(name, region) {
       FWI$1.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
-  }
+    }
+  }, {
+    key: 'PopContent',
+    value: function PopContent() {
+      FWI$1.RunScript('Template.PopContent();');
+    }
+  }, {
+    key: 'PushContent',
+    value: function PushContent(content, region) {
+      var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
 
-  static PopContent() {
-    FWI$1.RunScript('Template.PopContent();');
-  }
+      FWI$1.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
+    }
+  }, {
+    key: 'Restart',
+    value: function Restart() {
+      FWI$1.RunScript('Template.Restart();');
+    }
+  }, {
+    key: 'SetCanSize',
+    value: function SetCanSize(region_name, value) {
+      FWI$1.RunScript('Template.SetCanSize(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'SetCanDrag',
+    value: function SetCanDrag(region_name, value) {
+      FWI$1.RunScript('Template.SetCanDrag(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'SetCanRotate',
+    value: function SetCanRotate(region_name, value) {
+      FWI$1.RunScript('Template.SetCanRotate(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'SetLeft',
+    value: function SetLeft(region_name, value) {
+      FWI$1.RunScript('Template.SetLeft(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetTop',
+    value: function SetTop(region_name, value) {
+      FWI$1.RunScript('Template.SetTop(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetWidth',
+    value: function SetWidth(region_name, value) {
+      FWI$1.RunScript('Template.SetWidth(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetHeight',
+    value: function SetHeight(region_name, value) {
+      FWI$1.RunScript('Template.SetHeight(' + region_name + ',' + value + ');');
+    }
+  }, {
+    key: 'SetAngle',
+    value: function SetAngle(region_name, value) {
+      FWI$1.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'ClearLeft',
+    value: function ClearLeft(region_name) {
+      FWI$1.RunScript('Template.ClearLeft(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearTop',
+    value: function ClearTop(region_name) {
+      FWI$1.RunScript('Template.ClearTop(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearWidth',
+    value: function ClearWidth(region_name) {
+      FWI$1.RunScript('Template.ClearWidth(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearHeight',
+    value: function ClearHeight(region_name) {
+      FWI$1.RunScript('Template.ClearHeight(' + region_name + ');');
+    }
+  }, {
+    key: 'ClearAngle',
+    value: function ClearAngle(region_name) {
+      FWI$1.RunScript('Template.ClearAngle(' + region_name + ');');
+    }
+  }, {
+    key: 'SetZIndex',
+    value: function SetZIndex(region_name, value) {
+      FWI$1.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
+    }
+  }, {
+    key: 'ClearZIndex',
+    value: function ClearZIndex(region_name) {
+      FWI$1.RunScript('Template.ClearZIndex(' + region_name + ');');
+    }
+  }, {
+    key: 'SetLinearVelocity',
+    value: function SetLinearVelocity(region_name) {
+      var Vx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '*';
+      var Vy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '*';
 
-  static PushContent(content, region, params = undefined) {
-    FWI$1.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
-  }
+      FWI$1.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
+    }
+  }, {
+    key: 'SetAngularVelocity',
+    value: function SetAngularVelocity(region_name, omega) {
+      FWI$1.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
+    }
+  }]);
+  return Template;
+}();
 
-  static Restart() {
-    FWI$1.RunScript('Template.Restart();');
-  }
+var _origin_position = new WeakMap();
+var _origin_size = new WeakMap();
 
-  static SetCanSize(region_name, value) {
-    FWI$1.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');
-  }
-
-  static SetCanDrag(region_name, value) {
-    FWI$1.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');
-  }
-
-  static SetCanRotate(region_name, value) {
-    FWI$1.RunScript('Template.SetCanRotate(' + region_name + ', ' + value +');');
-  }
-
-  static SetLeft(region_name, value) {
-    FWI$1.RunScript('Template.SetLeft('+ region_name + ',' + value + ');');
-  }
-
-  static SetTop(region_name, value) {
-    FWI$1.RunScript('Template.SetTop('+ region_name + ',' + value + ');');
-  }
-
-  static SetWidth(region_name, value) {
-    FWI$1.RunScript('Template.SetWidth('+ region_name + ',' + value + ');');
-  }
-
-  static SetHeight(region_name, value) {
-    FWI$1.RunScript('Template.SetHeight('+ region_name + ',' + value + ');');
-  }
-
-  static SetAngle(region_name, value) {
-    FWI$1.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
-  }
-
-  static ClearLeft(region_name) {
-    FWI$1.RunScript('Template.ClearLeft('+ region_name + ');');
-  }
-
-  static ClearTop(region_name) {
-    FWI$1.RunScript('Template.ClearTop('+ region_name + ');');
-  }
-
-  static ClearWidth(region_name) {
-    FWI$1.RunScript('Template.ClearWidth('+ region_name + ');');
-  }
-
-  static ClearHeight(region_name) {
-    FWI$1.RunScript('Template.ClearHeight('+ region_name + ');');
-  }
-
-  static ClearAngle(region_name) {
-    FWI$1.RunScript('Template.ClearAngle(' + region_name + ');');
-  }
-
-  static SetZIndex(region_name, value) {
-    FWI$1.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
-  }
-
-  static ClearZIndex(region_name) {
-    FWI$1.RunScript('Template.ClearZIndex(' + region_name + ');');
-  }
-
-  static SetLinearVelocity(region_name, Vx = '*', Vy = '*') {
-    FWI$1.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
-  }
-
-  static SetAngularVelocity(region_name, omega) {
-    FWI$1.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
-  }
-}
-
-const _origin_position = new WeakMap();
-const _origin_size = new WeakMap();
-
-class Region {
+var Region = function () {
 
     /**
      * The init function creates a new region object to keep track of region specific information
@@ -620,7 +1008,9 @@ class Region {
      * @param {Array} origin_size Array of the regions' size [x,y]
      * @return {Obj} New region object
      */
-    constructor(region_name, template_name, origin_position, origin_size) {
+    function Region(region_name, template_name, origin_position, origin_size) {
+        classCallCheck(this, Region);
+
         this.region_name = region_name;
         this.template_name = template_name;
         _origin_position.set(this, origin_position);
@@ -636,220 +1026,266 @@ class Region {
     * @parm {String} regionName Name of the region you want to seek
     * @return {Void}
     */
-    static Seek(region_name, direction, wrap = true) {
-        FWI.RunScript('Region['+ region_name +'].Seek("' + direction + '", "' + wrap + '");');
-    }
 
-    /*
-     * getter for the original position
-     * @return {Array} Array of original [x,y] position
-     */
-    get originPosition() {
-        return _origin_position.get(this);
-    }
 
-    /*
-     * getter for the original size
-     * @return {Array} Array of original [x,y] size
-     */
-    get originSize() {
-        return _origin_size.get(this)
-    }
+    createClass(Region, [{
+        key: "resetPosition",
 
-    /*
-     * Resets the position of the region to the original
-     * @return {Void}
-     */
-    resetPosition() {
-        Template.ClearLeft(this.region_name);
-        Template.ClearTop(this.region_name);
-        this.current_xy = this.originXY;
-    }
 
-    /*
-     * Resets the size of the region to the original
-     * @return {Void}
-     */
-    resetSize() {
-        Template.ClearHeight(this.region_name);
-        Template.ClearWidth(this.region_name);
-        this.current_size = this.originSize;
-    }
-
-    /*
-     * bound seek method with region name automatially given
-     * see Region.Seek for more
-     */
-    seek(direction, wrap = true) {
-        Region.Seek(this.region_name, direction, wrap);
-    }
-
-    /*
-     * Sets the new horizontal position of the region
-     * @param {Int} value Horizontal position in pixels from left of the screen
-     * @return {Void}
-     */
-    _moveX(value) {
-        Template.SetLeft(this.region_name, value);
-    }
-
-    /*
-     * Sets the new vertical position of the region
-     * @param {Int} value Vertical position in pixels from top of the screen
-     * @return {Void}
-     */
-    _moveY(value) {
-        Template.SetTop(this.region_name, value);
-    }
-
-    /*
-     * Sets the new width of the region
-     * @param {Int} value Width in pixels
-     * @return {Void}
-     */
-    _resizeX(value) {
-        Template.SetWidth(this.region_name, value);
-    }
-
-    /*
-     * Sets the new height of the region
-     * @param {Int} value Height in pixels
-     * @return {Void}
-     */
-    _resizeY(value) {
-        Template.SetHeight(this.region_name, value);
-    }
-
-    /**
-     * The move function moves a region to a new set of xy coordinantes using predefined easing types.
-     * @param {Array} end_pos A list of [x,y] cordinates for the end position of the top left of the region
-     * @param {Int} duration How long the animation lasts in milliseconds
-     * @param {String} type What kind of easing to apply to the tween animation
-     * @return {Void}
-     */
-    moveTo(end_pos, duration = 1000, type = 'linear') {
-        //log.info('pathTo called, calling _animateRegionInit');
-        this._animateRegionInit(end_pos, duration, type, 'position');
-    }
-
-    /**
-     * The resize function resises a region to a new set of xy coordinantes using predefined easing types.
-     * @param {Array} end_size A list of [x,y] cordinates for the end size
-     * @param {Int} duration How long the animation lasts in milliseconds
-     * @param {String} type What kind of easing to apply to the tween animation
-     * @return {Void}
-     */
-    resize(end_size, duration = 1000, type = 'linear') {
-        this._animateRegionInit(end_size, duration, type, 'size');
-    }
-
-    /**
-     * Intializes some variables for use in the animation and calls the main animation method
-     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to
-     * @param {Int} duration How long the animation plays in milliseconds
-     * @param {String} type The easting type used for the tweening animation
-     * @return {Void}
-     */
-    _animateRegionInit(end_coords, duration, type, animation_type) {
-        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');
-
-        let delta_x;
-        let delta_y;
-
-        const start_time = new Date().getTime();
-        const end_time = start_time + duration;
-
-        if (animation_type == 'position') {
-            delta_x = end_coords[0] - this.current_position[0];
-            delta_y = end_coords[1] - this.current_position[1];
+        /*
+         * Resets the position of the region to the original
+         * @return {Void}
+         */
+        value: function resetPosition() {
+            Template.ClearLeft(this.region_name);
+            Template.ClearTop(this.region_name);
+            this.current_xy = this.originXY;
         }
 
-        else if (animation_type == 'size') {
-            //log.info('in the size animation tyype chooser init');
-            delta_x = end_coords[0] - this.current_size[0];
-            delta_y = end_coords[1] - this.current_size[1];
+        /*
+         * Resets the size of the region to the original
+         * @return {Void}
+         */
+
+    }, {
+        key: "resetSize",
+        value: function resetSize() {
+            Template.ClearHeight(this.region_name);
+            Template.ClearWidth(this.region_name);
+            this.current_size = this.originSize;
         }
 
-        //log.debug({startTime: start_time, endTime:end_time, deltaX:delta_x, deltaY: delta_y, duration: duration, type: type, animation_type: animation_type});
+        /*
+         * bound seek method with region name automatially given
+         * see Region.Seek for more
+         */
 
-        this._animateRegion(end_coords,delta_x,delta_y,start_time,end_time,duration,type, animation_type);
-    }
+    }, {
+        key: "seek",
+        value: function seek(direction) {
+            var wrap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-    /**
-     * Main animation loop, computes the next [x,y] values of the animation
-     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to
-     * @param {Int} cX The total delta of the X coordinate from beginning position to end position
-     * @param {Int} cY The total delta of theY coordinate from beginning position to end position
-     * @param {DateTime} start_time A datetime time object
-     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation
-     * @param {Int} d The duration of the animation in milliseconds
-     * @param {String} type The easting type used for the tweening animation
-     * @return {Void}
-     */
-    _animateRegion(end_coords,cX,cY,start_time,end_time,d,type, animation_type) {
-        //log.info('Inside main animation loop');
-
-        let next_pos_x;
-        let next_pos_y;
-        let next_size_x;
-        let next_size_y;
-
-        const now = new Date().getTime();
-        const t = now - start_time;
-
-        //log.debug('Now: ',now, ' T: ',t);
-
-        //log.debug({cx: cX, cy: cY, startTime: start_time, endTime: end_time, duration: d, type:type})
-
-        if (now < end_time) {
-
-            //log.info('inside if loop');
-            if (animation_type == 'position') {
-                next_pos_x = easingTypes[type](t,this.current_position[0],cX,d);
-                next_pos_y = easingTypes[type](t,this.current_position[1],cY,d);
-
-                this._moveX(next_pos_x);
-                this._moveY(next_pos_y);
-            }
-
-            else if (animation_type == 'size') {
-                next_size_x = easingTypes[type](t,this.current_size[0],cX,d);
-                next_size_y = easingTypes[type](t,this.current_size[1],cY,d);
-
-                this._resizeX(next_size_x);
-                this._resizeY(next_size_y);
-            }
-
-            const self = this;
-
-            function callback() {
-                self._animateRegion(end_coords,cX,cY,start_time,end_time,d,type, animation_type);
-            }
-
-            window.requestAnimationFrame(callback);
+            Region.Seek(this.region_name, direction, wrap);
         }
 
-        else {
-            //log.debug('inside else, almost over');
+        /*
+         * Sets the new horizontal position of the region
+         * @param {Int} value Horizontal position in pixels from left of the screen
+         * @return {Void}
+         */
+
+    }, {
+        key: "_moveX",
+        value: function _moveX(value) {
+            Template.SetLeft(this.region_name, value);
+        }
+
+        /*
+         * Sets the new vertical position of the region
+         * @param {Int} value Vertical position in pixels from top of the screen
+         * @return {Void}
+         */
+
+    }, {
+        key: "_moveY",
+        value: function _moveY(value) {
+            Template.SetTop(this.region_name, value);
+        }
+
+        /*
+         * Sets the new width of the region
+         * @param {Int} value Width in pixels
+         * @return {Void}
+         */
+
+    }, {
+        key: "_resizeX",
+        value: function _resizeX(value) {
+            Template.SetWidth(this.region_name, value);
+        }
+
+        /*
+         * Sets the new height of the region
+         * @param {Int} value Height in pixels
+         * @return {Void}
+         */
+
+    }, {
+        key: "_resizeY",
+        value: function _resizeY(value) {
+            Template.SetHeight(this.region_name, value);
+        }
+
+        /**
+         * The move function moves a region to a new set of xy coordinantes using predefined easing types.
+         * @param {Array} end_pos A list of [x,y] cordinates for the end position of the top left of the region
+         * @param {Int} duration How long the animation lasts in milliseconds
+         * @param {String} type What kind of easing to apply to the tween animation
+         * @return {Void}
+         */
+
+    }, {
+        key: "moveTo",
+        value: function moveTo(end_pos) {
+            var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
+            var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
+
+            //log.info('pathTo called, calling _animateRegionInit');
+            this._animateRegionInit(end_pos, duration, type, 'position');
+        }
+
+        /**
+         * The resize function resises a region to a new set of xy coordinantes using predefined easing types.
+         * @param {Array} end_size A list of [x,y] cordinates for the end size
+         * @param {Int} duration How long the animation lasts in milliseconds
+         * @param {String} type What kind of easing to apply to the tween animation
+         * @return {Void}
+         */
+
+    }, {
+        key: "resize",
+        value: function resize(end_size) {
+            var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
+            var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
+
+            this._animateRegionInit(end_size, duration, type, 'size');
+        }
+
+        /**
+         * Intializes some variables for use in the animation and calls the main animation method
+         * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to
+         * @param {Int} duration How long the animation plays in milliseconds
+         * @param {String} type The easting type used for the tweening animation
+         * @return {Void}
+         */
+
+    }, {
+        key: "_animateRegionInit",
+        value: function _animateRegionInit(end_coords, duration, type, animation_type) {
+            //log.info('_animateRegionInit called, setting vars and calling _animateRegion');
+
+            var delta_x = void 0;
+            var delta_y = void 0;
+
+            var start_time = new Date().getTime();
+            var end_time = start_time + duration;
 
             if (animation_type == 'position') {
-                this._moveX(end_coords[0]);
-                this._moveY(end_coords[1]);
-                this.current_position[0] = end_coords[0];
-                this.current_position[1] = end_coords[1];
+                delta_x = end_coords[0] - this.current_position[0];
+                delta_y = end_coords[1] - this.current_position[1];
+            } else if (animation_type == 'size') {
+                //log.info('in the size animation tyype chooser init');
+                delta_x = end_coords[0] - this.current_size[0];
+                delta_y = end_coords[1] - this.current_size[1];
             }
 
-            else if (animation_type == 'size') {
-                this._resizeX(end_coords[0]);
-                this._resizeY(end_coords[1]);
-                this.current_size[0] = end_coords[0];
-                this.current_size[1] = end_coords[1];
-            }
+            //log.debug({startTime: start_time, endTime:end_time, deltaX:delta_x, deltaY: delta_y, duration: duration, type: type, animation_type: animation_type});
 
-            return;
+            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type);
         }
-    }
-}
+
+        /**
+         * Main animation loop, computes the next [x,y] values of the animation
+         * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to
+         * @param {Int} cX The total delta of the X coordinate from beginning position to end position
+         * @param {Int} cY The total delta of theY coordinate from beginning position to end position
+         * @param {DateTime} start_time A datetime time object
+         * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation
+         * @param {Int} d The duration of the animation in milliseconds
+         * @param {String} type The easting type used for the tweening animation
+         * @return {Void}
+         */
+
+    }, {
+        key: "_animateRegion",
+        value: function _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type) {
+            //log.info('Inside main animation loop');
+
+            var next_pos_x = void 0;
+            var next_pos_y = void 0;
+            var next_size_x = void 0;
+            var next_size_y = void 0;
+
+            var now = new Date().getTime();
+            var t = now - start_time;
+
+            //log.debug('Now: ',now, ' T: ',t);
+
+            //log.debug({cx: cX, cy: cY, startTime: start_time, endTime: end_time, duration: d, type:type})
+
+            if (now < end_time) {
+                var callback = function callback() {
+                    self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type);
+                };
+
+                //log.info('inside if loop');
+                if (animation_type == 'position') {
+                    next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);
+                    next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);
+
+                    this._moveX(next_pos_x);
+                    this._moveY(next_pos_y);
+                } else if (animation_type == 'size') {
+                    next_size_x = easingTypes[type](t, this.current_size[0], cX, d);
+                    next_size_y = easingTypes[type](t, this.current_size[1], cY, d);
+
+                    this._resizeX(next_size_x);
+                    this._resizeY(next_size_y);
+                }
+
+                var self = this;
+
+                window.requestAnimationFrame(callback);
+            } else {
+                //log.debug('inside else, almost over');
+
+                if (animation_type == 'position') {
+                    this._moveX(end_coords[0]);
+                    this._moveY(end_coords[1]);
+                    this.current_position[0] = end_coords[0];
+                    this.current_position[1] = end_coords[1];
+                } else if (animation_type == 'size') {
+                    this._resizeX(end_coords[0]);
+                    this._resizeY(end_coords[1]);
+                    this.current_size[0] = end_coords[0];
+                    this.current_size[1] = end_coords[1];
+                }
+
+                return;
+            }
+        }
+    }, {
+        key: "originPosition",
+
+
+        /*
+         * getter for the original position
+         * @return {Array} Array of original [x,y] position
+         */
+        get: function get$$1() {
+            return _origin_position.get(this);
+        }
+
+        /*
+         * getter for the original size
+         * @return {Array} Array of original [x,y] size
+         */
+
+    }, {
+        key: "originSize",
+        get: function get$$1() {
+            return _origin_size.get(this);
+        }
+    }], [{
+        key: "Seek",
+        value: function Seek(region_name, direction) {
+            var wrap = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+            FWI.RunScript('Region[' + region_name + '].Seek("' + direction + '", "' + wrap + '");');
+        }
+    }]);
+    return Region;
+}();
 
 exports.Content = Content;
 exports.easingTypes = easingTypes;

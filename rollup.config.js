@@ -1,3 +1,4 @@
+import babel from 'rollup-plugin-babel';
 import multiEntry from 'rollup-plugin-multi-entry';
 
 export default [
@@ -5,21 +6,20 @@ export default [
         entry: 'src/*.js',
         dest: 'dist/fwi.es.js',
         format: 'es',
-        plugins: [multiEntry()],
-        moduleName: 'fwi'
+        plugins: [multiEntry()]
     },
     {
         entry: 'src/*.js',
-        dest: 'dist/fwi.umd.js',
-        format: 'umd',
-        plugins: [multiEntry()],
+        dest: 'dist/fwi.common.js',
+        format: 'cjs',
+        plugins: [multiEntry(), babel({ plugins: ['external-helpers'] })],
         moduleName: 'fwi'
     },
     {
         entry: 'src/*.js',
         dest: 'dist/fwi.browser.js',
         format: 'iife',
-        plugins: [multiEntry()],
+        plugins: [multiEntry(), babel()],
         moduleName: 'fwi'
     }
 ];
