@@ -1,6 +1,8 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.fwi = {})));
+}(this, (function (exports) { 'use strict';
 
 // Load the FWI Javascript base:
 const FWI$1 = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
@@ -857,3 +859,7 @@ exports.FWI = FWI$1;
 exports.Player = Player;
 exports.Region = Region;
 exports.Template = Template;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));

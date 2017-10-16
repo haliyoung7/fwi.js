@@ -1,7 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
 // Load the FWI Javascript base:
 const FWI$1 = window.frameElement ? window.frameElement.parentNode.FWI : window.external;
 
@@ -851,9 +847,4 @@ class Region {
     }
 }
 
-exports.Content = Content;
-exports.easingTypes = easingTypes;
-exports.FWI = FWI$1;
-exports.Player = Player;
-exports.Region = Region;
-exports.Template = Template;
+export { Content, easingTypes, FWI$1 as FWI, Player, Region, Template };

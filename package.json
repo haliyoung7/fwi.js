@@ -3,7 +3,8 @@
   "version": "0.0.12",
   "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
   "main": "./dist/fwi.common.js",
-  "module": "./dist/fwi.common.js",
+  "module": "./dist/fwi.es.js",
+  "browser": "./dist/fwi.browser.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fourwindsinteractive/fwi.js.git"
@@ -28,6 +29,7 @@
     "browserify": "^14.4.0",
     "gulp": "^3.9.1",
     "gulp-debug": "^3.1.0",
+    "rollup-plugin-multi-entry": "^2.0.1",
     "vinyl-source-stream": "^1.1.0"
   }
 }
