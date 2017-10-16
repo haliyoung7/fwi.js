@@ -1,4 +1,4 @@
 {
     "presets": [
-        ["env", {"modules": "commonjs"}]]
+        ["env", {"modules": false}]]
 }
