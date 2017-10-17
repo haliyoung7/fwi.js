@@ -1082,7 +1082,7 @@ var Region = function () {
             var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
             var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
 
-            this._animateRegionInit(end_size, duration, type, 'size');
+            return this._animateRegionInit(end_size, duration, type, 'size');
         }
 
         /**
@@ -1096,6 +1096,8 @@ var Region = function () {
     }, {
         key: "_animateRegionInit",
         value: function _animateRegionInit(end_coords, duration, type, animation_type) {
+            var _this = this;
+
             //log.info('_animateRegionInit called, setting vars and calling _animateRegion');
 
             var delta_x = void 0;
@@ -1113,9 +1115,10 @@ var Region = function () {
                 delta_y = end_coords[1] - this.current_size[1];
             }
 
-            //log.debug({startTime: start_time, endTime:end_time, deltaX:delta_x, deltaY: delta_y, duration: duration, type: type, animation_type: animation_type});
-
-            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type);
+            var promise = new Promise(function (resolve) {
+                _this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);
+            });
+            return promise;
         }
 
         /**
@@ -1132,9 +1135,7 @@ var Region = function () {
 
     }, {
         key: "_animateRegion",
-        value: function _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type) {
-            //log.info('Inside main animation loop');
-
+        value: function _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {
             var next_pos_x = void 0;
             var next_pos_y = void 0;
             var next_size_x = void 0;
@@ -1143,14 +1144,7 @@ var Region = function () {
             var now = new Date().getTime();
             var t = now - start_time;
 
-            //log.debug('Now: ',now, ' T: ',t);
-
-            //log.debug({cx: cX, cy: cY, startTime: start_time, endTime: end_time, duration: d, type:type})
-
             if (now < end_time) {
-                var callback = function callback() {
-                    self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type);
-                };
 
                 //log.info('inside if loop');
                 if (animation_type == 'position') {
@@ -1169,9 +1163,12 @@ var Region = function () {
 
                 var self = this;
 
+                var callback = function callback() {
+                    self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);
+                };
+
                 window.requestAnimationFrame(callback);
             } else {
-                //log.debug('inside else, almost over');
 
                 if (animation_type == 'position') {
                     this._moveX(end_coords[0]);
@@ -1184,8 +1181,7 @@ var Region = function () {
                     this.current_size[0] = end_coords[0];
                     this.current_size[1] = end_coords[1];
                 }
-
-                return;
+                resolve();
             }
         }
     }, {

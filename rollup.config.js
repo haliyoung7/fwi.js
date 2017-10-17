@@ -6,20 +6,27 @@ export default [
         entry: 'src/*.js',
         dest: 'dist/fwi.es.js',
         format: 'es',
-        plugins: [multiEntry()]
+        plugins: [
+            multiEntry()
+        ]
     },
     {
         entry: 'src/*.js',
         dest: 'dist/fwi.common.js',
         format: 'cjs',
-        plugins: [multiEntry(), babel({ plugins: ['external-helpers'] })],
+        plugins: [
+            multiEntry(),
+            babel({ plugins: ['external-helpers'] })
+        ],
         moduleName: 'fwi'
     },
     {
         entry: 'src/*.js',
         dest: 'dist/fwi.browser.js',
         format: 'iife',
-        plugins: [multiEntry(), babel()],
-        moduleName: 'fwi'
-    }
+        plugins: [
+            multiEntry(),
+            babel()
+        ],
+        moduleName: 'fwi'    }
 ];
