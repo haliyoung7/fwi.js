@@ -135,7 +135,7 @@ export class Region {
      * @return {Void}
      */
     resize(end_size, duration = 1000, type = 'linear') {
-        this._animateRegionInit(end_size, duration, type, 'size');
+        return this._animateRegionInit(end_size, duration, type, 'size');
     }
 
     /**
@@ -165,9 +165,10 @@ export class Region {
             delta_y = end_coords[1] - this.current_size[1];
         };
 
-        //log.debug({startTime: start_time, endTime:end_time, deltaX:delta_x, deltaY: delta_y, duration: duration, type: type, animation_type: animation_type});
-
-        this._animateRegion(end_coords,delta_x,delta_y,start_time,end_time,duration,type, animation_type);
+        const promise = new Promise((resolve) => {
+            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);
+        });
+        return promise;
     }
 
     /**
@@ -181,9 +182,7 @@ export class Region {
      * @param {String} type The easting type used for the tweening animation
      * @return {Void}
      */
-    _animateRegion(end_coords,cX,cY,start_time,end_time,d,type, animation_type) {
-        //log.info('Inside main animation loop');
-
+    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {
         let next_pos_x;
         let next_pos_y;
         let next_size_x;
@@ -192,24 +191,20 @@ export class Region {
         const now = new Date().getTime();
         const t = now - start_time;
 
-        //log.debug('Now: ',now, ' T: ',t);
-
-        //log.debug({cx: cX, cy: cY, startTime: start_time, endTime: end_time, duration: d, type:type})
-
         if (now < end_time) {
 
             //log.info('inside if loop');
             if (animation_type == 'position') {
-                next_pos_x = easingTypes[type](t,this.current_position[0],cX,d);
-                next_pos_y = easingTypes[type](t,this.current_position[1],cY,d);
+                next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);
+                next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);
 
                 this._moveX(next_pos_x);
                 this._moveY(next_pos_y);
             }
 
             else if (animation_type == 'size') {
-                next_size_x = easingTypes[type](t,this.current_size[0],cX,d);
-                next_size_y = easingTypes[type](t,this.current_size[1],cY,d);
+                next_size_x = easingTypes[type](t, this.current_size[0], cX, d);
+                next_size_y = easingTypes[type](t, this.current_size[1], cY, d);
 
                 this._resizeX(next_size_x);
                 this._resizeY(next_size_y);
@@ -217,15 +212,14 @@ export class Region {
 
             const self = this;
 
-            function callback() {
-                self._animateRegion(end_coords,cX,cY,start_time,end_time,d,type, animation_type);
+            const callback = () => {
+                self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);
             }
 
             window.requestAnimationFrame(callback);
         }
 
         else {
-            //log.debug('inside else, almost over');
 
             if (animation_type == 'position') {
                 this._moveX(end_coords[0]);
@@ -240,8 +234,7 @@ export class Region {
                 this.current_size[0] = end_coords[0];
                 this.current_size[1] = end_coords[1];
             }
-
-            return;
+            resolve()
         };
     }
 }
