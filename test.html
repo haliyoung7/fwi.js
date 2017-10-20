@@ -21,12 +21,16 @@
     };
 
     flashCard.resize([0, 300], 2000, 'easeOutBounce')
+        .then(function(){ return fwi.Player.SetVariable('foo', 'bar1') })
         .then(function(){ return sleep(1000) })
         .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') })
         .then(function(){ return sleep(1000) })
         .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })
+        .then(function(){ return fwi.Player.SetVariable('foo', 'bar2') })
         .then(function(){ return sleep(1000) })
-        .then(function(){ flashCard.resize([500, 300], 2000, 'easeOutBounce') });
+        .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });
+
+
 </script>
 </head>
 <body>

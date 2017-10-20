@@ -341,8 +341,11 @@ class Player{
    * @param {String} name A variable name to collect
    * @return {Number|String} An appropriately casted value from the variable
    */
-  static GetVariable(name) {
-    return FWI$1.MarkupValue('{&var:' + name + '}');
+  static async GetVariable(name) {
+    return new Promise((resolve) => {
+      FWI$1.MarkupValue('{&var:' + name + '}');
+      resolve();
+    });
   }
 
   /**
@@ -350,12 +353,14 @@ class Player{
    * @param {Array} nameArray An array of variable names to collect
    * @return {Array} An array of values that correspond to the requested variables
    */
-  static GetManyVariables(nameArray) {
+  static async GetManyVariables(nameArray) {
+    return new Promise((resolve) => {
       const values = [];
       for (let [k,v] of nameArray.entries()) {
         values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
       }
-      return values;
+      return resolve(values);
+    })
   }
 
   /**
@@ -364,8 +369,12 @@ class Player{
    * @param {String} value The value of the variable to set
    * @return {Void}
    */
-  static SetVariable(name, value) {
+  static async SetVariable(name, value) {
+    return new Promise((resolve) => {
       FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+      resolve();
+    })
+
   }
 
   /**
@@ -373,10 +382,12 @@ class Player{
    * @param {Object} keyValueDict An object that defines key/value pairs to use
    * @return {Void}
    */
-  static SetManyVariables(keyValueDict) {
+  static async SetManyVariables(keyValueDict) {
+    return new Promise((resolve) => {
       for (let [k, v] of keyValueDict) {
         FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
       }
+    })
   }
 
   /**
@@ -517,8 +528,11 @@ class Template {
 
   }
 
-  static PlayContent(name, region) {
+  static async PlayContent(name, region) {
+    return new Promise((resolve) => {
       FWI$1.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
+      resolve();
+    })
   }
 
   static PopContent() {

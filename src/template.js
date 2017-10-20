@@ -5,8 +5,11 @@ export class Template {
 
   }
 
-  static PlayContent(name, region) {
+  static async PlayContent(name, region) {
+    return new Promise((resolve) => {
       FWI.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
+      resolve()
+    })
   }
 
   static PopContent() {

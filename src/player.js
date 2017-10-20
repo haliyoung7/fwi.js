@@ -10,8 +10,11 @@ export class Player{
    * @param {String} name A variable name to collect
    * @return {Number|String} An appropriately casted value from the variable
    */
-  static GetVariable(name) {
-    return FWI.MarkupValue('{&var:' + name + '}');
+  static async GetVariable(name) {
+    return new Promise((resolve) => {
+      FWI.MarkupValue('{&var:' + name + '}')
+      resolve()
+    });
   }
 
   /**
@@ -19,12 +22,14 @@ export class Player{
    * @param {Array} nameArray An array of variable names to collect
    * @return {Array} An array of values that correspond to the requested variables
    */
-  static GetManyVariables(nameArray) {
+  static async GetManyVariables(nameArray) {
+    return new Promise((resolve) => {
       const values = [];
       for (let [k,v] of nameArray.entries()) {
         values.push(FWI.MarkupValue('{&var:' + v + '}'));
       }
-      return values;
+      return resolve(values);
+    })
   }
 
   /**
@@ -33,8 +38,12 @@ export class Player{
    * @param {String} value The value of the variable to set
    * @return {Void}
    */
-  static SetVariable(name, value) {
+  static async SetVariable(name, value) {
+    return new Promise((resolve) => {
       FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+      resolve();
+    })
+
   }
 
   /**
@@ -42,10 +51,12 @@ export class Player{
    * @param {Object} keyValueDict An object that defines key/value pairs to use
    * @return {Void}
    */
-  static SetManyVariables(keyValueDict) {
+  static async SetManyVariables(keyValueDict) {
+    return new Promise((resolve) => {
       for (let [k, v] of keyValueDict) {
         FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
       };
+    })
   }
 
   /**
