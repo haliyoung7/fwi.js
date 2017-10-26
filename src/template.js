@@ -5,6 +5,12 @@ export class Template {
 
   }
 
+  /**
+   * Plays a piece of content in a region
+   * @param {String} name The name of the variable to set
+   * @param {String} region The region of the content to play
+   * @return {Void}
+   */
   static async PlayContent(name, region) {
     return new Promise((resolve) => {
       FWI.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
@@ -12,22 +18,47 @@ export class Template {
     })
   }
 
+  /**
+   * Pops a command from the FIFO command stack
+   * @return {Void}
+   */
   static PopContent() {
     FWI.RunScript('Template.PopContent();');
   }
 
+  /**
+   * Pushes a command to the FIFO command stack
+   * @return {Void}
+   */
   static PushContent(content, region, params = undefined) {
     FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
   }
 
+  /**
+   * Restarts the template, be careful!  If you don't have a span region
+   * set this will spawn a new process.
+   * @return {Void}
+   */
   static Restart() {
     FWI.RunScript('Template.Restart();');
   }
 
+  /**
+   * Sets a region property telling it if it can resize or not.
+   * @param {String} region_name Name of the region
+   * @param {Bool} value True/False if the region can be resized
+   * @return {Void}
+   */
   static SetCanSize(region_name, value) {
     FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');
   }
 
+  /**
+   * Sets a region property telling it if it can be draged around
+   * @param {String} region_name Name of the region
+   * @param {Bool} region True/False if the region can be dragged
+   * @return {Void}
+   */
   static SetCanDrag(region_name, value) {
     FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');
   }

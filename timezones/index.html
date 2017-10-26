@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../dist/polyfill.js"></script>
+<script src="../dist/fwi.browser.js"></script>
+<script src="./moment.js"></script>
+<script src="./moment-timezone.js"></script>
+<script src="../dist/log4javascript/log4javascript.js"></script>
+<script>
+
+round10 = function(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
+}
+
+// Sets a variable with a specific value in Content Player.
+iterTimeZones = function(timezone_list) {
+
+    for (var i = 1; i <= 2; i++) {
+
+        var zone = fwi.Player.GetVariable('tz_zone' + i.toString());
+        var timecode = moment().tz(zone).format('YYYY-MM-DD[T]HH:mm:ss');
+
+        var hour = moment().tz(zone).format('hh');
+        var minute = moment().tz(zone).format('mm');
+        var rounded_minute = ('0' + round10(minute, -1)).slice(-2).toString();
+
+        var timeString;
+
+        if (rounded_minute == '60') {
+            hour = parseInt(hour)+1;
+
+            if (hour == 13) {
+                timeString = '0100';
+            }
+
+            timeString = '0' + (parseInt(hour)+1).slice(-2).toString() + '00';
+        }
+
+        else {
+            timeString = hour + rounded_minute;
+        }
+
+        var colorScheme = fwi.Player.GetVariable('color_scheme');
+
+        var time_image_uri = 'content://' + timeString + (colorScheme == 'dark' ? '_BlackClockLarge' : '_WhiteClockLarge');
+
+        fwi.Player.SetVariable('tz_timecode' + i.toString(), timecode);
+        fwi.Player.SetVariable('clock_face' + i.toString(), time_image_uri);
+    }
+};
+
+window.onload = iterTimeZones;
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

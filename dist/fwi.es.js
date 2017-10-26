@@ -20,7 +20,7 @@ class Content {
 	}
 
 	static GetDetails(name) {
-		return FWI$1.getURL('content://' + name);
+		return FWI$1.GetUrl('content://' + name);
 	}
 
 	static Print(region_name, parameters) {
@@ -331,6 +331,35 @@ const easingTypes = {
     }
 };
 
+class Helpers {
+
+	constructor() {
+
+	}
+
+	static splitColor(color) {
+		const opacity = parseInt('0x' + color.slice(1,3))/255;
+
+		const rgb = '#' + color.slice(3,9);
+
+		return ({'rgb' : rgb, 'opacity' : opacity});
+	}
+}
+
+String.prototype.ReplaceIllegalChars = function (prefix) {
+  //This method replaces { } and , with variable names so CM can read the JSON properly
+  let OutputString = this.replace(/{/g,"{&lb");
+  OutputString = OutputString.replace(/}/g,"&rb}");
+  OutputString = OutputString.replace(/,/g,`{&var:${prefix}_comma}`);
+  OutputString = OutputString.replace(/{&lb/g,"{&lb}");
+  OutputString = OutputString.replace(/&rb}/g,"{&rb}");
+  return OutputString;
+};
+
+String.prototype.startsWith = function (prefix) {
+    return this.slice(0, prefix.length) == prefix;
+};
+
 class Player{
   constructor() {
 
@@ -341,11 +370,18 @@ class Player{
    * @param {String} name A variable name to collect
    * @return {Number|String} An appropriately casted value from the variable
    */
-  static async GetVariable(name) {
-    return new Promise((resolve) => {
-      FWI$1.MarkupValue('{&var:' + name + '}');
-      resolve();
-    });
+  static GetVariable(name) {
+    return FWI$1.MarkupValue('{&var:' + name + '}') != '' ? FWI$1.MarkupValue('{&var:' + name + '}') : false;
+  };
+
+  /**
+   * Retrieves the value for a single CM font variable.
+   * @param {String} name A variable name to collect
+   * @return {Object} Dictionary of the font json
+   */
+  static GetFontVariable(name) {
+    const font_var = Player.GetVariable(name);
+    return JSON.parse(font_var);
   }
 
   /**
@@ -353,28 +389,32 @@ class Player{
    * @param {Array} nameArray An array of variable names to collect
    * @return {Array} An array of values that correspond to the requested variables
    */
-  static async GetManyVariables(nameArray) {
-    return new Promise((resolve) => {
-      const values = [];
-      for (let [k,v] of nameArray.entries()) {
-        values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
-      }
-      return resolve(values);
-    })
+  static GetManyVariables(nameArray) {
+    const values = [];
+    for (let [k,v] of nameArray.entries()) {
+      values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
+    }
+    return values;
   }
 
   /**
-   * Sets a single variable back in CM.
+   * Sets  single variable back in CM.
    * @param {String} name The name of the variable to set
    * @param {String} value The value of the variable to set
    * @return {Void}
    */
-  static async SetVariable(name, value) {
-    return new Promise((resolve) => {
-      FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
-      resolve();
-    })
+  static SetVariable(name, value) {
+    FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+  }
 
+  /**
+   * Sets a single font variable back in CM.
+   * @param {String} name The name of the variable to set
+   * @param {Object} value The font dictionary object
+   * @return {Void}
+   */
+  static SetFontVariable(name, value, prefix) {
+    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());
   }
 
   /**
@@ -382,12 +422,38 @@ class Player{
    * @param {Object} keyValueDict An object that defines key/value pairs to use
    * @return {Void}
    */
-  static async SetManyVariables(keyValueDict) {
-    return new Promise((resolve) => {
-      for (let [k, v] of keyValueDict) {
-        FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-      }
-    })
+  static SetManyVariables(keyValueDict) {
+    for (let [k, v] of keyValueDict) {
+      FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+    }
+  }
+
+  /**
+   * Creates a new dictionary with a font variable tempalte
+   * @return {Object} Font dictionary template
+   */
+  static CreateFontVariable() {
+
+    const font_dict = {
+        fontFamily: "Arial",
+        fontSize: 9.000000E+000,
+        fontStretch: null,
+        fontStyle: null,
+        fontWeight: null,
+        textDecoration: null,
+        fontColor: "#FF000000",
+        textAlignment: "TopLeft",
+        textAutoSize: false,
+        textSizeBehavior: "Fixed",
+        fontLeading: 0,
+        frame: {
+          type: "",
+          backgroundColor: "#00424242",
+          borderColor: "#008BD5B5"
+        }
+      };
+
+    return font_dict;
   }
 
   /**
@@ -739,7 +805,7 @@ class Region {
      */
     moveTo(end_pos, duration = 1000, type = 'linear') {
         //log.info('pathTo called, calling _animateRegionInit');
-        this._animateRegionInit(end_pos, duration, type, 'position');
+        return this._animateRegionInit(end_pos, duration, type, 'position');
     }
 
     /**
@@ -854,4 +920,4 @@ class Region {
     }
 }
 
-export { Content, easingTypes, FWI$1 as FWI, Player, Region, Template };
+export { Content, easingTypes, FWI$1 as FWI, Helpers, Player, Region, Template };

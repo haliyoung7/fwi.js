@@ -213,7 +213,7 @@ var Content = function () {
 	}], [{
 		key: 'GetDetails',
 		value: function GetDetails(name) {
-			return FWI$1.getURL('content://' + name);
+			return FWI$1.GetUrl('content://' + name);
 		}
 	}, {
 		key: 'Print',
@@ -548,6 +548,38 @@ var easingTypes = {
     }
 };
 
+var Helpers = function () {
+	function Helpers() {
+		classCallCheck(this, Helpers);
+	}
+
+	createClass(Helpers, null, [{
+		key: 'splitColor',
+		value: function splitColor(color) {
+			var opacity = parseInt('0x' + color.slice(1, 3)) / 255;
+
+			var rgb = '#' + color.slice(3, 9);
+
+			return { 'rgb': rgb, 'opacity': opacity };
+		}
+	}]);
+	return Helpers;
+}();
+
+String.prototype.ReplaceIllegalChars = function (prefix) {
+  //This method replaces { } and , with variable names so CM can read the JSON properly
+  var OutputString = this.replace(/{/g, "{&lb");
+  OutputString = OutputString.replace(/}/g, "&rb}");
+  OutputString = OutputString.replace(/,/g, "{&var:" + prefix + "_comma}");
+  OutputString = OutputString.replace(/{&lb/g, "{&lb}");
+  OutputString = OutputString.replace(/&rb}/g, "{&rb}");
+  return OutputString;
+};
+
+String.prototype.startsWith = function (prefix) {
+  return this.slice(0, prefix.length) == prefix;
+};
+
 var Player = function () {
   function Player() {
     classCallCheck(this, Player);
@@ -561,32 +593,23 @@ var Player = function () {
 
 
   createClass(Player, null, [{
-    key: 'GetVariable',
-    value: function () {
-      var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(name) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                return _context.abrupt('return', new Promise(function (resolve) {
-                  FWI$1.MarkupValue('{&var:' + name + '}');
-                  resolve();
-                }));
+    key: "GetVariable",
+    value: function GetVariable(name) {
+      return FWI$1.MarkupValue('{&var:' + name + '}') != '' ? FWI$1.MarkupValue('{&var:' + name + '}') : false;
+    }
+  }, {
+    key: "GetFontVariable",
 
-              case 1:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
 
-      function GetVariable(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return GetVariable;
-    }()
+    /**
+     * Retrieves the value for a single CM font variable.
+     * @param {String} name A variable name to collect
+     * @return {Object} Dictionary of the font json
+     */
+    value: function GetFontVariable(name) {
+      var font_var = Player.GetVariable(name);
+      return JSON.parse(font_var);
+    }
 
     /**
      * Retrieves values for multiple CM variables.
@@ -595,97 +618,67 @@ var Player = function () {
      */
 
   }, {
-    key: 'GetManyVariables',
-    value: function () {
-      var _ref2 = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(nameArray) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                return _context2.abrupt('return', new Promise(function (resolve) {
-                  var values = [];
-                  var _iteratorNormalCompletion = true;
-                  var _didIteratorError = false;
-                  var _iteratorError = undefined;
+    key: "GetManyVariables",
+    value: function GetManyVariables(nameArray) {
+      var values = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-                  try {
-                    for (var _iterator = nameArray.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                      var _ref3 = _step.value;
+      try {
+        for (var _iterator = nameArray.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _ref = _step.value;
 
-                      var _ref4 = slicedToArray(_ref3, 2);
+          var _ref2 = slicedToArray(_ref, 2);
 
-                      var k = _ref4[0];
-                      var v = _ref4[1];
+          var k = _ref2[0];
+          var v = _ref2[1];
 
-                      values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
-                    }
-                  } catch (err) {
-                    _didIteratorError = true;
-                    _iteratorError = err;
-                  } finally {
-                    try {
-                      if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                      }
-                    } finally {
-                      if (_didIteratorError) {
-                        throw _iteratorError;
-                      }
-                    }
-                  }
-
-                  return resolve(values);
-                }));
-
-              case 1:
-              case 'end':
-                return _context2.stop();
-            }
+          values.push(FWI$1.MarkupValue('{&var:' + v + '}'));
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
           }
-        }, _callee2, this);
-      }));
-
-      function GetManyVariables(_x2) {
-        return _ref2.apply(this, arguments);
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
 
-      return GetManyVariables;
-    }()
+      return values;
+    }
 
     /**
-     * Sets a single variable back in CM.
+     * Sets  single variable back in CM.
      * @param {String} name The name of the variable to set
      * @param {String} value The value of the variable to set
      * @return {Void}
      */
 
   }, {
-    key: 'SetVariable',
-    value: function () {
-      var _ref5 = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(name, value) {
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                return _context3.abrupt('return', new Promise(function (resolve) {
-                  FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
-                  resolve();
-                }));
+    key: "SetVariable",
+    value: function SetVariable(name, value) {
+      FWI$1.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+    }
 
-              case 1:
-              case 'end':
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
+    /**
+     * Sets a single font variable back in CM.
+     * @param {String} name The name of the variable to set
+     * @param {Object} value The font dictionary object
+     * @return {Void}
+     */
 
-      function SetVariable(_x3, _x4) {
-        return _ref5.apply(this, arguments);
-      }
-
-      return SetVariable;
-    }()
+  }, {
+    key: "SetFontVariable",
+    value: function SetFontVariable(name, value, prefix) {
+      Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());
+    }
 
     /**
      * Sets multiple variables back in CM.
@@ -694,61 +687,71 @@ var Player = function () {
      */
 
   }, {
-    key: 'SetManyVariables',
-    value: function () {
-      var _ref6 = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(keyValueDict) {
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                return _context4.abrupt('return', new Promise(function (resolve) {
-                  var _iteratorNormalCompletion2 = true;
-                  var _didIteratorError2 = false;
-                  var _iteratorError2 = undefined;
+    key: "SetManyVariables",
+    value: function SetManyVariables(keyValueDict) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
-                  try {
-                    for (var _iterator2 = keyValueDict[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                      var _ref7 = _step2.value;
+      try {
+        for (var _iterator2 = keyValueDict[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _ref3 = _step2.value;
 
-                      var _ref8 = slicedToArray(_ref7, 2);
+          var _ref4 = slicedToArray(_ref3, 2);
 
-                      var k = _ref8[0];
-                      var v = _ref8[1];
+          var k = _ref4[0];
+          var v = _ref4[1];
 
-                      FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-                    }
-                  } catch (err) {
-                    _didIteratorError2 = true;
-                    _iteratorError2 = err;
-                  } finally {
-                    try {
-                      if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                      }
-                    } finally {
-                      if (_didIteratorError2) {
-                        throw _iteratorError2;
-                      }
-                    }
-                  }
-
-                  
-                }));
-
-              case 1:
-              case 'end':
-                return _context4.stop();
-            }
+          FWI$1.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
-        }, _callee4, this);
-      }));
-
-      function SetManyVariables(_x5) {
-        return _ref6.apply(this, arguments);
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
       }
 
-      return SetManyVariables;
-    }()
+      
+    }
+
+    /**
+     * Creates a new dictionary with a font variable tempalte
+     * @return {Object} Font dictionary template
+     */
+
+  }, {
+    key: "CreateFontVariable",
+    value: function CreateFontVariable() {
+
+      var font_dict = {
+        fontFamily: "Arial",
+        fontSize: 9.000000E+000,
+        fontStretch: null,
+        fontStyle: null,
+        fontWeight: null,
+        textDecoration: null,
+        fontColor: "#FF000000",
+        textAlignment: "TopLeft",
+        textAutoSize: false,
+        textSizeBehavior: "Fixed",
+        fontLeading: 0,
+        frame: {
+          type: "",
+          backgroundColor: "#00424242",
+          borderColor: "#008BD5B5"
+        }
+      };
+
+      return font_dict;
+    }
 
     /**
      * Sets the language of the build.
@@ -757,7 +760,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'SetLanguage',
+    key: "SetLanguage",
     value: function SetLanguage(languageCode) {
       FWI$1.RunScript('Player.SetLanguage(' + languageCode + ');');
     }
@@ -769,7 +772,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'ToggleVariable',
+    key: "ToggleVariable",
     value: function ToggleVariable(name) {
       FWI$1.RunScript('Player.ToggleVariable(' + name + ');');
     }
@@ -782,7 +785,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'PlayTemplate',
+    key: "PlayTemplate",
     value: function PlayTemplate(name, templateIndex) {
       FWI$1.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
     }
@@ -795,7 +798,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'Command',
+    key: "Command",
     value: function Command(command_name, arg_array) {
       var command = 'Player.Command(' + command_name;
 
@@ -805,12 +808,12 @@ var Player = function () {
 
       try {
         for (var _iterator3 = arg_array.entries()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var _ref9 = _step3.value;
+          var _ref5 = _step3.value;
 
-          var _ref10 = slicedToArray(_ref9, 2);
+          var _ref6 = slicedToArray(_ref5, 2);
 
-          var k = _ref10[0];
-          var v = _ref10[1];
+          var k = _ref6[0];
+          var v = _ref6[1];
 
           command = command + ', ' + v;
         }
@@ -840,7 +843,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'ResetIdleTimer',
+    key: "ResetIdleTimer",
     value: function ResetIdleTimer() {
       FWI$1.RunScript('Player.ResetIdleTimer();');
     }
@@ -851,7 +854,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'Restart',
+    key: "Restart",
     value: function Restart() {
       FWI$1.RunScript('Player.Restart();');
     }
@@ -874,7 +877,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'SendMail',
+    key: "SendMail",
     value: function SendMail(o) {
       var command = 'Player.SendMail(';
 
@@ -884,12 +887,12 @@ var Player = function () {
 
       try {
         for (var _iterator4 = o[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var _ref11 = _step4.value;
+          var _ref7 = _step4.value;
 
-          var _ref12 = slicedToArray(_ref11, 2);
+          var _ref8 = slicedToArray(_ref7, 2);
 
-          var k = _ref12[0];
-          var v = _ref12[1];
+          var k = _ref8[0];
+          var v = _ref8[1];
 
           command = command + ',' + k + '=' + v;
         }
@@ -928,7 +931,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'Speak',
+    key: "Speak",
     value: function Speak(o) {
       var command = 'Player.Speak(';
 
@@ -944,12 +947,12 @@ var Player = function () {
 
       try {
         for (var _iterator5 = o[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var _ref13 = _step5.value;
+          var _ref9 = _step5.value;
 
-          var _ref14 = slicedToArray(_ref13, 2);
+          var _ref10 = slicedToArray(_ref9, 2);
 
-          var k = _ref14[0];
-          var v = _ref14[1];
+          var k = _ref10[0];
+          var v = _ref10[1];
 
           command = k != 'msg' ? command + ',' + k + '=' + v : '';
         }
@@ -982,7 +985,7 @@ var Player = function () {
      */
 
   }, {
-    key: 'UnsetVariable',
+    key: "UnsetVariable",
     value: function UnsetVariable(name) {
       FWI$1.RunScript('Player.UnsetVariable(' + name + ');');
     }
@@ -1268,7 +1271,7 @@ var Region = function () {
             var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
 
             //log.info('pathTo called, calling _animateRegionInit');
-            this._animateRegionInit(end_pos, duration, type, 'position');
+            return this._animateRegionInit(end_pos, duration, type, 'position');
         }
 
         /**
@@ -1423,6 +1426,7 @@ var Region = function () {
 exports.Content = Content;
 exports.easingTypes = easingTypes;
 exports.FWI = FWI$1;
+exports.Helpers = Helpers;
 exports.Player = Player;
 exports.Region = Region;
 exports.Template = Template;

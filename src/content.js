@@ -19,7 +19,7 @@ export class Content {
 	}
 
 	static GetDetails(name) {
-		return FWI.getURL('content://' + name);
+		return FWI.GetUrl('content://' + name);
 	}
 
 	static Print(region_name, parameters) {

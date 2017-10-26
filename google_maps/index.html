@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfNaSrj8Y2X-Yaz5mqQB1k-Ddwwf7xdek&v=3"></script>
+    <script src="../dist/polyfill.js"></script>
+    <script src="../dist/fwi.browser.js"></script>
+    <script src="../dist/xmljs.js"></script>
+    <script src="../dist/log4javascript/log4javascript.js"></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Kaiser Google Map</title>
+    <style type="text/css">
+        html { height: 100% }
+        body { height: 100%; margin: 0; padding: 0 }
+        #googleMap { height: 100% }
+    </style>
+    <script>
+	    // Create the logger
+	    var log = log4javascript.getLogger();
+
+        // Create a PopUpAppender with default options
+        var popUpAppender = new log4javascript.PopUpAppender();
+
+        // Change the desired configuration options
+        popUpAppender.setFocusPopUp(true);
+        popUpAppender.setNewestMessageAtTop(true);
+
+        // Add the appender to the logger
+        log.addAppender(popUpAppender);
+
+        // Test the logger
+        log.debug("Hello world!");
+
+        var start = fwi.Player.GetVariable("startAddress");
+
+        var myCenter = new google.maps.LatLng(37.824633,-122.255945);
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var geocoder = new google.maps.Geocoder();
+        var startMarker = new google.maps.Marker({
+            animation: google.maps.Animation.DROP,
+            position:myCenter,
+            icon:'http://contentstore.fourwindsinteractive.com/PlayerHandler.ashx?Type=download&Title=CS00126318&UserType=1&LinkSource=%2bwkDa9F5oXgkHdmbc61TEQ%3d%3d&LinkKey=689bb1b793b5081d69baceef29f85fad&Extension=png&FWIIncludeMimetype=false'
+        });
+
+        var initialize = function() {
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            var mapProp = {
+                panControl:false,
+                zoomControl:true,
+                mapTypeControl:false,
+                scaleControl:false,
+                streetViewControl:false,
+                rotateControl:false,
+                center:myCenter,
+                zoom:15,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+            var trafficLayer = new google.maps.TrafficLayer();
+
+            trafficLayer.setMap(map);
+            directionsDisplay.setMap(map);
+            startMarker.setMap(map);
+
+            var content = new fwi.Content('places', 'Places');
+
+            var obj = xmljs.xml2js(content.getDetails());
+
+            var markers = [];
+
+            var codeAddresses = function() {
+                for (var i = 0; i < obj.elements[0].elements.length; i++) {
+                    address = obj.elements[0].elements[i].elements[1].elements[0].text;
+                    geocoder.geocode({'address': address}, function(results, status){
+                        addMarkerWithTimeout(results[0].geometry.location.toJSON(), i*75);
+                        i++
+                        return;
+                    });
+                };
+            };
+
+            var addMarkerWithTimeout = function(position, timeout) {
+                log.debug(timeout);
+                window.setTimeout(function() {
+                    markers.push(new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        animation: google.maps.Animation.DROP
+                    }));
+                }, timeout);
+            };
+
+            codeAddresses();
+        };
+
+
+        var calcRoute = function(end) {
+            var request = {
+                origin:start,
+                destination:end,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+
+            var draw = function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+                }
+            };
+
+            directionsService.route(request, draw);
+        };
+
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+</head>
+    <body>
+        <div id="googleMap"></div>
+    </body>
+</html>

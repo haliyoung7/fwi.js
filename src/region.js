@@ -124,7 +124,7 @@ export class Region {
      */
     moveTo(end_pos, duration = 1000, type = 'linear') {
         //log.info('pathTo called, calling _animateRegionInit');
-        this._animateRegionInit(end_pos, duration, type, 'position');
+        return this._animateRegionInit(end_pos, duration, type, 'position');
     }
 
     /**

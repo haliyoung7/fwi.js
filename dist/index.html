@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="./js/current/polyfill.js"></script>
+    <script src="./js/current/fwi.browser.js"></script>
+    <script src="./js/current/xmljs.js"></script>
+    <script src="./js/current/log4javascript/log4javascript.js"></script>
+    <script>
+        var Player = fwi.Player;
+        var Template = fwi.Template;
+        var Content = fwi.Content;
+        var Region = fwi.Region;
+
+	    // Create the logger
+	    var log = log4javascript.getLogger();
+
+        // Create a PopUpAppender with default options
+        var popUpAppender = new log4javascript.PopUpAppender();
+
+        // Change the desired configuration options
+        popUpAppender.setFocusPopUp(true);
+        popUpAppender.setNewestMessageAtTop(true);
+
+        // Add the appender to the logger
+        log.addAppender(popUpAppender);
+
+        // Test the logger
+        log.debug("FWello world!");
+    </script>
+
+</head>
+    <body>
+    </body>
+</html>

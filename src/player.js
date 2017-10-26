@@ -1,5 +1,19 @@
 import { FWI } from "./fwi_core.js";
 
+String.prototype.ReplaceIllegalChars = function (prefix) {
+  //This method replaces { } and , with variable names so CM can read the JSON properly
+  let OutputString = this.replace(/{/g,"{&lb");
+  OutputString = OutputString.replace(/}/g,"&rb}");
+  OutputString = OutputString.replace(/,/g,`{&var:${prefix}_comma}`);
+  OutputString = OutputString.replace(/{&lb/g,"{&lb}");
+  OutputString = OutputString.replace(/&rb}/g,"{&rb}");
+  return OutputString;
+}
+
+String.prototype.startsWith = function (prefix) {
+    return this.slice(0, prefix.length) == prefix;
+}
+
 export class Player{
   constructor() {
 
@@ -10,11 +24,18 @@ export class Player{
    * @param {String} name A variable name to collect
    * @return {Number|String} An appropriately casted value from the variable
    */
-  static async GetVariable(name) {
-    return new Promise((resolve) => {
-      FWI.MarkupValue('{&var:' + name + '}')
-      resolve()
-    });
+  static GetVariable(name) {
+    return FWI.MarkupValue('{&var:' + name + '}') != '' ? FWI.MarkupValue('{&var:' + name + '}') : false;
+  };
+
+  /**
+   * Retrieves the value for a single CM font variable.
+   * @param {String} name A variable name to collect
+   * @return {Object} Dictionary of the font json
+   */
+  static GetFontVariable(name) {
+    const font_var = Player.GetVariable(name);
+    return JSON.parse(font_var);
   }
 
   /**
@@ -22,28 +43,32 @@ export class Player{
    * @param {Array} nameArray An array of variable names to collect
    * @return {Array} An array of values that correspond to the requested variables
    */
-  static async GetManyVariables(nameArray) {
-    return new Promise((resolve) => {
-      const values = [];
-      for (let [k,v] of nameArray.entries()) {
-        values.push(FWI.MarkupValue('{&var:' + v + '}'));
-      }
-      return resolve(values);
-    })
+  static GetManyVariables(nameArray) {
+    const values = [];
+    for (let [k,v] of nameArray.entries()) {
+      values.push(FWI.MarkupValue('{&var:' + v + '}'));
+    }
+    return values;
   }
 
   /**
-   * Sets a single variable back in CM.
+   * Sets  single variable back in CM.
    * @param {String} name The name of the variable to set
    * @param {String} value The value of the variable to set
    * @return {Void}
    */
-  static async SetVariable(name, value) {
-    return new Promise((resolve) => {
-      FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
-      resolve();
-    })
+  static SetVariable(name, value) {
+    FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+  }
 
+  /**
+   * Sets a single font variable back in CM.
+   * @param {String} name The name of the variable to set
+   * @param {Object} value The font dictionary object
+   * @return {Void}
+   */
+  static SetFontVariable(name, value, prefix) {
+    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());
   }
 
   /**
@@ -51,12 +76,38 @@ export class Player{
    * @param {Object} keyValueDict An object that defines key/value pairs to use
    * @return {Void}
    */
-  static async SetManyVariables(keyValueDict) {
-    return new Promise((resolve) => {
-      for (let [k, v] of keyValueDict) {
-        FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-      };
-    })
+  static SetManyVariables(keyValueDict) {
+    for (let [k, v] of keyValueDict) {
+      FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+    };
+  }
+
+  /**
+   * Creates a new dictionary with a font variable tempalte
+   * @return {Object} Font dictionary template
+   */
+  static CreateFontVariable() {
+
+    const font_dict = {
+        fontFamily: "Arial",
+        fontSize: 9.000000E+000,
+        fontStretch: null,
+        fontStyle: null,
+        fontWeight: null,
+        textDecoration: null,
+        fontColor: "#FF000000",
+        textAlignment: "TopLeft",
+        textAutoSize: false,
+        textSizeBehavior: "Fixed",
+        fontLeading: 0,
+        frame: {
+          type: "",
+          backgroundColor: "#00424242",
+          borderColor: "#008BD5B5"
+        }
+      }
+
+    return font_dict;
   }
 
   /**
@@ -87,7 +138,7 @@ export class Player{
       FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
   }
 
-  /*
+  /**
    * Runs a shell command
    * @param {String} command_name The main command, sometimes includes folder path
    * @param {Array} arg_array Array of args to be submitted to the command
@@ -106,7 +157,7 @@ export class Player{
 
   }
 
-  /*
+  /**
    * Resets the idle timer
    * @return {Void}
    */
@@ -114,7 +165,7 @@ export class Player{
     FWI.RunScript('Player.ResetIdleTimer();');
   }
 
-  /*
+  /**
    * Restarts the player
    * @return {Void}
    */
@@ -122,7 +173,7 @@ export class Player{
     FWI.RunScript('Player.Restart();');
   }
 
-  /*
+  /**
    * Sends mail
    * @param {Obj} o Object that contains all paramters from wiki
    * {
@@ -150,7 +201,7 @@ export class Player{
     FWI.RunScript(command);
   }
 
-  /*
+  /**
    * Text-to-speech
    * @param {Obj} o Object that contains parameters from the wiki
    * {
@@ -158,7 +209,7 @@ export class Player{
    *   Volume: int volume,
    *   Rate: int rate,
    *   Voice: string voice
-     }
+   * }
    * @return {Void}
    */
   static Speak(o) {
@@ -181,7 +232,7 @@ export class Player{
     FWI.RunScript(command);
   }
 
-  /*
+  /**
    * Unsets a variable
    * @param {String} name Variable name you wish to clear
    * @return {Void}

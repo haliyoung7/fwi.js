@@ -1,5 +1,10 @@
 import babel from 'rollup-plugin-babel';
 import multiEntry from 'rollup-plugin-multi-entry';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import uglify from 'rollup-plugin-uglify';
+import builtins from 'rollup-plugin-node-builtins';
+import globals from 'rollup-plugin-node-globals';
 
 export default [
     {
@@ -16,7 +21,9 @@ export default [
         format: 'cjs',
         plugins: [
             multiEntry(),
-            babel({ plugins: ['external-helpers'] })
+            babel({ plugins: ['external-helpers'] }),
+            resolve(),
+            commonjs()
         ],
         moduleName: 'fwi'
     },
@@ -26,7 +33,35 @@ export default [
         format: 'iife',
         plugins: [
             multiEntry(),
-            babel()
+            babel(),
+            resolve(),
+            commonjs()
         ],
-        moduleName: 'fwi'    }
+        moduleName: 'fwi'
+    },
+    {
+        entry: 'src/*.js',
+        dest: 'dist/fwi.browser.min.js',
+        format: 'iife',
+        plugins: [
+            multiEntry(),
+            babel(),
+            resolve(),
+            commonjs(),
+            uglify()
+        ],
+        moduleName: 'fwi'
+    },
+    {
+        entry: 'color_manipulations/color_utils.js',
+        dest: 'dist/color_utils.js',
+        format: 'iife',
+        plugins: [
+            resolve(),
+            commonjs(),
+            builtins(),
+            globals()
+        ],
+        moduleName: 'color'
+    }
 ];
