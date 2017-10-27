@@ -2570,7 +2570,7 @@
     "__docId__": 113,
     "kind": "file",
     "name": "src/region.js",
-    "content": "import { Template } from \"./template.js\";\nimport { easingTypes } from \"./easing_types.js\";\n\n/**\n * These store information outside of the class for reasons\n */\nconst _origin_position = new WeakMap();\nconst _origin_size = new WeakMap();\n\n/**\n* This is the amazing region class.  Unlike it's CM counterpart there are more scrpipts to this one!\n* Of course it has the traditional region scripts, but with the addition of animations!\n*\n* Example:\n* ```\n* var flashCard = new fwi.Region('FlashCard', 'Main', [710, 390], [500, 300]);\n*\n* function sleep(ms) {\n*     return new Promise(function(resolve) {\n*         setTimeout(resolve, ms);\n*     });\n* }\n*\n* //resize events return a promise so you can chain them!\n* flashCard.resize([0, 300], 2000, 'easeOutBounce')\n*     .then(function(){ return Player.SetVariable('foo', 'bar1') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })\n*     .then(function(){ return Player.SetVariable('foo', 'bar2') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });\n* ```\n*/\nexport class Region {\n\n    /**\n     * The init function creates a new region object to keep track of region specific information\n     * like location, template name, region name, etc.\n     * @param {String} region_name Name of the region you want to control\n     * @param {String} template_name Name of the containing template\n     * @param {Array} origin_xy Array of the regions' starting top left coordinates, [x,y]\n     * @param {Array} origin_size Array of the regions' size [x,y]\n     * @return {Object} New region object\n     */\n    constructor(region_name, template_name, origin_position, origin_size) {\n        this.region_name = region_name;\n        this.template_name = template_name;\n        _origin_position.set(this, origin_position);\n        _origin_size.set(this, origin_size);\n        this.current_position = _origin_position.get(this);\n        this.current_size = _origin_size.get(this);\n    }\n\n    /**\n    * Seeks to the next content item in that region\n    * @param {String} direction Direction of pagination prev|next|first\n    * @param {Boolean} wrap Controls what happens when reach the end of the list\n    * @param {String} regionName Name of the region you want to seek\n    * @return {Void}\n    */\n    static Seek(region_name, direction, wrap = true) {\n        FWI.RunScript('Region['+ region_name +'].Seek(\"' + direction + '\", \"' + wrap + '\");');\n    }\n\n    /**\n     * Gets the original position of the top left corner of the region.\n     * @return {Array} Array of original [x,y] position\n     */\n    get originPosition() {\n        return _origin_position.get(this);\n    }\n\n    /**\n     * Gets the original size of the region.\n     * @return {Array} Array of original [x,y] size\n     */\n    get originSize() {\n        return _origin_size.get(this)\n    }\n\n    /**\n     * Resets the position of the region to the original\n     * @return {Void}\n     */\n    resetPosition() {\n        Template.ClearLeft(this.region_name);\n        Template.ClearTop(this.region_name);\n        this.current_xy = this.originXY;\n    }\n\n    /**\n     * Resets the size of the region to the original\n     * @return {Void}\n     */\n    resetSize() {\n        Template.ClearHeight(this.region_name);\n        Template.ClearWidth(this.region_name);\n        this.current_size = this.originSize;\n    }\n\n    /**\n     * bound seek method with region name automatially given\n     * see Region.Seek for more\n     */\n    seek(direction, wrap = true) {\n        Region.Seek(this.region_name, direction, wrap);\n    }\n\n    /**\n     * Sets the new horizontal position of the region\n     * @param {Int} value Horizontal position in pixels from left of the screen\n     * @return {Void}\n     */\n    _moveX(value) {\n        Template.SetLeft(this.region_name, value);\n    }\n\n    /**\n     * Sets the new vertical position of the region\n     * @param {Int} value Vertical position in pixels from top of the screen\n     * @return {Void}\n     */\n    _moveY(value) {\n        Template.SetTop(this.region_name, value);\n    }\n\n    /**\n     * Sets the new width of the region\n     * @param {Int} value Width in pixels\n     * @return {Void}\n     */\n    _resizeX(value) {\n        Template.SetWidth(this.region_name, value);\n    }\n\n    /**\n     * Sets the new height of the region\n     * @param {Int} value Height in pixels\n     * @return {Void}\n     */\n    _resizeY(value) {\n        Template.SetHeight(this.region_name, value);\n    }\n\n    /**\n     * The move function moves a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_pos A list of [x,y] cordinates for the end position of the top left of the region\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    moveTo(end_pos, duration = 1000, type = 'linear') {\n        //log.info('pathTo called, calling _animateRegionInit');\n        return this._animateRegionInit(end_pos, duration, type, 'position');\n    }\n\n    /**\n     * The resize function resises a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_size A list of [x,y] cordinates for the end size\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    resize(end_size, duration = 1000, type = 'linear') {\n        return this._animateRegionInit(end_size, duration, type, 'size');\n    }\n\n    /**\n     * Intializes some variables for use in the animation and calls the main animation method\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} duration How long the animation plays in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegionInit(end_coords, duration, type, animation_type) {\n        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');\n\n        let delta_x;\n        let delta_y;\n\n        const start_time = new Date().getTime();\n        const end_time = start_time + duration;\n\n        if (animation_type == 'position') {\n            delta_x = end_coords[0] - this.current_position[0];\n            delta_y = end_coords[1] - this.current_position[1];\n        }\n\n        else if (animation_type == 'size') {\n            //log.info('in the size animation tyype chooser init');\n            delta_x = end_coords[0] - this.current_size[0];\n            delta_y = end_coords[1] - this.current_size[1];\n        };\n\n        const promise = new Promise((resolve) => {\n            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);\n        });\n        return promise;\n    }\n\n    /**\n     * Main animation loop, computes the next [x,y] values of the animation\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} cX The total delta of the X coordinate from beginning position to end position\n     * @param {Int} cY The total delta of theY coordinate from beginning position to end position\n     * @param {DateTime} start_time A datetime time object\n     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation\n     * @param {Int} d The duration of the animation in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {\n        let next_pos_x;\n        let next_pos_y;\n        let next_size_x;\n        let next_size_y;\n\n        const now = new Date().getTime();\n        const t = now - start_time;\n\n        if (now < end_time) {\n\n            //log.info('inside if loop');\n            if (animation_type == 'position') {\n                next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);\n                next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);\n\n                this._moveX(next_pos_x);\n                this._moveY(next_pos_y);\n            }\n\n            else if (animation_type == 'size') {\n                next_size_x = easingTypes[type](t, this.current_size[0], cX, d);\n                next_size_y = easingTypes[type](t, this.current_size[1], cY, d);\n\n                this._resizeX(next_size_x);\n                this._resizeY(next_size_y);\n            };\n\n            const self = this;\n\n            const callback = () => {\n                self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);\n            }\n\n            window.requestAnimationFrame(callback);\n        }\n\n        else {\n\n            if (animation_type == 'position') {\n                this._moveX(end_coords[0]);\n                this._moveY(end_coords[1]);\n                this.current_position[0] = end_coords[0];\n                this.current_position[1] = end_coords[1];\n            }\n\n            else if (animation_type == 'size') {\n                this._resizeX(end_coords[0]);\n                this._resizeY(end_coords[1]);\n                this.current_size[0] = end_coords[0];\n                this.current_size[1] = end_coords[1];\n            }\n            resolve()\n        };\n    }\n}",
+    "content": "import { Template } from \"./template.js\";\nimport { easingTypes } from \"./easing_types.js\";\n\n/**\n * These store information outside of the class for reasons\n */\nconst _origin_position = new WeakMap();\nconst _origin_size = new WeakMap();\n\n/**\n* This is the amazing region class.  Unlike it's CM counterpart there are more scrpipts to this one!\n* Of course it has the traditional region scripts, but with the addition of animations!\n*\n* Example:\n* ```\n* var flashCard = new fwi.Region('FlashCard', 'Main', [710, 390], [500, 300]);\n*\n* function sleep(ms) {\n*     return new Promise(function(resolve) {\n*         setTimeout(resolve, ms);\n*     });\n* }\n*\n* //resize events return a promise so you can chain them!\n* flashCard.resize([0, 300], 2000, 'easeOutBounce')\n*     .then(function(){ return Player.SetVariable('foo', 'bar1') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })\n*     .then(function(){ return Player.SetVariable('foo', 'bar2') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });\n* ```\n*/\nexport class Region {\n\n    /**\n     * The init function creates a new region object to keep track of region specific information\n     * like location, template name, region name, etc.\n     * @param {String} region_name Name of the region you want to control\n     * @param {String} template_name Name of the containing template\n     * @param {Array} origin_xy Array of the regions' starting top left coordinates, [x,y]\n     * @param {Array} origin_size Array of the regions' size [x,y]\n     * @return {Object} New region object\n     */\n    constructor(region_name, template_name, origin_position, origin_size) {\n        this.region_name = region_name;\n        this.template_name = template_name;\n        _origin_position.set(this, origin_position);\n        _origin_size.set(this, origin_size);\n        this.current_position = _origin_position.get(this);\n        this.current_size = _origin_size.get(this);\n    }\n\n    /**\n    * Seeks to the next content item in that region\n    * @param {String} direction Direction of pagination prev|next|first\n    * @param {Boolean} wrap Controls what happens when reach the end of the list\n    * @param {String} regionName Name of the region you want to seek\n    * @return {Void}\n    */\n    static Seek(region_name, direction, wrap = true) {\n        FWI.RunScript('Region['+ region_name +'].Seek(\"' + direction + '\", \"' + wrap + '\");');\n    }\n\n    /**\n     * Gets the original position of the top left corner of the region.\n     * @return {Array} Array of original [x,y] position\n     */\n    get originPosition() {\n        return _origin_position.get(this);\n    }\n\n    /**\n     * Gets the original size of the region.\n     * @return {Array} Array of original [x,y] size\n     */\n    get originSize() {\n        return _origin_size.get(this)\n    }\n\n    /**\n     * Returns the center position of a region relative to the top left of the image\n     * @return {Array}\n     */\n    regionCenter() {\n        var x1 = this.current_position[0];\n        var y1 = this.current_position[1];\n        var x2 = x1 + this.current_size[0];\n        var y2 = y1 + this.current_size[1];\n\n        xPrime = (x1 + x2) / 2;\n        yPrime = (y1 + y2) / 2;\n\n        return [xPrime, yPrime];\n    }\n\n    /**\n     * Resets the position of the region to the original\n     * @return {Void}\n     */\n    resetPosition() {\n        Template.ClearLeft(this.region_name);\n        Template.ClearTop(this.region_name);\n        this.current_position = _origin_position.get(this);\n    }\n\n    /**\n     * Resets the size of the region to the original\n     * @return {Void}\n     */\n    resetSize() {\n        Template.ClearHeight(this.region_name);\n        Template.ClearWidth(this.region_name);\n        this.current_size = _origin_size.get(this);\n\n    }\n\n    /**\n     * bound seek method with region name automatially given\n     * see Region.Seek for more\n     */\n    seek(direction, wrap = true) {\n        Region.Seek(this.region_name, direction, wrap);\n    }\n\n    /**\n     * Sets the new horizontal position of the region\n     * @param {Int} value Horizontal position in pixels from left of the screen\n     * @return {Void}\n     */\n    _moveX(value) {\n        Template.SetLeft(this.region_name, value);\n    }\n\n    /**\n     * Sets the new vertical position of the region\n     * @param {Int} value Vertical position in pixels from top of the screen\n     * @return {Void}\n     */\n    _moveY(value) {\n        Template.SetTop(this.region_name, value);\n    }\n\n    /**\n     * Sets the new width of the region\n     * @param {Int} value Width in pixels\n     * @return {Void}\n     */\n    _resizeX(value) {\n        Template.SetWidth(this.region_name, value);\n    }\n\n    /**\n     * Sets the new height of the region\n     * @param {Int} value Height in pixels\n     * @return {Void}\n     */\n    _resizeY(value) {\n        Template.SetHeight(this.region_name, value);\n    }\n\n    /**\n     * The move function moves a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_pos A list of [x,y] cordinates for the end position of the top left of the region\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    moveTo(end_pos, duration = 1000, type = 'linear') {\n        //log.info('pathTo called, calling _animateRegionInit');\n        return this._animateRegionInit(end_pos, duration, type, 'position');\n    }\n\n    /**\n     * The resize function resises a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_size A list of [x,y] cordinates for the end size\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    resize(end_size, duration = 1000, type = 'linear') {\n        return this._animateRegionInit(end_size, duration, type, 'size');\n    }\n\n    resizeFromCenter(end_size, duration = 1000, type = 'linear') {\n        return;\n    }\n\n    /**\n     * Intializes some variables for use in the animation and calls the main animation method\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} duration How long the animation plays in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegionInit(end_coords, duration, type, animation_type) {\n        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');\n\n        let delta_x;\n        let delta_y;\n\n        const start_time = new Date().getTime();\n        const end_time = start_time + duration;\n\n        if (animation_type == 'position') {\n            delta_x = end_coords[0] - this.current_position[0];\n            delta_y = end_coords[1] - this.current_position[1];\n        }\n\n        else if (animation_type == 'size') {\n            //log.info('in the size animation tyype chooser init');\n            delta_x = end_coords[0] - this.current_size[0];\n            delta_y = end_coords[1] - this.current_size[1];\n        };\n\n        const promise = new Promise((resolve) => {\n            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);\n        });\n        return promise;\n    }\n\n    /**\n     * Main animation loop, computes the next [x,y] values of the animation\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} cX The total delta of the X coordinate from beginning position to end position\n     * @param {Int} cY The total delta of theY coordinate from beginning position to end position\n     * @param {DateTime} start_time A datetime time object\n     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation\n     * @param {Int} d The duration of the animation in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {\n        let next_pos_x;\n        let next_pos_y;\n        let next_size_x;\n        let next_size_y;\n\n        const now = new Date().getTime();\n        const t = now - start_time;\n\n        if (now < end_time) {\n\n            //log.info('inside if loop');\n            if (animation_type == 'position') {\n                next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);\n                next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);\n\n                this._moveX(next_pos_x);\n                this._moveY(next_pos_y);\n            }\n\n            else if (animation_type == 'size') {\n                next_size_x = easingTypes[type](t, this.current_size[0], cX, d);\n                next_size_y = easingTypes[type](t, this.current_size[1], cY, d);\n\n                this._resizeX(next_size_x);\n                this._resizeY(next_size_y);\n            };\n\n            const self = this;\n\n            const callback = () => {\n                self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);\n            }\n\n            window.requestAnimationFrame(callback);\n        }\n\n        else {\n\n            if (animation_type == 'position') {\n                this._moveX(end_coords[0]);\n                this._moveY(end_coords[1]);\n                this.current_position[0] = end_coords[0];\n                this.current_position[1] = end_coords[1];\n            }\n\n            else if (animation_type == 'size') {\n                this._resizeX(end_coords[0]);\n                this._resizeY(end_coords[1]);\n                this.current_size[0] = end_coords[0];\n                this.current_size[1] = end_coords[1];\n            }\n            resolve()\n        };\n    }\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/region.js",
     "access": "public",
@@ -2872,6 +2872,28 @@
   {
     "__docId__": 125,
     "kind": "method",
+    "name": "regionCenter",
+    "memberof": "src/region.js~Region",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/region.js~Region#regionCenter",
+    "access": "public",
+    "description": "Returns the center position of a region relative to the top left of the image",
+    "lineNumber": 87,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 126,
+    "kind": "method",
     "name": "resetPosition",
     "memberof": "src/region.js~Region",
     "generator": false,
@@ -2880,7 +2902,7 @@
     "longname": "src/region.js~Region#resetPosition",
     "access": "public",
     "description": "Resets the position of the region to the original",
-    "lineNumber": 87,
+    "lineNumber": 103,
     "return": {
       "nullable": null,
       "types": [
@@ -2892,24 +2914,7 @@
     "params": []
   },
   {
-    "__docId__": 126,
-    "kind": "member",
-    "name": "current_xy",
-    "memberof": "src/region.js~Region",
-    "static": false,
-    "longname": "src/region.js~Region#current_xy",
-    "access": "public",
-    "description": null,
-    "lineNumber": 90,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 127,
+    "__docId__": 128,
     "kind": "method",
     "name": "resetSize",
     "memberof": "src/region.js~Region",
@@ -2919,7 +2924,7 @@
     "longname": "src/region.js~Region#resetSize",
     "access": "public",
     "description": "Resets the size of the region to the original",
-    "lineNumber": 97,
+    "lineNumber": 113,
     "return": {
       "nullable": null,
       "types": [
@@ -2931,7 +2936,7 @@
     "params": []
   },
   {
-    "__docId__": 129,
+    "__docId__": 130,
     "kind": "method",
     "name": "seek",
     "memberof": "src/region.js~Region",
@@ -2941,7 +2946,7 @@
     "longname": "src/region.js~Region#seek",
     "access": "public",
     "description": "bound seek method with region name automatially given\nsee Region.Seek for more",
-    "lineNumber": 107,
+    "lineNumber": 124,
     "params": [
       {
         "name": "direction",
@@ -2962,7 +2967,7 @@
     "return": null
   },
   {
-    "__docId__": 130,
+    "__docId__": 131,
     "kind": "method",
     "name": "_moveX",
     "memberof": "src/region.js~Region",
@@ -2972,7 +2977,7 @@
     "longname": "src/region.js~Region#_moveX",
     "access": "private",
     "description": "Sets the new horizontal position of the region",
-    "lineNumber": 116,
+    "lineNumber": 133,
     "params": [
       {
         "nullable": null,
@@ -2995,7 +3000,7 @@
     }
   },
   {
-    "__docId__": 131,
+    "__docId__": 132,
     "kind": "method",
     "name": "_moveY",
     "memberof": "src/region.js~Region",
@@ -3005,7 +3010,7 @@
     "longname": "src/region.js~Region#_moveY",
     "access": "private",
     "description": "Sets the new vertical position of the region",
-    "lineNumber": 125,
+    "lineNumber": 142,
     "params": [
       {
         "nullable": null,
@@ -3028,7 +3033,7 @@
     }
   },
   {
-    "__docId__": 132,
+    "__docId__": 133,
     "kind": "method",
     "name": "_resizeX",
     "memberof": "src/region.js~Region",
@@ -3038,7 +3043,7 @@
     "longname": "src/region.js~Region#_resizeX",
     "access": "private",
     "description": "Sets the new width of the region",
-    "lineNumber": 134,
+    "lineNumber": 151,
     "params": [
       {
         "nullable": null,
@@ -3061,7 +3066,7 @@
     }
   },
   {
-    "__docId__": 133,
+    "__docId__": 134,
     "kind": "method",
     "name": "_resizeY",
     "memberof": "src/region.js~Region",
@@ -3071,7 +3076,7 @@
     "longname": "src/region.js~Region#_resizeY",
     "access": "private",
     "description": "Sets the new height of the region",
-    "lineNumber": 143,
+    "lineNumber": 160,
     "params": [
       {
         "nullable": null,
@@ -3094,7 +3099,7 @@
     }
   },
   {
-    "__docId__": 134,
+    "__docId__": 135,
     "kind": "method",
     "name": "moveTo",
     "memberof": "src/region.js~Region",
@@ -3104,7 +3109,7 @@
     "longname": "src/region.js~Region#moveTo",
     "access": "public",
     "description": "The move function moves a region to a new set of xy coordinantes using predefined easing types.",
-    "lineNumber": 154,
+    "lineNumber": 171,
     "params": [
       {
         "nullable": null,
@@ -3147,7 +3152,7 @@
     }
   },
   {
-    "__docId__": 135,
+    "__docId__": 136,
     "kind": "method",
     "name": "resize",
     "memberof": "src/region.js~Region",
@@ -3157,7 +3162,7 @@
     "longname": "src/region.js~Region#resize",
     "access": "public",
     "description": "The resize function resises a region to a new set of xy coordinantes using predefined easing types.",
-    "lineNumber": 166,
+    "lineNumber": 183,
     "params": [
       {
         "nullable": null,
@@ -3200,7 +3205,48 @@
     }
   },
   {
-    "__docId__": 136,
+    "__docId__": 137,
+    "kind": "method",
+    "name": "resizeFromCenter",
+    "memberof": "src/region.js~Region",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/region.js~Region#resizeFromCenter",
+    "access": "public",
+    "description": null,
+    "lineNumber": 187,
+    "undocument": true,
+    "params": [
+      {
+        "name": "end_size",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "duration",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 1000,
+        "defaultValue": "1000"
+      },
+      {
+        "name": "type",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "linear",
+        "defaultValue": "linear"
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 138,
     "kind": "method",
     "name": "_animateRegionInit",
     "memberof": "src/region.js~Region",
@@ -3210,7 +3256,7 @@
     "longname": "src/region.js~Region#_animateRegionInit",
     "access": "private",
     "description": "Intializes some variables for use in the animation and calls the main animation method",
-    "lineNumber": 177,
+    "lineNumber": 198,
     "params": [
       {
         "nullable": null,
@@ -3253,7 +3299,7 @@
     }
   },
   {
-    "__docId__": 137,
+    "__docId__": 139,
     "kind": "method",
     "name": "_animateRegion",
     "memberof": "src/region.js~Region",
@@ -3263,7 +3309,7 @@
     "longname": "src/region.js~Region#_animateRegion",
     "access": "private",
     "description": "Main animation loop, computes the next [x,y] values of the animation",
-    "lineNumber": 214,
+    "lineNumber": 235,
     "params": [
       {
         "nullable": null,
@@ -3347,7 +3393,7 @@
     }
   },
   {
-    "__docId__": 138,
+    "__docId__": 140,
     "kind": "file",
     "name": "src/template.js",
     "content": "import { FWI } from \"./fwi_core.js\";\n\n/**\n * This is the template class.  It contains all of the template functions you'd find in CM.\n * All methods in this class are static so you do not need to use the `new` keyword.\n *\n * Example:\n * ```\n * Template.PlayContent('Foo', 'Bar');\n * ```\n */\nexport class Template {\n  constructor() {\n\n  }\n\n  /**\n   * Plays a piece of content in a region\n   * @param {String} name The name of the variable to set\n   * @param {String} region The region of the content to play\n   * @return {Void}\n   */\n  static async PlayContent(name, region) {\n    return new Promise((resolve) => {\n      FWI.RunScript('Template.PlayContent(\"' + name + '\", \"' + region + '\");');\n      resolve()\n    })\n  }\n\n  /**\n   * Pops a command from the FIFO command stack\n   * @return {Void}\n   */\n  static PopContent() {\n    FWI.RunScript('Template.PopContent();');\n  }\n\n  /**\n   * Pushes a command to the FIFO command stack\n   * @return {Void}\n   */\n  static PushContent(content, region, params = undefined) {\n    FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');\n  }\n\n  /**\n   * Restarts the template, be careful!  If you don't have a span region\n   * set this will spawn a new process.\n   * @return {Void}\n   */\n  static Restart() {\n    FWI.RunScript('Template.Restart();');\n  }\n\n  /**\n   * Sets a region property telling it if it can resize or not.\n   * @param {String} region_name Name of the region\n   * @param {Bool} value True/False if the region can be resized\n   * @return {Void}\n   */\n  static SetCanSize(region_name, value) {\n    FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets a region property telling it if it can be draged around\n   * @param {String} region_name Name of the region\n   * @param {Boolean} value True/False if the region can be dragged\n   * @return {Void}\n   */\n  static SetCanDrag(region_name, value) {\n    FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets a region property telling it if it can be rotated by touch\n   * @param {String} region_name Name of the region\n   * @param {Boolean} value True/False if the region can be rotated\n   * @return {Void}\n   */\n  static SetCanRotate(region_name, value) {\n    FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets the top left point of the region in x axis\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the top left corner of the region in pixels in the x axis\n   * @return {Void}\n   */\n  static SetLeft(region_name, value) {\n    FWI.RunScript('Template.SetLeft('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Set the top left point of the region in the Y axis\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the top left corner of the region in pixels in the y axis\n   * @return {Void}\n   */\n  static SetTop(region_name, value) {\n    FWI.RunScript('Template.SetTop('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Sets the regions width in pixels\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the width of the region in pixels\n   * @return {Void}\n   */\n  static SetWidth(region_name, value) {\n    FWI.RunScript('Template.SetWidth('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Sets the regions height in pixels\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the height of the region in pixels\n   * @return {Void}\n   */\n  static SetHeight(region_name, value) {\n    FWI.RunScript('Template.SetHeight('+ region_name + ',' + value + ');');\n  }\n  /**\n   * Sets a regions angle in degrees\n   * @param {String} region_name Name of the region\n   * @param {Number} value Angle of the region in degrees\n   * @return {Void}\n   */\n  static SetAngle(region_name, value) {\n    FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');\n  }\n\n  /**\n   * Sets a regions X coordinante\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearLeft(region_name) {\n    FWI.RunScript('Template.ClearLeft('+ region_name + ');');\n  }\n\n  /**\n   * Resets a regions Y coordinante\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearTop(region_name) {\n    FWI.RunScript('Template.ClearTop('+ region_name + ');');\n  }\n\n  /**\n   * Resets the width of the region back to the stored original\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearWidth(region_name) {\n    FWI.RunScript('Template.ClearWidth('+ region_name + ');');\n  }\n\n  /**\n   * Resets the regions height\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearHeight(region_name) {\n    FWI.RunScript('Template.ClearHeight('+ region_name + ');');\n  }\n\n  /**\n   * Resets a regions angle\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearAngle(region_name) {\n    FWI.RunScript('Template.ClearAngle(' + region_name + ');');\n  }\n\n  /**\n   * Sets a regions Z-Index\n   * @param {String} region_name Name of the region\n   * @param {Number} value Number of the regions z-index\n   * @return {Void}\n   */\n  static SetZIndex(region_name, value) {\n    FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');\n  }\n\n  /**\n   * Resets the Z-Index\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearZIndex(region_name) {\n    FWI.RunScript('Template.ClearZIndex(' + region_name + ');');\n  }\n\n  /**\n   * Sets a regions linear velocity\n   * @param {String} region_name Name of the region\n   * @param {Number} Vx Velocity of the region in the x axis\n   * @param {Number} Vy Velocity of the region in the y axis\n   * @return {Void}\n   */\n  static SetLinearVelocity(region_name, Vx = '*', Vy = '*') {\n    FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');\n  }\n\n  /**\n   * Sets a region's angular velocity or rotation\n   * @param {String} region_name Name of the region\n   * @param {Number} omega Number of degrees per a second\n   * @return {Void}\n   */\n  static SetAngularVelocity(region_name, omega) {\n    FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');\n  }\n}",
@@ -3358,7 +3404,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 139,
+    "__docId__": 141,
     "kind": "class",
     "name": "Template",
     "memberof": "src/template.js",
@@ -3373,7 +3419,7 @@
     "interface": false
   },
   {
-    "__docId__": 140,
+    "__docId__": 142,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/template.js~Template",
@@ -3387,7 +3433,7 @@
     "undocument": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 143,
     "kind": "method",
     "name": "PlayContent",
     "memberof": "src/template.js~Template",
@@ -3430,7 +3476,7 @@
     }
   },
   {
-    "__docId__": 142,
+    "__docId__": 144,
     "kind": "method",
     "name": "PopContent",
     "memberof": "src/template.js~Template",
@@ -3452,7 +3498,7 @@
     "params": []
   },
   {
-    "__docId__": 143,
+    "__docId__": 145,
     "kind": "method",
     "name": "PushContent",
     "memberof": "src/template.js~Template",
@@ -3496,7 +3542,7 @@
     ]
   },
   {
-    "__docId__": 144,
+    "__docId__": 146,
     "kind": "method",
     "name": "Restart",
     "memberof": "src/template.js~Template",
@@ -3518,7 +3564,7 @@
     "params": []
   },
   {
-    "__docId__": 145,
+    "__docId__": 147,
     "kind": "method",
     "name": "SetCanSize",
     "memberof": "src/template.js~Template",
@@ -3561,7 +3607,7 @@
     }
   },
   {
-    "__docId__": 146,
+    "__docId__": 148,
     "kind": "method",
     "name": "SetCanDrag",
     "memberof": "src/template.js~Template",
@@ -3604,7 +3650,7 @@
     }
   },
   {
-    "__docId__": 147,
+    "__docId__": 149,
     "kind": "method",
     "name": "SetCanRotate",
     "memberof": "src/template.js~Template",
@@ -3647,7 +3693,7 @@
     }
   },
   {
-    "__docId__": 148,
+    "__docId__": 150,
     "kind": "method",
     "name": "SetLeft",
     "memberof": "src/template.js~Template",
@@ -3690,7 +3736,7 @@
     }
   },
   {
-    "__docId__": 149,
+    "__docId__": 151,
     "kind": "method",
     "name": "SetTop",
     "memberof": "src/template.js~Template",
@@ -3733,7 +3779,7 @@
     }
   },
   {
-    "__docId__": 150,
+    "__docId__": 152,
     "kind": "method",
     "name": "SetWidth",
     "memberof": "src/template.js~Template",
@@ -3776,7 +3822,7 @@
     }
   },
   {
-    "__docId__": 151,
+    "__docId__": 153,
     "kind": "method",
     "name": "SetHeight",
     "memberof": "src/template.js~Template",
@@ -3819,7 +3865,7 @@
     }
   },
   {
-    "__docId__": 152,
+    "__docId__": 154,
     "kind": "method",
     "name": "SetAngle",
     "memberof": "src/template.js~Template",
@@ -3862,7 +3908,7 @@
     }
   },
   {
-    "__docId__": 153,
+    "__docId__": 155,
     "kind": "method",
     "name": "ClearLeft",
     "memberof": "src/template.js~Template",
@@ -3895,7 +3941,7 @@
     }
   },
   {
-    "__docId__": 154,
+    "__docId__": 156,
     "kind": "method",
     "name": "ClearTop",
     "memberof": "src/template.js~Template",
@@ -3928,7 +3974,7 @@
     }
   },
   {
-    "__docId__": 155,
+    "__docId__": 157,
     "kind": "method",
     "name": "ClearWidth",
     "memberof": "src/template.js~Template",
@@ -3961,7 +4007,7 @@
     }
   },
   {
-    "__docId__": 156,
+    "__docId__": 158,
     "kind": "method",
     "name": "ClearHeight",
     "memberof": "src/template.js~Template",
@@ -3994,7 +4040,7 @@
     }
   },
   {
-    "__docId__": 157,
+    "__docId__": 159,
     "kind": "method",
     "name": "ClearAngle",
     "memberof": "src/template.js~Template",
@@ -4027,7 +4073,7 @@
     }
   },
   {
-    "__docId__": 158,
+    "__docId__": 160,
     "kind": "method",
     "name": "SetZIndex",
     "memberof": "src/template.js~Template",
@@ -4070,7 +4116,7 @@
     }
   },
   {
-    "__docId__": 159,
+    "__docId__": 161,
     "kind": "method",
     "name": "ClearZIndex",
     "memberof": "src/template.js~Template",
@@ -4103,7 +4149,7 @@
     }
   },
   {
-    "__docId__": 160,
+    "__docId__": 162,
     "kind": "method",
     "name": "SetLinearVelocity",
     "memberof": "src/template.js~Template",
@@ -4156,7 +4202,7 @@
     }
   },
   {
-    "__docId__": 161,
+    "__docId__": 163,
     "kind": "method",
     "name": "SetAngularVelocity",
     "memberof": "src/template.js~Template",

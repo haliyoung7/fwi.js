@@ -82,11 +82,18 @@ export class Region {
 
     /**
      * Returns the center position of a region relative to the top left of the image
-     * @return {Array} Array of original [x,y] size
+     * @return {Array}
      */
-    get regionCenter() {
-        size = this.current_size;
-        location = this.originPosition;
+    regionCenter() {
+        var x1 = this.current_position[0];
+        var y1 = this.current_position[1];
+        var x2 = x1 + this.current_size[0];
+        var y2 = y1 + this.current_size[1];
+
+        xPrime = (x1 + x2) / 2;
+        yPrime = (y1 + y2) / 2;
+
+        return [xPrime, yPrime];
     }
 
     /**

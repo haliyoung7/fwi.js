@@ -173,35 +173,35 @@
     "filePath": "src/region.js",
     "lines": [
       {
-        "lineNumber": 169,
+        "lineNumber": 190,
         "line": "    /**"
       },
       {
-        "lineNumber": 170,
+        "lineNumber": 191,
         "line": "     * Intializes some variables for use in the animation and calls the main animation method"
       },
       {
-        "lineNumber": 171,
+        "lineNumber": 192,
         "line": "     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to"
       },
       {
-        "lineNumber": 172,
+        "lineNumber": 193,
         "line": "     * @param {Int} duration How long the animation plays in milliseconds"
       },
       {
-        "lineNumber": 173,
+        "lineNumber": 194,
         "line": "     * @param {String} type The easting type used for the tweening animation"
       },
       {
-        "lineNumber": 174,
+        "lineNumber": 195,
         "line": "     * @return {Void}"
       },
       {
-        "lineNumber": 175,
+        "lineNumber": 196,
         "line": "     */"
       },
       {
-        "lineNumber": 176,
+        "lineNumber": 197,
         "line": "    _animateRegionInit(end_coords, duration, type, animation_type) {"
       }
     ],
@@ -222,51 +222,51 @@
     "filePath": "src/region.js",
     "lines": [
       {
-        "lineNumber": 202,
+        "lineNumber": 223,
         "line": "    /**"
       },
       {
-        "lineNumber": 203,
+        "lineNumber": 224,
         "line": "     * Main animation loop, computes the next [x,y] values of the animation"
       },
       {
-        "lineNumber": 204,
+        "lineNumber": 225,
         "line": "     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to"
       },
       {
-        "lineNumber": 205,
+        "lineNumber": 226,
         "line": "     * @param {Int} cX The total delta of the X coordinate from beginning position to end position"
       },
       {
-        "lineNumber": 206,
+        "lineNumber": 227,
         "line": "     * @param {Int} cY The total delta of theY coordinate from beginning position to end position"
       },
       {
-        "lineNumber": 207,
+        "lineNumber": 228,
         "line": "     * @param {DateTime} start_time A datetime time object"
       },
       {
-        "lineNumber": 208,
+        "lineNumber": 229,
         "line": "     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation"
       },
       {
-        "lineNumber": 209,
+        "lineNumber": 230,
         "line": "     * @param {Int} d The duration of the animation in milliseconds"
       },
       {
-        "lineNumber": 210,
+        "lineNumber": 231,
         "line": "     * @param {String} type The easting type used for the tweening animation"
       },
       {
-        "lineNumber": 211,
+        "lineNumber": 232,
         "line": "     * @return {Void}"
       },
       {
-        "lineNumber": 212,
+        "lineNumber": 233,
         "line": "     */"
       },
       {
-        "lineNumber": 213,
+        "lineNumber": 234,
         "line": "    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {"
       }
     ],
