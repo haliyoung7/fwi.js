@@ -81,13 +81,22 @@ export class Region {
     }
 
     /**
+     * Returns the center position of a region relative to the top left of the image
+     * @return {Array} Array of original [x,y] size
+     */
+    get regionCenter() {
+        size = this.current_size;
+        location = this.originPosition;
+    }
+
+    /**
      * Resets the position of the region to the original
      * @return {Void}
      */
     resetPosition() {
         Template.ClearLeft(this.region_name);
         Template.ClearTop(this.region_name);
-        this.current_xy = this.originXY;
+        this.current_position = _origin_position.get(this);
     }
 
     /**
@@ -97,7 +106,8 @@ export class Region {
     resetSize() {
         Template.ClearHeight(this.region_name);
         Template.ClearWidth(this.region_name);
-        this.current_size = this.originSize;
+        this.current_size = _origin_size.get(this);
+
     }
 
     /**
@@ -165,6 +175,10 @@ export class Region {
      */
     resize(end_size, duration = 1000, type = 'linear') {
         return this._animateRegionInit(end_size, duration, type, 'size');
+    }
+
+    resizeFromCenter(end_size, duration = 1000, type = 'linear') {
+        return;
     }
 
     /**
