@@ -1,0 +1,251 @@
+[
+  {
+    "name": "Player.SetFontVariable",
+    "filePath": "src/player.js",
+    "lines": [
+      {
+        "lineNumber": 63,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 64,
+        "line": "   * Sets a single font variable back in CM."
+      },
+      {
+        "lineNumber": 65,
+        "line": "   * @param {String} name The name of the variable to set"
+      },
+      {
+        "lineNumber": 66,
+        "line": "   * @param {Object} value The font dictionary object"
+      },
+      {
+        "lineNumber": 67,
+        "line": "   * @return {Void}"
+      },
+      {
+        "lineNumber": 68,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 69,
+        "line": "  static SetFontVariable(name, value, prefix) {"
+      }
+    ],
+    "codeParams": [
+      "name",
+      "value",
+      "prefix"
+    ],
+    "docParams": [
+      "name",
+      "value"
+    ]
+  },
+  {
+    "name": "Player.ToggleVariable",
+    "filePath": "src/player.js",
+    "lines": [
+      {
+        "lineNumber": 121,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 122,
+        "line": "   * Sets the language of the build."
+      },
+      {
+        "lineNumber": 123,
+        "line": "   * @param {String} languageCode The language code to use"
+      },
+      {
+        "lineNumber": 124,
+        "line": "   * @return {Void}"
+      },
+      {
+        "lineNumber": 125,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 126,
+        "line": "  static ToggleVariable(name) {"
+      }
+    ],
+    "codeParams": [
+      "name"
+    ],
+    "docParams": [
+      "languageCode"
+    ]
+  },
+  {
+    "name": "Region.Seek",
+    "filePath": "src/region.js",
+    "lines": [
+      {
+        "lineNumber": 26,
+        "line": "    /**"
+      },
+      {
+        "lineNumber": 27,
+        "line": "    * Seeks to the next content item in that region"
+      },
+      {
+        "lineNumber": 28,
+        "line": "    * @param {String} direction Direction of pagination prev|next|first"
+      },
+      {
+        "lineNumber": 29,
+        "line": "    * @param {Bool|String} wrap Controls what happens when reach the end of the list"
+      },
+      {
+        "lineNumber": 30,
+        "line": "    * @parm {String} regionName Name of the region you want to seek"
+      },
+      {
+        "lineNumber": 31,
+        "line": "    * @return {Void}"
+      },
+      {
+        "lineNumber": 32,
+        "line": "    */"
+      },
+      {
+        "lineNumber": 33,
+        "line": "    static Seek(region_name, direction, wrap = true) {"
+      }
+    ],
+    "codeParams": [
+      "region_name",
+      "direction",
+      "wrap"
+    ],
+    "docParams": [
+      "direction",
+      "wrap"
+    ]
+  },
+  {
+    "name": "Region#_animateRegionInit",
+    "filePath": "src/region.js",
+    "lines": [
+      {
+        "lineNumber": 140,
+        "line": "    /**"
+      },
+      {
+        "lineNumber": 141,
+        "line": "     * Intializes some variables for use in the animation and calls the main animation method"
+      },
+      {
+        "lineNumber": 142,
+        "line": "     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to"
+      },
+      {
+        "lineNumber": 143,
+        "line": "     * @param {Int} duration How long the animation plays in milliseconds"
+      },
+      {
+        "lineNumber": 144,
+        "line": "     * @param {String} type The easting type used for the tweening animation"
+      },
+      {
+        "lineNumber": 145,
+        "line": "     * @return {Void}"
+      },
+      {
+        "lineNumber": 146,
+        "line": "     */"
+      },
+      {
+        "lineNumber": 147,
+        "line": "    _animateRegionInit(end_coords, duration, type, animation_type) {"
+      }
+    ],
+    "codeParams": [
+      "end_coords",
+      "duration",
+      "type",
+      "animation_type"
+    ],
+    "docParams": [
+      "end_coords",
+      "duration",
+      "type"
+    ]
+  },
+  {
+    "name": "Region#_animateRegion",
+    "filePath": "src/region.js",
+    "lines": [
+      {
+        "lineNumber": 173,
+        "line": "    /**"
+      },
+      {
+        "lineNumber": 174,
+        "line": "     * Main animation loop, computes the next [x,y] values of the animation"
+      },
+      {
+        "lineNumber": 175,
+        "line": "     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to"
+      },
+      {
+        "lineNumber": 176,
+        "line": "     * @param {Int} cX The total delta of the X coordinate from beginning position to end position"
+      },
+      {
+        "lineNumber": 177,
+        "line": "     * @param {Int} cY The total delta of theY coordinate from beginning position to end position"
+      },
+      {
+        "lineNumber": 178,
+        "line": "     * @param {DateTime} start_time A datetime time object"
+      },
+      {
+        "lineNumber": 179,
+        "line": "     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation"
+      },
+      {
+        "lineNumber": 180,
+        "line": "     * @param {Int} d The duration of the animation in milliseconds"
+      },
+      {
+        "lineNumber": 181,
+        "line": "     * @param {String} type The easting type used for the tweening animation"
+      },
+      {
+        "lineNumber": 182,
+        "line": "     * @return {Void}"
+      },
+      {
+        "lineNumber": 183,
+        "line": "     */"
+      },
+      {
+        "lineNumber": 184,
+        "line": "    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {"
+      }
+    ],
+    "codeParams": [
+      "end_coords",
+      "cX",
+      "cY",
+      "start_time",
+      "end_time",
+      "d",
+      "type",
+      "animation_type",
+      "resolve"
+    ],
+    "docParams": [
+      "end_coords",
+      "cX",
+      "cY",
+      "start_time",
+      "end_time",
+      "d",
+      "type"
+    ]
+  }
+]

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/player.js | fwi.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="This is a javascript interface for use inside of Four Winds Interactive&apos;s Content Player (c) 2017"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="fwi.js"><meta property="twitter:description" content="This is a javascript interface for use inside of Four Winds Interactive&apos;s Content Player (c) 2017"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/fourwindsinteractive/fwi.js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/content.js~Content.html">Content</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/helpers.js~Helpers.html">Helpers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/player.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/region.js~Region.html">Region</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/template.js~Template.html">Template</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-easingTypes">easingTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FWI">FWI</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/player.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { FWI } from &quot;./fwi_core.js&quot;;
+
+String.prototype.ReplaceIllegalChars = function (prefix) {
+  //This method replaces { } and , with variable names so CM can read the JSON properly
+  let OutputString = this.replace(/{/g,&quot;{&amp;lb&quot;);
+  OutputString = OutputString.replace(/}/g,&quot;&amp;rb}&quot;);
+  OutputString = OutputString.replace(/,/g,`{&amp;var:${prefix}_comma}`);
+  OutputString = OutputString.replace(/{&amp;lb/g,&quot;{&amp;lb}&quot;);
+  OutputString = OutputString.replace(/&amp;rb}/g,&quot;{&amp;rb}&quot;);
+  return OutputString;
+}
+
+String.prototype.startsWith = function (prefix) {
+    return this.slice(0, prefix.length) == prefix;
+}
+
+export class Player{
+  constructor() {
+
+  }
+
+  /**
+   * Retrieves the value for a single CM variable.
+   * @param {String} name A variable name to collect
+   * @return {Number|String} An appropriately casted value from the variable
+   */
+  static GetVariable(name) {
+    return FWI.MarkupValue(&apos;{&amp;var:&apos; + name + &apos;}&apos;) != &apos;&apos; ? FWI.MarkupValue(&apos;{&amp;var:&apos; + name + &apos;}&apos;) : false;
+  };
+
+  /**
+   * Retrieves the value for a single CM font variable.
+   * @param {String} name A variable name to collect
+   * @return {Object} Dictionary of the font json
+   */
+  static GetFontVariable(name) {
+    const font_var = Player.GetVariable(name);
+    return JSON.parse(font_var);
+  }
+
+  /**
+   * Retrieves values for multiple CM variables.
+   * @param {Array} nameArray An array of variable names to collect
+   * @return {Array} An array of values that correspond to the requested variables
+   */
+  static GetManyVariables(nameArray) {
+    const values = [];
+    for (let [k,v] of nameArray.entries()) {
+      values.push(FWI.MarkupValue(&apos;{&amp;var:&apos; + v + &apos;}&apos;));
+    }
+    return values;
+  }
+
+  /**
+   * Sets  single variable back in CM.
+   * @param {String} name The name of the variable to set
+   * @param {String} value The value of the variable to set
+   * @return {Void}
+   */
+  static SetVariable(name, value) {
+    FWI.RunScript(&apos;Player.SetVariable(&apos; + name + &apos;, &apos; + value + &apos;);&apos;);
+  }
+
+  /**
+   * Sets a single font variable back in CM.
+   * @param {String} name The name of the variable to set
+   * @param {Object} value The font dictionary object
+   * @return {Void}
+   */
+  static SetFontVariable(name, value, prefix) {
+    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());
+  }
+
+  /**
+   * Sets multiple variables back in CM.
+   * @param {Object} keyValueDict An object that defines key/value pairs to use
+   * @return {Void}
+   */
+  static SetManyVariables(keyValueDict) {
+    for (let [k, v] of keyValueDict) {
+      FWI.RunScript(&apos;Player.SetVariable(&apos; + k + &apos;,&apos; + v + &apos;);&apos;);
+    };
+  }
+
+  /**
+   * Creates a new dictionary with a font variable tempalte
+   * @return {Object} Font dictionary template
+   */
+  static CreateFontVariable() {
+
+    const font_dict = {
+        fontFamily: &quot;Arial&quot;,
+        fontSize: 9.000000E+000,
+        fontStretch: null,
+        fontStyle: null,
+        fontWeight: null,
+        textDecoration: null,
+        fontColor: &quot;#FF000000&quot;,
+        textAlignment: &quot;TopLeft&quot;,
+        textAutoSize: false,
+        textSizeBehavior: &quot;Fixed&quot;,
+        fontLeading: 0,
+        frame: {
+          type: &quot;&quot;,
+          backgroundColor: &quot;#00424242&quot;,
+          borderColor: &quot;#008BD5B5&quot;
+        }
+      }
+
+    return font_dict;
+  }
+
+  /**
+   * Sets the language of the build.
+   * @param {String} languageCode The language code to use
+   * @return {Void}
+   */
+  static SetLanguage(languageCode) {
+      FWI.RunScript(&apos;Player.SetLanguage(&apos; + languageCode + &apos;);&apos;);
+  }
+
+  /**
+   * Sets the language of the build.
+   * @param {String} languageCode The language code to use
+   * @return {Void}
+   */
+  static ToggleVariable(name) {
+      FWI.RunScript(&apos;Player.ToggleVariable(&apos; + name + &apos;);&apos;);
+  }
+
+  /**
+   * Plays a template
+   * @param {String} name The name of the template to play
+   * @param {String|Int} templateIndex The position of the desired template instance in the network overview
+   * @return {Void}
+   */
+  static PlayTemplate(name, templateIndex) {
+      FWI.RunScript(&apos;Player.PlayTemplate(&apos; + name + (templateIndex ? &apos;, &apos; + templateIndex : &apos;&apos;) + &apos;);&apos;);
+  }
+
+  /**
+   * Runs a shell command
+   * @param {String} command_name The main command, sometimes includes folder path
+   * @param {Array} arg_array Array of args to be submitted to the command
+   * @return {Void}
+   */
+  static Command(command_name, arg_array) {
+    let command = &apos;Player.Command(&apos; + command_name;
+
+    for (let [k,v] of arg_array.entries()) {
+      command = command + &apos;, &apos; + v;
+    }
+
+    command += &apos;);&apos;;
+
+    FWI.RunScript(command);
+
+  }
+
+  /**
+   * Resets the idle timer
+   * @return {Void}
+   */
+  static ResetIdleTimer() {
+    FWI.RunScript(&apos;Player.ResetIdleTimer();&apos;);
+  }
+
+  /**
+   * Restarts the player
+   * @return {Void}
+   */
+  static Restart() {
+    FWI.RunScript(&apos;Player.Restart();&apos;);
+  }
+
+  /**
+   * Sends mail
+   * @param {Obj} o Object that contains all paramters from wiki
+   * {
+   *   to: string dest_address
+   *   cc: string cc_address,
+   *   bcc: string bcc_address,
+   *   subject: string subject,
+   *   from: string sender_address,
+   *   body: string main_message,
+   *   host: string smpt_host,
+   *   username: string smpt_username,
+   *   password: strign smpt_password
+   * }
+   * @return {Void}
+   */
+  static SendMail(o) {
+    let command = &apos;Player.SendMail(&apos;;
+
+    for (let [k,v] of o) {
+      command = command + &apos;,&apos; + k + &apos;=&apos; + v;
+    };
+
+    command += &apos;);&apos;;
+
+    FWI.RunScript(command);
+  }
+
+  /**
+   * Text-to-speech
+   * @param {Obj} o Object that contains parameters from the wiki
+   * {
+   *   msg: string text_to_speak,
+   *   Volume: int volume,
+   *   Rate: int rate,
+   *   Voice: string voice
+   * }
+   * @return {Void}
+   */
+  static Speak(o) {
+    let command = &apos;Player.Speak(&apos;;
+
+    try {
+      command += o[msg];
+    }
+
+    catch(e) {
+      log.error(e);
+    };
+
+    for (let [k,v] of o) {
+      command = (k != &apos;msg&apos; ? (command + &apos;,&apos; + k + &apos;=&apos; + v) : &apos;&apos;);
+    };
+
+    command += &apos;);&apos;;
+
+    FWI.RunScript(command);
+  }
+
+  /**
+   * Unsets a variable
+   * @param {String} name Variable name you wish to clear
+   * @return {Void}
+   */
+  static UnsetVariable(name) {
+    FWI.RunScript(&apos;Player.UnsetVariable(&apos; + name + &apos;);&apos;);
+  }
+
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

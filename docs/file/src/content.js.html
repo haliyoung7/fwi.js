@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/content.js | fwi.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="This is a javascript interface for use inside of Four Winds Interactive&apos;s Content Player (c) 2017"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="fwi.js"><meta property="twitter:description" content="This is a javascript interface for use inside of Four Winds Interactive&apos;s Content Player (c) 2017"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/fourwindsinteractive/fwi.js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/content.js~Content.html">Content</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/helpers.js~Helpers.html">Helpers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/player.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/region.js~Region.html">Region</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/template.js~Template.html">Template</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-easingTypes">easingTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FWI">FWI</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/content.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { FWI } from &quot;./fwi_core.js&quot;;
+
+const _content_name = new WeakMap();
+const _region_name = new WeakMap();
+
+export class Content {
+
+	constructor(name, region_name) {
+		_content_name.set(this, name);
+		_region_name.set(this, region_name);
+	}
+
+	get name() {
+		return _content_name.get(this);
+	}
+
+	get region_name() {
+		return _region_name.get(this);
+	}
+
+	static GetDetails(name) {
+		return FWI.GetUrl(&apos;content://&apos; + name);
+	}
+
+	static Print(region_name, parameters) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].Print(&apos; + parameters + &apos;);&apos;);
+	}
+
+	static Seek(region_name, direction, wrap = true) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].Seek(&apos; + direction + &apos;, &apos; + wrap + &apos;);&apos;);
+	}
+
+	static SetArgument(region_name, o) {
+      	for (let [k,v] of o) {
+          	FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].SetArgument(&apos; + k + &apos;, &apos; + v + &apos;);&apos;);
+      	};
+	}
+
+	static ShowRoute(region_name, o) {
+		for (let [k,v] of o) {
+			FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].ShowRoute(&apos; + k + &apos;, &apos; + v + &apos;);&apos;);
+		}
+	}
+
+	static Url(url) {
+		FWI.RunScript(&apos;Content.Url(&apos; + url + &apos;);&apos;);
+	}
+
+	static UrlAsync(url) {
+		FWI.RunScript(&apos;Content.UrlAsync(&apos; + url + &apos;);&apos;);
+	}
+
+	static Pause(region_name) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].Pause();&apos;);
+	}
+
+	static Play(region_name) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].Play();&apos;);
+	}
+
+	static SeekBy(region_name, value) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].SeekBy(&apos; + value + &apos;);&apos;);
+	}
+
+	static SeekTo(region_name, value) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].SeekTo(&apos; + value + &apos;);&apos;);
+	}
+
+	static Resume(region_name) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].Resume();&apos;);
+	}
+
+	static SetBalance(region_name, balance) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].SetBalance(&apos; + balance + &apos;);&apos;);
+	}
+
+	static SetVolume(region_name, volume) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].SetVolume(&apos; + volume + &apos;);&apos;);
+	}
+
+	static Stop(region_name) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].Stop();&apos;);
+	}
+
+	static HighlightRows(region_name, row_list) {
+		FWI.RunScript(&apos;Content[&apos; + region_name + &apos;].HighlightRows(&apos; + row_list + &apos;);&apos;);
+	}
+
+	getDetails() {
+		return Content.GetDetails(this.name);
+	}
+
+	print(parameters) {
+		Content.Print(this.region_name, parameters);
+	}
+
+	seek(direction, wrap = true) {
+		Content.Seek(this.region_name, direction, wrap);
+	}
+
+	setArgument(o) {
+		Content.SetArgument(this.region_name, o);
+	}
+
+	showRoute(o) {
+		Content.ShowRoute(this.region_name, o);
+	}
+
+	pause() {
+		Content.Pause(this.region_name);
+	}
+
+	play() {
+		Content.Play(this.region_name);
+	}
+
+	seekBy(value) {
+		Content.SeekBy(this.region_name, value);
+	}
+
+	seekTo(value) {
+		Content.SeekTo(this.region_name, value);
+	}
+
+	resume() {
+		Content.Resume(this.region_name);
+	}
+
+	setBalance(balance) {
+		Content.SetBalance(this.region_name, balance);
+	}
+
+	setVolume(volume) {
+		Content.SetVolume(this.region_name, volume);
+	}
+
+	stop() {
+		Content.Stop(this.region_name);
+	}
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
