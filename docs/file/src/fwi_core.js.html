@@ -41,7 +41,9 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/fwi_core.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// Load the FWI Javascript base:
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * Load the FWI Javascript base depending on if you are using a browser or windows player.
+ */
 export const FWI = window.frameElement ? window.frameElement.parentNode.FWI : window.external;</code></pre>
 
 </div>

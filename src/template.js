@@ -1,5 +1,14 @@
 import { FWI } from "./fwi_core.js";
 
+/**
+ * This is the template class.  It contains all of the template functions you'd find in CM.
+ * All methods in this class are static so you do not need to use the `new` keyword.
+ *
+ * Example:
+ * ```
+ * Template.PlayContent('Foo', 'Bar');
+ * ```
+ */
 export class Template {
   constructor() {
 

@@ -1,12 +1,13 @@
+/**
+ * Easing types are different equations to determine the path of a region tween.
+ * They can be used in resizes or moveTo scripts.  All of them follow the same input formula.
+ * @param {DateTime|Int} t The amount of time that has passed since the animation began.
+ * @param {Int|Float} b The current position of the x or y point of the top left corner of the region
+ * @param {Int|Float} c The total delta for the x or y point from beginning position to the end position
+ * @param {Int} d The total duration of the animation
+ * @return {Float} The next position of the x or y point.
+ */
 export const easingTypes = {
-      /**
-       * Easing types are different equations to determine the path of a region tween.
-       * @param {DateTime|Int} t The amount of time that has passed since the animation began.
-       * @param {Int|Float} b The current position of the x or y point of the top left corner of the region
-       * @param {Int|Float} c The total delta for the x or y point from beginning position to the end position
-       * @param {Int} d The total duration of the animation
-       * @return {Float} The next position of the x or y point.
-       */
 
     linear: function(t,b ,c, d) {
       return c*t/d + b;

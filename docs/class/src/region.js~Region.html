@@ -41,13 +41,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Region} from &apos;<span><a href="file/src/region.js.html#lineNumber7">fwi.js/src/region.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Region} from &apos;<span><a href="file/src/region.js.html#lineNumber36">fwi.js/src/region.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/region.js.html#lineNumber7">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/region.js.html#lineNumber36">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -67,7 +67,28 @@
 
   
   
-  
+  <div class="description" data-ice="description"><p>This is the amazing region class.  Unlike it&apos;s CM counterpart there are more scrpipts to this one!
+Of course it has the traditional region scripts, but with the addition of animations!</p>
+<p>Example:</p>
+<pre><code><code class="source-code prettyprint">var flashCard = new fwi.Region(&apos;FlashCard&apos;, &apos;Main&apos;, [710, 390], [500, 300]);
+
+function sleep(ms) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+//resize events return a promise so you can chain them!
+flashCard.resize([0, 300], 2000, &apos;easeOutBounce&apos;)
+    .then(function(){ return Player.SetVariable(&apos;foo&apos;, &apos;bar1&apos;) })
+    .then(function(){ return sleep(1000) })
+    .then(function(){ return flashCard.resize([500, 300], 2000, &apos;easeOutBounce&apos;) })
+    .then(function(){ return sleep(1000) })
+    .then(function(){ return flashCard.resize([0, 300], 2000, &apos;easeOutBounce&apos;) })
+    .then(function(){ return Player.SetVariable(&apos;foo&apos;, &apos;bar2&apos;) })
+    .then(function(){ return sleep(1000) })
+    .then(function(){ return flashCard.resize([500, 300], 2000, &apos;easeOutBounce&apos;) });</code>
+</code></pre></div>
   
 
   
@@ -98,7 +119,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#static-method-Seek">Seek</a></span></span><span class="code" data-ice="signature">(direction: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, wrap: <span>Bool</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span>Void</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#static-method-Seek">Seek</a></span></span><span class="code" data-ice="signature">(direction: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, wrap: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span>, regionName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span>Void</span></span>
         </p>
       </div>
       <div>
@@ -134,7 +155,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(region_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, template_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, origin_xy: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>, origin_size: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span>Obj</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(region_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, template_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, origin_xy: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>, origin_size: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -255,13 +276,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-get-originPosition">originPosition</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-get-originPosition">originPosition</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>: <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Gets the original position of the top left corner of the region.</p>
+</div>
       </div>
     </td>
     <td>
@@ -283,13 +305,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-get-originSize">originSize</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-get-originSize">originSize</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>: <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Gets the original size of the region.</p>
+</div>
       </div>
     </td>
     <td>
@@ -403,13 +426,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-resetPosition">resetPosition</a></span></span><span class="code" data-ice="signature">()</span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-resetPosition">resetPosition</a></span></span><span class="code" data-ice="signature">(): <span>Void</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Resets the position of the region to the original</p>
+</div>
       </div>
     </td>
     <td>
@@ -431,13 +455,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-resetSize">resetSize</a></span></span><span class="code" data-ice="signature">()</span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-resetSize">resetSize</a></span></span><span class="code" data-ice="signature">(): <span>Void</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Resets the size of the region to the original</p>
+</div>
       </div>
     </td>
     <td>
@@ -494,7 +519,9 @@ like location, template name, region name, etc.</p>
       <div>
         
         
-        
+        <div data-ice="description"><p>bound seek method with region name automatially given
+see Region.Seek for more</p>
+</div>
       </div>
     </td>
     <td>
@@ -580,13 +607,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_moveX">_moveX</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_moveX">_moveX</a></span></span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Sets the new horizontal position of the region</p>
+</div>
       </div>
     </td>
     <td>
@@ -608,13 +636,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_moveY">_moveY</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_moveY">_moveY</a></span></span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Sets the new vertical position of the region</p>
+</div>
       </div>
     </td>
     <td>
@@ -636,13 +665,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_resizeX">_resizeX</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_resizeX">_resizeX</a></span></span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Sets the new width of the region</p>
+</div>
       </div>
     </td>
     <td>
@@ -664,13 +694,14 @@ like location, template name, region name, etc.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_resizeY">_resizeY</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/region.js~Region.html#instance-method-_resizeY">_resizeY</a></span></span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Sets the new height of the region</p>
+</div>
       </div>
     </td>
     <td>
@@ -695,11 +726,11 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">Seek</span><span class="code" data-ice="signature">(direction: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, wrap: <span>Bool</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span>Void</span></span>
+    <span class="code" data-ice="name">Seek</span><span class="code" data-ice="signature">(direction: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, wrap: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span>, regionName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber34">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber63">source</a></span></span>
     </span>
   </h3>
 
@@ -728,9 +759,16 @@ like location, template name, region name, etc.</p>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">wrap</td>
-      <td data-ice="type" class="code"><span>Bool</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>Controls what happens when reach the end of the list</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">regionName</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Name of the region you want to seek</p>
 </td>
     </tr>
 </tbody>
@@ -778,11 +816,11 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(region_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, template_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, origin_xy: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>, origin_size: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span>Obj</span></span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(region_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, template_name: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, origin_xy: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>, origin_size: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber18">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber47">source</a></span></span>
     </span>
   </h3>
 
@@ -841,7 +879,7 @@ like location, template name, region name, etc.</p>
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span>Obj</span></td>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
           <td class="return-desc" data-ice="returnDescription"><p>New region object</p>
 </td>
         </tr>
@@ -881,7 +919,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber23">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
@@ -924,7 +962,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber24">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber53">source</a></span></span>
     </span>
   </h3>
 
@@ -967,7 +1005,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber61">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber90">source</a></span></span>
     </span>
   </h3>
 
@@ -1006,25 +1044,39 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">originPosition</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="code" data-ice="name">originPosition</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber42">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber71">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Gets the original position of the top left corner of the region.</p>
+</div>
 
   
 
   <div data-ice="properties">
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>Array of original [x,y] position</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1049,25 +1101,39 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">originSize</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="code" data-ice="name">originSize</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber50">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber79">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Gets the original size of the region.</p>
+</div>
 
   
 
   <div data-ice="properties">
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>Array of original [x,y] size</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1096,7 +1162,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber19">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber48">source</a></span></span>
     </span>
   </h3>
 
@@ -1139,7 +1205,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber20">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
@@ -1185,7 +1251,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber125">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber154">source</a></span></span>
     </span>
   </h3>
 
@@ -1268,25 +1334,38 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">resetPosition</span><span class="code" data-ice="signature">()</span>
+    <span class="code" data-ice="name">resetPosition</span><span class="code" data-ice="signature">(): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber58">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber87">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Resets the position of the region to the original</p>
+</div>
 
   
 
   <div data-ice="properties">
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1311,25 +1390,38 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">resetSize</span><span class="code" data-ice="signature">()</span>
+    <span class="code" data-ice="name">resetSize</span><span class="code" data-ice="signature">(): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber68">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber97">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Resets the size of the region to the original</p>
+</div>
 
   
 
   <div data-ice="properties">
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1358,7 +1450,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber137">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber166">source</a></span></span>
     </span>
   </h3>
 
@@ -1445,14 +1537,16 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber78">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber107">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>bound seek method with region name automatially given
+see Region.Seek for more</p>
+</div>
 
   
 
@@ -1513,7 +1607,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber185">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber214">source</a></span></span>
     </span>
   </h3>
 
@@ -1628,7 +1722,7 @@ like location, template name, region name, etc.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber148">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber177">source</a></span></span>
     </span>
   </h3>
 
@@ -1711,18 +1805,19 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">_moveX</span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+    <span class="code" data-ice="name">_moveX</span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber87">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber116">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Sets the new horizontal position of the region</p>
+</div>
 
   
 
@@ -1736,16 +1831,29 @@ like location, template name, region name, etc.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">value</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="type" class="code"><span>Int</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Horizontal position in pixels from left of the screen</p>
+</td>
     </tr>
 </tbody>
   </table>
 </div>
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1770,18 +1878,19 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">_moveY</span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+    <span class="code" data-ice="name">_moveY</span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber96">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber125">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Sets the new vertical position of the region</p>
+</div>
 
   
 
@@ -1795,16 +1904,29 @@ like location, template name, region name, etc.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">value</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="type" class="code"><span>Int</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Vertical position in pixels from top of the screen</p>
+</td>
     </tr>
 </tbody>
   </table>
 </div>
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1829,18 +1951,19 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">_resizeX</span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+    <span class="code" data-ice="name">_resizeX</span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber105">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber134">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Sets the new width of the region</p>
+</div>
 
   
 
@@ -1854,16 +1977,29 @@ like location, template name, region name, etc.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">value</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="type" class="code"><span>Int</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Width in pixels</p>
+</td>
     </tr>
 </tbody>
   </table>
 </div>
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1888,18 +2024,19 @@ like location, template name, region name, etc.</p>
     
     
     
-    <span class="code" data-ice="name">_resizeY</span><span class="code" data-ice="signature">(value: <span>*</span>)</span>
+    <span class="code" data-ice="name">_resizeY</span><span class="code" data-ice="signature">(value: <span>Int</span>): <span>Void</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber114">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/region.js.html#lineNumber143">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Sets the new height of the region</p>
+</div>
 
   
 
@@ -1913,16 +2050,29 @@ like location, template name, region name, etc.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">value</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="type" class="code"><span>Int</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Height in pixels</p>
+</td>
     </tr>
 </tbody>
   </table>
 </div>
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Void</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 

@@ -1,34 +1,76 @@
 [
   {
+    "name": "Content.ShowRoute",
+    "filePath": "src/content.js",
+    "lines": [
+      {
+        "lineNumber": 94,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 95,
+        "line": "   * Shows the route on a wayfinding contnet item"
+      },
+      {
+        "lineNumber": 96,
+        "line": "   * @param {String} region name Name of the content item"
+      },
+      {
+        "lineNumber": 97,
+        "line": "   * @param {Object} o Single key pair object that takes a Location=Location type thing"
+      },
+      {
+        "lineNumber": 98,
+        "line": "   * @return {Void}"
+      },
+      {
+        "lineNumber": 99,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 100,
+        "line": "\tstatic ShowRoute(region_name, o) {"
+      }
+    ],
+    "codeParams": [
+      "region_name",
+      "o"
+    ],
+    "docParams": [
+      "region",
+      "o"
+    ]
+  },
+  {
     "name": "Player.SetFontVariable",
     "filePath": "src/player.js",
     "lines": [
       {
-        "lineNumber": 63,
+        "lineNumber": 81,
         "line": "  /**"
       },
       {
-        "lineNumber": 64,
+        "lineNumber": 82,
         "line": "   * Sets a single font variable back in CM."
       },
       {
-        "lineNumber": 65,
+        "lineNumber": 83,
         "line": "   * @param {String} name The name of the variable to set"
       },
       {
-        "lineNumber": 66,
+        "lineNumber": 84,
         "line": "   * @param {Object} value The font dictionary object"
       },
       {
-        "lineNumber": 67,
+        "lineNumber": 85,
         "line": "   * @return {Void}"
       },
       {
-        "lineNumber": 68,
+        "lineNumber": 86,
         "line": "   */"
       },
       {
-        "lineNumber": 69,
+        "lineNumber": 87,
         "line": "  static SetFontVariable(name, value, prefix) {"
       }
     ],
@@ -47,27 +89,27 @@
     "filePath": "src/player.js",
     "lines": [
       {
-        "lineNumber": 121,
+        "lineNumber": 139,
         "line": "  /**"
       },
       {
-        "lineNumber": 122,
+        "lineNumber": 140,
         "line": "   * Sets the language of the build."
       },
       {
-        "lineNumber": 123,
+        "lineNumber": 141,
         "line": "   * @param {String} languageCode The language code to use"
       },
       {
-        "lineNumber": 124,
+        "lineNumber": 142,
         "line": "   * @return {Void}"
       },
       {
-        "lineNumber": 125,
+        "lineNumber": 143,
         "line": "   */"
       },
       {
-        "lineNumber": 126,
+        "lineNumber": 144,
         "line": "  static ToggleVariable(name) {"
       }
     ],
@@ -83,35 +125,35 @@
     "filePath": "src/region.js",
     "lines": [
       {
-        "lineNumber": 26,
+        "lineNumber": 55,
         "line": "    /**"
       },
       {
-        "lineNumber": 27,
+        "lineNumber": 56,
         "line": "    * Seeks to the next content item in that region"
       },
       {
-        "lineNumber": 28,
+        "lineNumber": 57,
         "line": "    * @param {String} direction Direction of pagination prev|next|first"
       },
       {
-        "lineNumber": 29,
-        "line": "    * @param {Bool|String} wrap Controls what happens when reach the end of the list"
+        "lineNumber": 58,
+        "line": "    * @param {Boolean} wrap Controls what happens when reach the end of the list"
       },
       {
-        "lineNumber": 30,
-        "line": "    * @parm {String} regionName Name of the region you want to seek"
+        "lineNumber": 59,
+        "line": "    * @param {String} regionName Name of the region you want to seek"
       },
       {
-        "lineNumber": 31,
+        "lineNumber": 60,
         "line": "    * @return {Void}"
       },
       {
-        "lineNumber": 32,
+        "lineNumber": 61,
         "line": "    */"
       },
       {
-        "lineNumber": 33,
+        "lineNumber": 62,
         "line": "    static Seek(region_name, direction, wrap = true) {"
       }
     ],
@@ -122,7 +164,8 @@
     ],
     "docParams": [
       "direction",
-      "wrap"
+      "wrap",
+      "regionName"
     ]
   },
   {
@@ -130,35 +173,35 @@
     "filePath": "src/region.js",
     "lines": [
       {
-        "lineNumber": 140,
+        "lineNumber": 169,
         "line": "    /**"
       },
       {
-        "lineNumber": 141,
+        "lineNumber": 170,
         "line": "     * Intializes some variables for use in the animation and calls the main animation method"
       },
       {
-        "lineNumber": 142,
+        "lineNumber": 171,
         "line": "     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to"
       },
       {
-        "lineNumber": 143,
+        "lineNumber": 172,
         "line": "     * @param {Int} duration How long the animation plays in milliseconds"
       },
       {
-        "lineNumber": 144,
+        "lineNumber": 173,
         "line": "     * @param {String} type The easting type used for the tweening animation"
       },
       {
-        "lineNumber": 145,
+        "lineNumber": 174,
         "line": "     * @return {Void}"
       },
       {
-        "lineNumber": 146,
+        "lineNumber": 175,
         "line": "     */"
       },
       {
-        "lineNumber": 147,
+        "lineNumber": 176,
         "line": "    _animateRegionInit(end_coords, duration, type, animation_type) {"
       }
     ],
@@ -179,51 +222,51 @@
     "filePath": "src/region.js",
     "lines": [
       {
-        "lineNumber": 173,
+        "lineNumber": 202,
         "line": "    /**"
       },
       {
-        "lineNumber": 174,
+        "lineNumber": 203,
         "line": "     * Main animation loop, computes the next [x,y] values of the animation"
       },
       {
-        "lineNumber": 175,
+        "lineNumber": 204,
         "line": "     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to"
       },
       {
-        "lineNumber": 176,
+        "lineNumber": 205,
         "line": "     * @param {Int} cX The total delta of the X coordinate from beginning position to end position"
       },
       {
-        "lineNumber": 177,
+        "lineNumber": 206,
         "line": "     * @param {Int} cY The total delta of theY coordinate from beginning position to end position"
       },
       {
-        "lineNumber": 178,
+        "lineNumber": 207,
         "line": "     * @param {DateTime} start_time A datetime time object"
       },
       {
-        "lineNumber": 179,
+        "lineNumber": 208,
         "line": "     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation"
       },
       {
-        "lineNumber": 180,
+        "lineNumber": 209,
         "line": "     * @param {Int} d The duration of the animation in milliseconds"
       },
       {
-        "lineNumber": 181,
+        "lineNumber": 210,
         "line": "     * @param {String} type The easting type used for the tweening animation"
       },
       {
-        "lineNumber": 182,
+        "lineNumber": 211,
         "line": "     * @return {Void}"
       },
       {
-        "lineNumber": 183,
+        "lineNumber": 212,
         "line": "     */"
       },
       {
-        "lineNumber": 184,
+        "lineNumber": 213,
         "line": "    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {"
       }
     ],

@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/content.js",
-    "content": "import { FWI } from \"./fwi_core.js\";\n\nconst _content_name = new WeakMap();\nconst _region_name = new WeakMap();\n\nexport class Content {\n\n\tconstructor(name, region_name) {\n\t\t_content_name.set(this, name);\n\t\t_region_name.set(this, region_name);\n\t}\n\n\tget name() {\n\t\treturn _content_name.get(this);\n\t}\n\n\tget region_name() {\n\t\treturn _region_name.get(this);\n\t}\n\n\tstatic GetDetails(name) {\n\t\treturn FWI.GetUrl('content://' + name);\n\t}\n\n\tstatic Print(region_name, parameters) {\n\t\tFWI.RunScript('Content[' + region_name + '].Print(' + parameters + ');');\n\t}\n\n\tstatic Seek(region_name, direction, wrap = true) {\n\t\tFWI.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');\n\t}\n\n\tstatic SetArgument(region_name, o) {\n      \tfor (let [k,v] of o) {\n          \tFWI.RunScript('Content[' + region_name + '].SetArgument(' + k + ', ' + v + ');');\n      \t};\n\t}\n\n\tstatic ShowRoute(region_name, o) {\n\t\tfor (let [k,v] of o) {\n\t\t\tFWI.RunScript('Content[' + region_name + '].ShowRoute(' + k + ', ' + v + ');');\n\t\t}\n\t}\n\n\tstatic Url(url) {\n\t\tFWI.RunScript('Content.Url(' + url + ');');\n\t}\n\n\tstatic UrlAsync(url) {\n\t\tFWI.RunScript('Content.UrlAsync(' + url + ');');\n\t}\n\n\tstatic Pause(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Pause();');\n\t}\n\n\tstatic Play(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Play();');\n\t}\n\n\tstatic SeekBy(region_name, value) {\n\t\tFWI.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');\n\t}\n\n\tstatic SeekTo(region_name, value) {\n\t\tFWI.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');\n\t}\n\n\tstatic Resume(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Resume();');\n\t}\n\n\tstatic SetBalance(region_name, balance) {\n\t\tFWI.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');\n\t}\n\n\tstatic SetVolume(region_name, volume) {\n\t\tFWI.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');\n\t}\n\n\tstatic Stop(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Stop();');\n\t}\n\n\tstatic HighlightRows(region_name, row_list) {\n\t\tFWI.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');\n\t}\n\n\tgetDetails() {\n\t\treturn Content.GetDetails(this.name);\n\t}\n\n\tprint(parameters) {\n\t\tContent.Print(this.region_name, parameters);\n\t}\n\n\tseek(direction, wrap = true) {\n\t\tContent.Seek(this.region_name, direction, wrap);\n\t}\n\n\tsetArgument(o) {\n\t\tContent.SetArgument(this.region_name, o);\n\t}\n\n\tshowRoute(o) {\n\t\tContent.ShowRoute(this.region_name, o);\n\t}\n\n\tpause() {\n\t\tContent.Pause(this.region_name);\n\t}\n\n\tplay() {\n\t\tContent.Play(this.region_name);\n\t}\n\n\tseekBy(value) {\n\t\tContent.SeekBy(this.region_name, value);\n\t}\n\n\tseekTo(value) {\n\t\tContent.SeekTo(this.region_name, value);\n\t}\n\n\tresume() {\n\t\tContent.Resume(this.region_name);\n\t}\n\n\tsetBalance(balance) {\n\t\tContent.SetBalance(this.region_name, balance);\n\t}\n\n\tsetVolume(volume) {\n\t\tContent.SetVolume(this.region_name, volume);\n\t}\n\n\tstop() {\n\t\tContent.Stop(this.region_name);\n\t}\n}",
+    "content": "import { FWI } from \"./fwi_core.js\";\n\n/**\n * These are here to store information about multiple content and regions names\n */\nconst _content_name = new WeakMap();\nconst _region_name = new WeakMap();\n\n/**\n * This is the content class it can be used in two ways.  You can access the static methods if you just need\n * a one off operation, or you can create a content item to execute multiple operations on it.\n *\n * Example:\n * ```\n * var item = new Content('Places_Live_Data', 'Live_Data_Region);\n *\n * item.getDetails()\n *\n * item.play()\n * ```\n * or\n * ```\n * var url_contents = Content.Url('https://example.com');\n * ```\n */\nexport class Content {\n\n  /**\n   * Constructor that accespts the content items name and the region the content item is playing in.\n   * @param {String} name Name of the content item\n   * @param {String} region_name Name of the region the content item resides in\n   * @return {Void}\n   */\n\tconstructor(name, region_name) {\n\t\t_content_name.set(this, name);\n\t\t_region_name.set(this, region_name);\n\t}\n\n  /**\n   * Returns the name of the content item\n   * @return {String}\n   */\n\tget name() {\n\t\treturn _content_name.get(this);\n\t}\n\n  /**\n   * Returns the name of the content item\n   * @return {String}\n   */\n\tget region_name() {\n\t\treturn _region_name.get(this);\n\t}\n\n  /**\n   * Returns the content items details, in the case of the live data, it's the data itself.\n   * @param {String} name Name of the content item\n   * @return {String}\n   */\n\tstatic GetDetails(name) {\n\t\treturn FWI.GetUrl('content://' + name);\n\t}\n\n  /**\n   * Prints the regions content item\n   * @param {String} region_name Name of the region.\n   * @param {String} parameters Printing parameters\n   * @return {Void}\n   */\n\tstatic Print(region_name, parameters) {\n\t\tFWI.RunScript('Content[' + region_name + '].Print(' + parameters + ');');\n\t}\n\n  /**\n   * Play the next item in the region\n   * @param {String} region_name Name of the region\n   * @param {String} direction Forward/Backward\n   * @param {Boolean} wrap True/False if it should wrap when it reaches the start/end.\n   * @return {Void}\n   */\n\tstatic Seek(region_name, direction, wrap = true) {\n\t\tFWI.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');\n\t}\n\n  /**\n   * Sets arguments on currently playing content items\n   * @param {String} region_name Name of the region\n   * @param {Object} o Object that contains a single object of key pair values for content arguments.\n   * @return {Void}\n   */\n\tstatic SetArgument(region_name, o) {\n    FWI.RunScript('Content[' + region_name + '].SetArgument(' + o.keys[0] + ', ' + o.values[0] + ');');\n\t}\n\n  /**\n   * Shows the route on a wayfinding contnet item\n   * @param {String} region name Name of the content item\n   * @param {Object} o Single key pair object that takes a Location=Location type thing\n   * @return {Void}\n   */\n\tstatic ShowRoute(region_name, o) {\n\t\tFWI.RunScript('Content[' + region_name + '].ShowRoute(' + o.keys[0] + '=' + o.values[0] + ');');\n\t}\n\n  /**\n   * Gets the contents of a provided URL.  Blocking operation, CM will freeze while it gets the url contents.\n   * @param {String} url www.gooogle.com or www.example.com\n   * @return {Void}\n   */\n\tstatic Url(url) {\n\t\treturn FWI.RunScript('Content.Url(' + url + ');');\n\t}\n\n  /**\n   * Gets the contents of a provided URL.  Non-blocking operation.  Will return contents to variable once operation is complete.\n   * @param {String} url Name of the content item\n   * @return {Void}\n   */\n\tstatic UrlAsync(url) {\n\t\treturn FWI.RunScript('Content.UrlAsync(' + url + ');');\n\t}\n\n  /**\n   * Pauses a video if it is playing in a region.\n   * @param {String} region_name Name of the region that contains the video\n   * @return {Void}\n   */\n\tstatic Pause(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Pause();');\n\t}\n\n  /**\n   * Plays a video if it is playing in a region.\n   * @param {String} region_name Name of the region that contains the video\n   * @return {Void}\n   */\n\tstatic Play(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Play();');\n\t}\n\n  /**\n   * Seeks by a  a particular part of a video if it is playing in a region.\n   * @param {String} region_name Name of the region that contains the video\n   * @param {String} value Timecode value to seek through the video by.\n   * @return {Void}\n   */\n\tstatic SeekBy(region_name, value) {\n\t\tFWI.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');\n\t}\n\n  /**\n   * Seeks to a  a particular part of a video if it is playing in a region.\n   * @param {String} region_name Name of the region that contains the video\n   * @param {String} value Timecode value to seek through the video too.\n   * @return {Void}\n   */\n\tstatic SeekTo(region_name, value) {\n\t\tFWI.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');\n\t}\n\n  /**\n   * Resumes a paused video if it is playing in a region.\n   * @param {String} region_name Name of the region that contains the video\n   * @return {Void}\n   */\n\tstatic Resume(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Resume();');\n\t}\n\n  /**\n   * Sets the left right balance of the audio in a video\n   * @param {String} region_name Name of the region that contains the video\n   * @param {Number} balance Number representing the left right balance.\n   * @return {Void}\n   */\n\tstatic SetBalance(region_name, balance) {\n\t\tFWI.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');\n\t}\n\n  /**\n   * Sets the audio for a video.\n   * @param {String} region_name Name of the region that contains the video\n   * @param {Number} volume Number representing the volume\n   * @return {Void}\n   */\n\tstatic SetVolume(region_name, volume) {\n\t\tFWI.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');\n\t}\n\n  /**\n   * Stops a video in a region if it's scheduled\n   * @param {String} region_name Name of the region that contains the video\n   * @return {Void}\n   */\n\tstatic Stop(region_name) {\n\t\tFWI.RunScript('Content[' + region_name + '].Stop();');\n\t}\n\n  /**\n   * Highlights one or multiple rows in live data\n   * @param {String} region_name Name of the region that contains the video\n   * @param {String} row_list Comma seperated list of rows to highlight.\n   * @return {Void}\n   */\n\tstatic HighlightRows(region_name, row_list) {\n\t\tFWI.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');\n\t}\n\n  /**\n   * Returns the content items details, in the case of the live data, it's the data itself.\n   * @return {String}\n   */\n\tgetDetails() {\n\t\treturn Content.GetDetails(this.name);\n\t}\n\n  /**\n   * Prints the regions content item\n   * @param {String} parameters Printing parameters\n   * @return {Void}\n   */\n\tprint(parameters) {\n\t\tContent.Print(this.region_name, parameters);\n\t}\n\n  /**\n   * Play the next item in the region\n   * @param {String} direction Forward/Backward\n   * @param {Boolean} wrap True/False if it should wrap when it reaches the start/end.\n   * @return {Void}\n   */\n\tseek(direction, wrap = true) {\n\t\tContent.Seek(this.region_name, direction, wrap);\n\t}\n\n  /**\n   * Sets arguments on currently playing content items\n   * @param {Object} o Object that contains a single object of key pair values for content arguments.\n   * @return {Void}\n   */\n\tsetArgument(o) {\n\t\tContent.SetArgument(this.region_name, o);\n\t}\n\n  /**\n   * Shows the route on a wayfinding contnet item\n   * @param {Object} o Single key pair object that takes a Location=Location type thing\n   * @return {Void}\n   */\n\tshowRoute(o) {\n\t\tContent.ShowRoute(this.region_name, o);\n\t}\n\n  /**\n   * Pauses a video if it is playing in a region.\n   * @return {Void}\n   */\n\tpause() {\n\t\tContent.Pause(this.region_name);\n\t}\n\n  /**\n   * Plays a video if it is playing in a region.\n   * @return {Void}\n   */\n\tplay() {\n\t\tContent.Play(this.region_name);\n\t}\n\n  /**\n   * Seeks by a  a particular part of a video if it is playing in a region.\n   * @param {String} value Timecode value to seek through the video by.\n   * @return {Void}\n   */\n\tseekBy(value) {\n\t\tContent.SeekBy(this.region_name, value);\n\t}\n\n  /**\n   * Seeks to a  a particular part of a video if it is playing in a region.\n   * @param {String} value Timecode value to seek through the video too.\n   * @return {Void}\n   */\n\tseekTo(value) {\n\t\tContent.SeekTo(this.region_name, value);\n\t}\n\n  /**\n   * Resumes a paused video if it is playing in a region.\n   * @return {Void}\n   */\n\tresume() {\n\t\tContent.Resume(this.region_name);\n\t}\n\n  /**\n   * Sets the left right balance of the audio in a video\n   * @param {Number} balance Number representing the left right balance.\n   * @return {Void}\n   */\n\tsetBalance(balance) {\n\t\tContent.SetBalance(this.region_name, balance);\n\t}\n\n  /**\n   * Sets the audio for a video.\n   * @param {Number} volume Number representing the volume\n   * @return {Void}\n   */\n\tsetVolume(volume) {\n\t\tContent.SetVolume(this.region_name, volume);\n\t}\n\n  /**\n   * Stops a video in a region if it's scheduled\n   * @return {Void}\n   */\n\tstop() {\n\t\tContent.Stop(this.region_name);\n\t}\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/content.js",
     "access": "public",
@@ -585,9 +585,8 @@
     "export": false,
     "importPath": "fwi.js/src/content.js",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 3,
-    "undocument": true,
+    "description": "These are here to store information about multiple content and regions names",
+    "lineNumber": 6,
     "type": {
       "types": [
         "*"
@@ -607,7 +606,7 @@
     "importPath": "fwi.js/src/content.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 4,
+    "lineNumber": 7,
     "undocument": true,
     "type": {
       "types": [
@@ -627,9 +626,8 @@
     "export": true,
     "importPath": "fwi.js/src/content.js",
     "importStyle": "{Content}",
-    "description": null,
-    "lineNumber": 6,
-    "undocument": true,
+    "description": "This is the content class it can be used in two ways.  You can access the static methods if you just need\na one off operation, or you can create a content item to execute multiple operations on it.\n\nExample:\n```\nvar item = new Content('Places_Live_Data', 'Live_Data_Region);\n\nitem.getDetails()\n\nitem.play()\n```\nor\n```\nvar url_contents = Content.Url('https://example.com');\n```",
+    "lineNumber": 26,
     "interface": false
   },
   {
@@ -642,9 +640,38 @@
     "static": false,
     "longname": "src/content.js~Content#constructor",
     "access": "public",
-    "description": null,
-    "lineNumber": 8,
-    "undocument": true
+    "description": "Constructor that accespts the content items name and the region the content item is playing in.",
+    "lineNumber": 34,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "Name of the content item"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region the content item resides in"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 53,
@@ -656,9 +683,16 @@
     "static": false,
     "longname": "src/content.js~Content#name",
     "access": "public",
-    "description": null,
-    "lineNumber": 13,
-    "undocument": true,
+    "description": "Returns the name of the content item",
+    "lineNumber": 43,
+    "return": {
+      "nullable": null,
+      "types": [
+        "String"
+      ],
+      "spread": false,
+      "description": ""
+    },
     "type": {
       "types": [
         "*"
@@ -675,9 +709,16 @@
     "static": false,
     "longname": "src/content.js~Content#region_name",
     "access": "public",
-    "description": null,
-    "lineNumber": 17,
-    "undocument": true,
+    "description": "Returns the name of the content item",
+    "lineNumber": 51,
+    "return": {
+      "nullable": null,
+      "types": [
+        "String"
+      ],
+      "spread": false,
+      "description": ""
+    },
     "type": {
       "types": [
         "*"
@@ -694,21 +735,27 @@
     "static": true,
     "longname": "src/content.js~Content.GetDetails",
     "access": "public",
-    "description": null,
-    "lineNumber": 21,
-    "undocument": true,
+    "description": "Returns the content items details, in the case of the live data, it's the data itself.",
+    "lineNumber": 60,
     "params": [
       {
-        "name": "name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "Name of the content item"
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "String"
+      ],
+      "spread": false,
+      "description": ""
     }
   },
   {
@@ -721,24 +768,38 @@
     "static": true,
     "longname": "src/content.js~Content.Print",
     "access": "public",
-    "description": null,
-    "lineNumber": 25,
-    "undocument": true,
+    "description": "Prints the regions content item",
+    "lineNumber": 70,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region."
       },
       {
-        "name": "parameters",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parameters",
+        "description": "Printing parameters"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 57,
@@ -750,33 +811,48 @@
     "static": true,
     "longname": "src/content.js~Content.Seek",
     "access": "public",
-    "description": null,
-    "lineNumber": 29,
-    "undocument": true,
+    "description": "Play the next item in the region",
+    "lineNumber": 81,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "direction",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "wrap",
-        "optional": true,
-        "types": [
-          "boolean"
+          "String"
         ],
-        "defaultRaw": true,
-        "defaultValue": "true"
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "direction",
+        "description": "Forward/Backward"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "wrap",
+        "description": "True/False if it should wrap when it reaches the start/end."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 58,
@@ -788,24 +864,38 @@
     "static": true,
     "longname": "src/content.js~Content.SetArgument",
     "access": "public",
-    "description": null,
-    "lineNumber": 33,
-    "undocument": true,
+    "description": "Sets arguments on currently playing content items",
+    "lineNumber": 91,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region"
       },
       {
-        "name": "o",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "o",
+        "description": "Object that contains a single object of key pair values for content arguments."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 59,
@@ -817,24 +907,38 @@
     "static": true,
     "longname": "src/content.js~Content.ShowRoute",
     "access": "public",
-    "description": null,
-    "lineNumber": 39,
-    "undocument": true,
+    "description": "Shows the route on a wayfinding contnet item",
+    "lineNumber": 101,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region",
+        "description": "name Name of the content item"
       },
       {
-        "name": "o",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "o",
+        "description": "Single key pair object that takes a Location=Location type thing"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 60,
@@ -846,18 +950,28 @@
     "static": true,
     "longname": "src/content.js~Content.Url",
     "access": "public",
-    "description": null,
-    "lineNumber": 45,
-    "undocument": true,
+    "description": "Gets the contents of a provided URL.  Blocking operation, CM will freeze while it gets the url contents.",
+    "lineNumber": 110,
     "params": [
       {
-        "name": "url",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "url",
+        "description": "www.gooogle.com or www.example.com"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 61,
@@ -869,18 +983,28 @@
     "static": true,
     "longname": "src/content.js~Content.UrlAsync",
     "access": "public",
-    "description": null,
-    "lineNumber": 49,
-    "undocument": true,
+    "description": "Gets the contents of a provided URL.  Non-blocking operation.  Will return contents to variable once operation is complete.",
+    "lineNumber": 119,
     "params": [
       {
-        "name": "url",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "url",
+        "description": "Name of the content item"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 62,
@@ -892,18 +1016,28 @@
     "static": true,
     "longname": "src/content.js~Content.Pause",
     "access": "public",
-    "description": null,
-    "lineNumber": 53,
-    "undocument": true,
+    "description": "Pauses a video if it is playing in a region.",
+    "lineNumber": 128,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 63,
@@ -915,18 +1049,28 @@
     "static": true,
     "longname": "src/content.js~Content.Play",
     "access": "public",
-    "description": null,
-    "lineNumber": 57,
-    "undocument": true,
+    "description": "Plays a video if it is playing in a region.",
+    "lineNumber": 137,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 64,
@@ -938,24 +1082,38 @@
     "static": true,
     "longname": "src/content.js~Content.SeekBy",
     "access": "public",
-    "description": null,
-    "lineNumber": 61,
-    "undocument": true,
+    "description": "Seeks by a  a particular part of a video if it is playing in a region.",
+    "lineNumber": 147,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       },
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Timecode value to seek through the video by."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 65,
@@ -967,24 +1125,38 @@
     "static": true,
     "longname": "src/content.js~Content.SeekTo",
     "access": "public",
-    "description": null,
-    "lineNumber": 65,
-    "undocument": true,
+    "description": "Seeks to a  a particular part of a video if it is playing in a region.",
+    "lineNumber": 157,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       },
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Timecode value to seek through the video too."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 66,
@@ -996,18 +1168,28 @@
     "static": true,
     "longname": "src/content.js~Content.Resume",
     "access": "public",
-    "description": null,
-    "lineNumber": 69,
-    "undocument": true,
+    "description": "Resumes a paused video if it is playing in a region.",
+    "lineNumber": 166,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 67,
@@ -1019,24 +1201,38 @@
     "static": true,
     "longname": "src/content.js~Content.SetBalance",
     "access": "public",
-    "description": null,
-    "lineNumber": 73,
-    "undocument": true,
+    "description": "Sets the left right balance of the audio in a video",
+    "lineNumber": 176,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       },
       {
-        "name": "balance",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "balance",
+        "description": "Number representing the left right balance."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 68,
@@ -1048,24 +1244,38 @@
     "static": true,
     "longname": "src/content.js~Content.SetVolume",
     "access": "public",
-    "description": null,
-    "lineNumber": 77,
-    "undocument": true,
+    "description": "Sets the audio for a video.",
+    "lineNumber": 186,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       },
       {
-        "name": "volume",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "volume",
+        "description": "Number representing the volume"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 69,
@@ -1077,18 +1287,28 @@
     "static": true,
     "longname": "src/content.js~Content.Stop",
     "access": "public",
-    "description": null,
-    "lineNumber": 81,
-    "undocument": true,
+    "description": "Stops a video in a region if it's scheduled",
+    "lineNumber": 195,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 70,
@@ -1100,24 +1320,38 @@
     "static": true,
     "longname": "src/content.js~Content.HighlightRows",
     "access": "public",
-    "description": null,
-    "lineNumber": 85,
-    "undocument": true,
+    "description": "Highlights one or multiple rows in live data",
+    "lineNumber": 205,
     "params": [
       {
-        "name": "region_name",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region_name",
+        "description": "Name of the region that contains the video"
       },
       {
-        "name": "row_list",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "row_list",
+        "description": "Comma seperated list of rows to highlight."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 71,
@@ -1129,15 +1363,17 @@
     "static": false,
     "longname": "src/content.js~Content#getDetails",
     "access": "public",
-    "description": null,
-    "lineNumber": 89,
-    "undocument": true,
-    "params": [],
+    "description": "Returns the content items details, in the case of the live data, it's the data itself.",
+    "lineNumber": 213,
     "return": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
-    }
+        "String"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 72,
@@ -1149,18 +1385,28 @@
     "static": false,
     "longname": "src/content.js~Content#print",
     "access": "public",
-    "description": null,
-    "lineNumber": 93,
-    "undocument": true,
+    "description": "Prints the regions content item",
+    "lineNumber": 222,
     "params": [
       {
-        "name": "parameters",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parameters",
+        "description": "Printing parameters"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 73,
@@ -1172,27 +1418,38 @@
     "static": false,
     "longname": "src/content.js~Content#seek",
     "access": "public",
-    "description": null,
-    "lineNumber": 97,
-    "undocument": true,
+    "description": "Play the next item in the region",
+    "lineNumber": 232,
     "params": [
       {
-        "name": "direction",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "direction",
+        "description": "Forward/Backward"
       },
       {
-        "name": "wrap",
-        "optional": true,
+        "nullable": null,
         "types": [
-          "boolean"
+          "Boolean"
         ],
-        "defaultRaw": true,
-        "defaultValue": "true"
+        "spread": false,
+        "optional": false,
+        "name": "wrap",
+        "description": "True/False if it should wrap when it reaches the start/end."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 74,
@@ -1204,18 +1461,28 @@
     "static": false,
     "longname": "src/content.js~Content#setArgument",
     "access": "public",
-    "description": null,
-    "lineNumber": 101,
-    "undocument": true,
+    "description": "Sets arguments on currently playing content items",
+    "lineNumber": 241,
     "params": [
       {
-        "name": "o",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "o",
+        "description": "Object that contains a single object of key pair values for content arguments."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 75,
@@ -1227,18 +1494,28 @@
     "static": false,
     "longname": "src/content.js~Content#showRoute",
     "access": "public",
-    "description": null,
-    "lineNumber": 105,
-    "undocument": true,
+    "description": "Shows the route on a wayfinding contnet item",
+    "lineNumber": 250,
     "params": [
       {
-        "name": "o",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "o",
+        "description": "Single key pair object that takes a Location=Location type thing"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 76,
@@ -1250,11 +1527,17 @@
     "static": false,
     "longname": "src/content.js~Content#pause",
     "access": "public",
-    "description": null,
-    "lineNumber": 109,
-    "undocument": true,
-    "params": [],
-    "return": null
+    "description": "Pauses a video if it is playing in a region.",
+    "lineNumber": 258,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 77,
@@ -1266,11 +1549,17 @@
     "static": false,
     "longname": "src/content.js~Content#play",
     "access": "public",
-    "description": null,
-    "lineNumber": 113,
-    "undocument": true,
-    "params": [],
-    "return": null
+    "description": "Plays a video if it is playing in a region.",
+    "lineNumber": 266,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 78,
@@ -1282,18 +1571,28 @@
     "static": false,
     "longname": "src/content.js~Content#seekBy",
     "access": "public",
-    "description": null,
-    "lineNumber": 117,
-    "undocument": true,
+    "description": "Seeks by a  a particular part of a video if it is playing in a region.",
+    "lineNumber": 275,
     "params": [
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Timecode value to seek through the video by."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 79,
@@ -1305,18 +1604,28 @@
     "static": false,
     "longname": "src/content.js~Content#seekTo",
     "access": "public",
-    "description": null,
-    "lineNumber": 121,
-    "undocument": true,
+    "description": "Seeks to a  a particular part of a video if it is playing in a region.",
+    "lineNumber": 284,
     "params": [
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Timecode value to seek through the video too."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 80,
@@ -1328,11 +1637,17 @@
     "static": false,
     "longname": "src/content.js~Content#resume",
     "access": "public",
-    "description": null,
-    "lineNumber": 125,
-    "undocument": true,
-    "params": [],
-    "return": null
+    "description": "Resumes a paused video if it is playing in a region.",
+    "lineNumber": 292,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 81,
@@ -1344,18 +1659,28 @@
     "static": false,
     "longname": "src/content.js~Content#setBalance",
     "access": "public",
-    "description": null,
-    "lineNumber": 129,
-    "undocument": true,
+    "description": "Sets the left right balance of the audio in a video",
+    "lineNumber": 301,
     "params": [
       {
-        "name": "balance",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "balance",
+        "description": "Number representing the left right balance."
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 82,
@@ -1367,18 +1692,28 @@
     "static": false,
     "longname": "src/content.js~Content#setVolume",
     "access": "public",
-    "description": null,
-    "lineNumber": 133,
-    "undocument": true,
+    "description": "Sets the audio for a video.",
+    "lineNumber": 310,
     "params": [
       {
-        "name": "volume",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "volume",
+        "description": "Number representing the volume"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 83,
@@ -1390,17 +1725,23 @@
     "static": false,
     "longname": "src/content.js~Content#stop",
     "access": "public",
-    "description": null,
-    "lineNumber": 137,
-    "undocument": true,
-    "params": [],
-    "return": null
+    "description": "Stops a video in a region if it's scheduled",
+    "lineNumber": 318,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 84,
     "kind": "file",
     "name": "src/easing_types.js",
-    "content": "export const easingTypes = {\n      /**\n       * Easing types are different equations to determine the path of a region tween.\n       * @param {DateTime|Int} t The amount of time that has passed since the animation began.\n       * @param {Int|Float} b The current position of the x or y point of the top left corner of the region\n       * @param {Int|Float} c The total delta for the x or y point from beginning position to the end position\n       * @param {Int} d The total duration of the animation\n       * @return {Float} The next position of the x or y point.\n       */\n\n    linear: function(t,b ,c, d) {\n      return c*t/d + b;\n    },\n\n    easeInQuad: function (t, b, c, d) {\n      t /= d;\n      return c*t*t + b;\n    },\n\n    easeOutQuad: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t + b;\n        t--;\n        return -c/2 * (t*(t-2) - 1) + b;\n    },\n\n    easeInCubic: function(t, b, c, d) {\n        t /= d;\n        return c*t*t*t + b;\n    },\n\n    easeOutCubic: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return c*(t*t*t + 1) + b;\n    },\n\n    easeInOutCubic: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t*t + b;\n        t -= 2;\n        return c/2*(t*t*t + 2) + b;\n    },\n\n    easeInQuart: function(t, b, c, d) {\n        t /= d;\n        return c*t*t*t*t + b;\n    },\n\n    easeOutQuart: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return -c * (t*t*t*t - 1) + b;\n    },\n\n    easeInOutQuart: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t*t*t + b;\n        t -= 2;\n        return -c/2 * (t*t*t*t - 2) + b;\n    },\n\n    easeInQuint: function(t, b, c, d) {\n        t /= d;\n        return c*t*t*t*t*t + b;\n    },\n\n    easeOutQuint: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return c*(t*t*t*t*t + 1) + b;\n    },\n\n    easeInOutQuint: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t*t*t*t + b;\n        t -= 2;\n        return c/2*(t*t*t*t*t + 2) + b;\n    },\n\n    easeInSine: function(t, b, c, d) {\n        return -c * Math.cos(t/d * (Math.PI/2)) + c + b;\n    },\n\n    easeOutSine: function(t, b, c, d) {\n        return c * Math.sin(t/d * (Math.PI/2)) + b;\n    },\n\n    easeInOutSine: function(t, b, c, d) {\n        return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;\n    },\n\n    easeInExpo: function(t, b, c, d) {\n        return c * Math.pow( 2, 10 * (t/d - 1) ) + b;\n    },\n\n    easeOutExpo: function(t, b, c, d) {\n        return c * ( -Math.pow( 2, -10 * t/d ) + 1 ) + b;\n    },\n\n    easeInOutExpo: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b;\n        t--;\n        return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;\n    },\n\n    easeInCirc: function(t, b, c, d) {\n        t /= d;\n        return -c * (Math.sqrt(1 - t*t) - 1) + b;\n    },\n\n    easeOutCirc: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return c * Math.sqrt(1 - t*t) + b;\n    },\n\n    easeInOutCirc: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;\n        t -= 2;\n        return c/2 * (Math.sqrt(1 - t*t) + 1) + b;\n    },\n\n    easeInElastic: function(t, b, c, d) {\n        var a = 0;\n        var p = 0;\n        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;\n        if (a < Math.abs(c)) { a=c; var s=p/4; }\n        else var s = p/(2*Math.PI) * Math.asin (c/a);\n        return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;\n    },\n\n    easeOutElastic: function(t, b, c, d) {\n        var a = 0;\n        var p = 0;\n        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;\n        if (a < Math.abs(c)) { a=c; var s=p/4; }\n        else var s = p/(2*Math.PI) * Math.asin (c/a);\n        return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;\n    },\n\n    easeInOutElastic: function(t, b, c, d) {\n        var a = 0;\n        var p = 0;\n        if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);\n        if (a < Math.abs(c)) { a=c; var s=p/4; }\n        else var s = p/(2*Math.PI) * Math.asin (c/a);\n        if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;\n        return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;\n    },\n\n    easeInBack: function(t, b, c, d, s) {\n        if (s == undefined) s = 1.70158;\n        return c*(t/=d)*t*((s+1)*t - s) + b;\n    },\n\n    easeOutBack: function(t, b, c, d, s) {\n        if (s == undefined) s = 1.70158;\n        return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;\n    },\n\n    easeInOutBack: function(t, b, c, d, s) {\n        if (s == undefined) s = 1.70158;\n        if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;\n        return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;\n    },\n\n    easeInBounce: function(t, b, c, d) {\n        return c - this.easeOutBounce(d-t, 0, c, d) + b;\n    },\n\n    easeOutBounce: function(t, b, c, d) {\n        if ((t/=d) < (1/2.75)) {\n            return c*(7.5625*t*t) + b;\n        } else if (t < (2/2.75)) {\n            return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;\n        } else if (t < (2.5/2.75)) {\n            return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;\n        } else {\n            return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;\n        }\n    },\n\n    easeInOutBounce: function(t, b, c, d) {\n        if (t < d/2) return this.easeInBounce(t*2, 0, c, d) * .5 + b;\n        return this.easeOutBounce(t*2-d, 0, c, d) * .5 + c*.5 + b;\n    }\n}",
+    "content": "/**\n * Easing types are different equations to determine the path of a region tween.\n * They can be used in resizes or moveTo scripts.  All of them follow the same input formula.\n * @param {DateTime|Int} t The amount of time that has passed since the animation began.\n * @param {Int|Float} b The current position of the x or y point of the top left corner of the region\n * @param {Int|Float} c The total delta for the x or y point from beginning position to the end position\n * @param {Int} d The total duration of the animation\n * @return {Float} The next position of the x or y point.\n */\nexport const easingTypes = {\n\n    linear: function(t,b ,c, d) {\n      return c*t/d + b;\n    },\n\n    easeInQuad: function (t, b, c, d) {\n      t /= d;\n      return c*t*t + b;\n    },\n\n    easeOutQuad: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t + b;\n        t--;\n        return -c/2 * (t*(t-2) - 1) + b;\n    },\n\n    easeInCubic: function(t, b, c, d) {\n        t /= d;\n        return c*t*t*t + b;\n    },\n\n    easeOutCubic: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return c*(t*t*t + 1) + b;\n    },\n\n    easeInOutCubic: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t*t + b;\n        t -= 2;\n        return c/2*(t*t*t + 2) + b;\n    },\n\n    easeInQuart: function(t, b, c, d) {\n        t /= d;\n        return c*t*t*t*t + b;\n    },\n\n    easeOutQuart: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return -c * (t*t*t*t - 1) + b;\n    },\n\n    easeInOutQuart: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t*t*t + b;\n        t -= 2;\n        return -c/2 * (t*t*t*t - 2) + b;\n    },\n\n    easeInQuint: function(t, b, c, d) {\n        t /= d;\n        return c*t*t*t*t*t + b;\n    },\n\n    easeOutQuint: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return c*(t*t*t*t*t + 1) + b;\n    },\n\n    easeInOutQuint: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2*t*t*t*t*t + b;\n        t -= 2;\n        return c/2*(t*t*t*t*t + 2) + b;\n    },\n\n    easeInSine: function(t, b, c, d) {\n        return -c * Math.cos(t/d * (Math.PI/2)) + c + b;\n    },\n\n    easeOutSine: function(t, b, c, d) {\n        return c * Math.sin(t/d * (Math.PI/2)) + b;\n    },\n\n    easeInOutSine: function(t, b, c, d) {\n        return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;\n    },\n\n    easeInExpo: function(t, b, c, d) {\n        return c * Math.pow( 2, 10 * (t/d - 1) ) + b;\n    },\n\n    easeOutExpo: function(t, b, c, d) {\n        return c * ( -Math.pow( 2, -10 * t/d ) + 1 ) + b;\n    },\n\n    easeInOutExpo: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b;\n        t--;\n        return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;\n    },\n\n    easeInCirc: function(t, b, c, d) {\n        t /= d;\n        return -c * (Math.sqrt(1 - t*t) - 1) + b;\n    },\n\n    easeOutCirc: function(t, b, c, d) {\n        t /= d;\n        t--;\n        return c * Math.sqrt(1 - t*t) + b;\n    },\n\n    easeInOutCirc: function(t, b, c, d) {\n        t /= d/2;\n        if (t < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;\n        t -= 2;\n        return c/2 * (Math.sqrt(1 - t*t) + 1) + b;\n    },\n\n    easeInElastic: function(t, b, c, d) {\n        var a = 0;\n        var p = 0;\n        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;\n        if (a < Math.abs(c)) { a=c; var s=p/4; }\n        else var s = p/(2*Math.PI) * Math.asin (c/a);\n        return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;\n    },\n\n    easeOutElastic: function(t, b, c, d) {\n        var a = 0;\n        var p = 0;\n        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;\n        if (a < Math.abs(c)) { a=c; var s=p/4; }\n        else var s = p/(2*Math.PI) * Math.asin (c/a);\n        return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;\n    },\n\n    easeInOutElastic: function(t, b, c, d) {\n        var a = 0;\n        var p = 0;\n        if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);\n        if (a < Math.abs(c)) { a=c; var s=p/4; }\n        else var s = p/(2*Math.PI) * Math.asin (c/a);\n        if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;\n        return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;\n    },\n\n    easeInBack: function(t, b, c, d, s) {\n        if (s == undefined) s = 1.70158;\n        return c*(t/=d)*t*((s+1)*t - s) + b;\n    },\n\n    easeOutBack: function(t, b, c, d, s) {\n        if (s == undefined) s = 1.70158;\n        return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;\n    },\n\n    easeInOutBack: function(t, b, c, d, s) {\n        if (s == undefined) s = 1.70158;\n        if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;\n        return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;\n    },\n\n    easeInBounce: function(t, b, c, d) {\n        return c - this.easeOutBounce(d-t, 0, c, d) + b;\n    },\n\n    easeOutBounce: function(t, b, c, d) {\n        if ((t/=d) < (1/2.75)) {\n            return c*(7.5625*t*t) + b;\n        } else if (t < (2/2.75)) {\n            return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;\n        } else if (t < (2.5/2.75)) {\n            return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;\n        } else {\n            return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;\n        }\n    },\n\n    easeInOutBounce: function(t, b, c, d) {\n        if (t < d/2) return this.easeInBounce(t*2, 0, c, d) * .5 + b;\n        return this.easeOutBounce(t*2-d, 0, c, d) * .5 + c*.5 + b;\n    }\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/easing_types.js",
     "access": "public",
@@ -1418,9 +1759,61 @@
     "export": true,
     "importPath": "fwi.js/src/easing_types.js",
     "importStyle": "{easingTypes}",
-    "description": null,
-    "lineNumber": 1,
-    "undocument": true,
+    "description": "Easing types are different equations to determine the path of a region tween.\nThey can be used in resizes or moveTo scripts.  All of them follow the same input formula.",
+    "lineNumber": 10,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "DateTime",
+          "Int"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "t",
+        "description": "The amount of time that has passed since the animation began."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Int",
+          "Float"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "b",
+        "description": "The current position of the x or y point of the top left corner of the region"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Int",
+          "Float"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "c",
+        "description": "The total delta for the x or y point from beginning position to the end position"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Int"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "d",
+        "description": "The total duration of the animation"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Float"
+      ],
+      "spread": false,
+      "description": "The next position of the x or y point."
+    },
     "type": {
       "types": [
         "{\"linear\": *, \"easeInQuad\": *, \"easeOutQuad\": *, \"easeInCubic\": *, \"easeOutCubic\": *, \"easeInOutCubic\": *, \"easeInQuart\": *, \"easeOutQuart\": *, \"easeInOutQuart\": *, \"easeInQuint\": *, \"easeOutQuint\": *, \"easeInOutQuint\": *, \"easeInSine\": *, \"easeOutSine\": *, \"easeInOutSine\": *, \"easeInExpo\": *, \"easeOutExpo\": *, \"easeInOutExpo\": *, \"easeInCirc\": *, \"easeOutCirc\": *, \"easeInOutCirc\": *, \"easeInElastic\": *, \"easeOutElastic\": *, \"easeInOutElastic\": *, \"easeInBack\": *, \"easeOutBack\": *, \"easeInOutBack\": *, \"easeInBounce\": *, \"easeOutBounce\": *, \"easeInOutBounce\": *}"
@@ -1431,7 +1824,7 @@
     "__docId__": 86,
     "kind": "file",
     "name": "src/fwi_core.js",
-    "content": "// Load the FWI Javascript base:\nexport const FWI = window.frameElement ? window.frameElement.parentNode.FWI : window.external;",
+    "content": "/**\n * Load the FWI Javascript base depending on if you are using a browser or windows player.\n */\nexport const FWI = window.frameElement ? window.frameElement.parentNode.FWI : window.external;",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/fwi_core.js",
     "access": "public",
@@ -1449,9 +1842,8 @@
     "export": true,
     "importPath": "fwi.js/src/fwi_core.js",
     "importStyle": "{FWI}",
-    "description": null,
-    "lineNumber": 2,
-    "undocument": true,
+    "description": "Load the FWI Javascript base depending on if you are using a browser or windows player.",
+    "lineNumber": 4,
     "type": {
       "types": [
         "*"
@@ -1462,7 +1854,7 @@
     "__docId__": 88,
     "kind": "file",
     "name": "src/helpers.js",
-    "content": "export class Helpers {\n\n\tconstructor() {\n\n\t}\n\n\tstatic splitColor(color) {\n\t\tconst opacity = parseInt('0x' + color.slice(1,3))/255;\n\n\t\tconst rgb = '#' + color.slice(3,9);\n\n\t\treturn ({'rgb' : rgb, 'opacity' : opacity});\n\t}\n}",
+    "content": "/**\n * This is the helpers class.  It will grow over time.  It contains methods\n * that are designed to help aid certain repetitive tasks.\n */\nexport class Helpers {\n\n\tconstructor() {\n\n\t}\n\n\t/**\n\t * This helper method is designed to split a color into it's opacity.\n\t * This is needed because most color libraries don't store their alpha information\n\t * in the first two digits of the hex code!\n\t * @param {String} color 8 digit hex color that our software uses\n\t * @returns {Object}\n\t */\n\tstatic splitColor(color) {\n\t\tconst opacity = parseInt('0x' + color.slice(1,3))/255;\n\n\t\tconst rgb = '#' + color.slice(3,9);\n\n\t\treturn ({'rgb' : rgb, 'opacity' : opacity});\n\t}\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/helpers.js",
     "access": "public",
@@ -1480,9 +1872,8 @@
     "export": true,
     "importPath": "fwi.js/src/helpers.js",
     "importStyle": "{Helpers}",
-    "description": null,
-    "lineNumber": 1,
-    "undocument": true,
+    "description": "This is the helpers class.  It will grow over time.  It contains methods\nthat are designed to help aid certain repetitive tasks.",
+    "lineNumber": 5,
     "interface": false
   },
   {
@@ -1496,7 +1887,7 @@
     "longname": "src/helpers.js~Helpers#constructor",
     "access": "public",
     "description": null,
-    "lineNumber": 3,
+    "lineNumber": 7,
     "undocument": true
   },
   {
@@ -1509,28 +1900,40 @@
     "static": true,
     "longname": "src/helpers.js~Helpers.splitColor",
     "access": "public",
-    "description": null,
-    "lineNumber": 7,
-    "undocument": true,
+    "description": "This helper method is designed to split a color into it's opacity.\nThis is needed because most color libraries don't store their alpha information\nin the first two digits of the hex code!",
+    "lineNumber": 18,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Object}"
+      }
+    ],
     "params": [
       {
-        "name": "color",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "color",
+        "description": "8 digit hex color that our software uses"
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
-        "{\"rgb\": *, \"opacity\": *}"
-      ]
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
     }
   },
   {
     "__docId__": 92,
     "kind": "file",
     "name": "src/player.js",
-    "content": "import { FWI } from \"./fwi_core.js\";\n\nString.prototype.ReplaceIllegalChars = function (prefix) {\n  //This method replaces { } and , with variable names so CM can read the JSON properly\n  let OutputString = this.replace(/{/g,\"{&lb\");\n  OutputString = OutputString.replace(/}/g,\"&rb}\");\n  OutputString = OutputString.replace(/,/g,`{&var:${prefix}_comma}`);\n  OutputString = OutputString.replace(/{&lb/g,\"{&lb}\");\n  OutputString = OutputString.replace(/&rb}/g,\"{&rb}\");\n  return OutputString;\n}\n\nString.prototype.startsWith = function (prefix) {\n    return this.slice(0, prefix.length) == prefix;\n}\n\nexport class Player{\n  constructor() {\n\n  }\n\n  /**\n   * Retrieves the value for a single CM variable.\n   * @param {String} name A variable name to collect\n   * @return {Number|String} An appropriately casted value from the variable\n   */\n  static GetVariable(name) {\n    return FWI.MarkupValue('{&var:' + name + '}') != '' ? FWI.MarkupValue('{&var:' + name + '}') : false;\n  };\n\n  /**\n   * Retrieves the value for a single CM font variable.\n   * @param {String} name A variable name to collect\n   * @return {Object} Dictionary of the font json\n   */\n  static GetFontVariable(name) {\n    const font_var = Player.GetVariable(name);\n    return JSON.parse(font_var);\n  }\n\n  /**\n   * Retrieves values for multiple CM variables.\n   * @param {Array} nameArray An array of variable names to collect\n   * @return {Array} An array of values that correspond to the requested variables\n   */\n  static GetManyVariables(nameArray) {\n    const values = [];\n    for (let [k,v] of nameArray.entries()) {\n      values.push(FWI.MarkupValue('{&var:' + v + '}'));\n    }\n    return values;\n  }\n\n  /**\n   * Sets  single variable back in CM.\n   * @param {String} name The name of the variable to set\n   * @param {String} value The value of the variable to set\n   * @return {Void}\n   */\n  static SetVariable(name, value) {\n    FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');\n  }\n\n  /**\n   * Sets a single font variable back in CM.\n   * @param {String} name The name of the variable to set\n   * @param {Object} value The font dictionary object\n   * @return {Void}\n   */\n  static SetFontVariable(name, value, prefix) {\n    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());\n  }\n\n  /**\n   * Sets multiple variables back in CM.\n   * @param {Object} keyValueDict An object that defines key/value pairs to use\n   * @return {Void}\n   */\n  static SetManyVariables(keyValueDict) {\n    for (let [k, v] of keyValueDict) {\n      FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');\n    };\n  }\n\n  /**\n   * Creates a new dictionary with a font variable tempalte\n   * @return {Object} Font dictionary template\n   */\n  static CreateFontVariable() {\n\n    const font_dict = {\n        fontFamily: \"Arial\",\n        fontSize: 9.000000E+000,\n        fontStretch: null,\n        fontStyle: null,\n        fontWeight: null,\n        textDecoration: null,\n        fontColor: \"#FF000000\",\n        textAlignment: \"TopLeft\",\n        textAutoSize: false,\n        textSizeBehavior: \"Fixed\",\n        fontLeading: 0,\n        frame: {\n          type: \"\",\n          backgroundColor: \"#00424242\",\n          borderColor: \"#008BD5B5\"\n        }\n      }\n\n    return font_dict;\n  }\n\n  /**\n   * Sets the language of the build.\n   * @param {String} languageCode The language code to use\n   * @return {Void}\n   */\n  static SetLanguage(languageCode) {\n      FWI.RunScript('Player.SetLanguage(' + languageCode + ');');\n  }\n\n  /**\n   * Sets the language of the build.\n   * @param {String} languageCode The language code to use\n   * @return {Void}\n   */\n  static ToggleVariable(name) {\n      FWI.RunScript('Player.ToggleVariable(' + name + ');');\n  }\n\n  /**\n   * Plays a template\n   * @param {String} name The name of the template to play\n   * @param {String|Int} templateIndex The position of the desired template instance in the network overview\n   * @return {Void}\n   */\n  static PlayTemplate(name, templateIndex) {\n      FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');\n  }\n\n  /**\n   * Runs a shell command\n   * @param {String} command_name The main command, sometimes includes folder path\n   * @param {Array} arg_array Array of args to be submitted to the command\n   * @return {Void}\n   */\n  static Command(command_name, arg_array) {\n    let command = 'Player.Command(' + command_name;\n\n    for (let [k,v] of arg_array.entries()) {\n      command = command + ', ' + v;\n    }\n\n    command += ');';\n\n    FWI.RunScript(command);\n\n  }\n\n  /**\n   * Resets the idle timer\n   * @return {Void}\n   */\n  static ResetIdleTimer() {\n    FWI.RunScript('Player.ResetIdleTimer();');\n  }\n\n  /**\n   * Restarts the player\n   * @return {Void}\n   */\n  static Restart() {\n    FWI.RunScript('Player.Restart();');\n  }\n\n  /**\n   * Sends mail\n   * @param {Obj} o Object that contains all paramters from wiki\n   * {\n   *   to: string dest_address\n   *   cc: string cc_address,\n   *   bcc: string bcc_address,\n   *   subject: string subject,\n   *   from: string sender_address,\n   *   body: string main_message,\n   *   host: string smpt_host,\n   *   username: string smpt_username,\n   *   password: strign smpt_password\n   * }\n   * @return {Void}\n   */\n  static SendMail(o) {\n    let command = 'Player.SendMail(';\n\n    for (let [k,v] of o) {\n      command = command + ',' + k + '=' + v;\n    };\n\n    command += ');';\n\n    FWI.RunScript(command);\n  }\n\n  /**\n   * Text-to-speech\n   * @param {Obj} o Object that contains parameters from the wiki\n   * {\n   *   msg: string text_to_speak,\n   *   Volume: int volume,\n   *   Rate: int rate,\n   *   Voice: string voice\n   * }\n   * @return {Void}\n   */\n  static Speak(o) {\n    let command = 'Player.Speak(';\n\n    try {\n      command += o[msg];\n    }\n\n    catch(e) {\n      log.error(e);\n    };\n\n    for (let [k,v] of o) {\n      command = (k != 'msg' ? (command + ',' + k + '=' + v) : '');\n    };\n\n    command += ');';\n\n    FWI.RunScript(command);\n  }\n\n  /**\n   * Unsets a variable\n   * @param {String} name Variable name you wish to clear\n   * @return {Void}\n   */\n  static UnsetVariable(name) {\n    FWI.RunScript('Player.UnsetVariable(' + name + ');');\n  }\n\n}",
+    "content": "import { FWI } from \"./fwi_core.js\";\n\n/**\n * This method replaces illegal charecters in the font strings so they aren't\n * inturpreted by javascript!\n */\nString.prototype.ReplaceIllegalChars = function (prefix) {\n  //This method replaces { } and , with variable names so CM can read the JSON properly\n  let OutputString = this.replace(/{/g,\"{&lb\");\n  OutputString = OutputString.replace(/}/g,\"&rb}\");\n  OutputString = OutputString.replace(/,/g,`{&var:${prefix}_comma}`);\n  OutputString = OutputString.replace(/{&lb/g,\"{&lb}\");\n  OutputString = OutputString.replace(/&rb}/g,\"{&rb}\");\n  return OutputString;\n}\n\n/**\n * This adds a startsWith method to all strings to see if they start with a specific prefix.\n */\nString.prototype.startsWith = function (prefix) {\n    return this.slice(0, prefix.length) == prefix;\n}\n\n/**\n * This is the Player class.  It will probably be the most used class.  It contains all player functions.\n * It should be noted that all methods in this class are static so there is no need for the `new` keyword.\n *\n * Example:\n * ```\n * Player.SetVariable('foo', 'bar');\n * Player.GetVariable('foo');\n * 'bar'\n * ```\n */\nexport class Player{\n  constructor() {\n\n  }\n\n  /**\n   * Retrieves the value for a single CM variable.\n   * @param {String} name A variable name to collect\n   * @return {Number|String} An appropriately casted value from the variable\n   */\n  static GetVariable(name) {\n    return FWI.MarkupValue('{&var:' + name + '}') != '' ? FWI.MarkupValue('{&var:' + name + '}') : false;\n  };\n\n  /**\n   * Retrieves the value for a single CM font variable.\n   * @param {String} name A variable name to collect\n   * @return {Object} Dictionary of the font json\n   */\n  static GetFontVariable(name) {\n    const font_var = Player.GetVariable(name);\n    return JSON.parse(font_var);\n  }\n\n  /**\n   * Retrieves values for multiple CM variables.\n   * @param {Array} nameArray An array of variable names to collect\n   * @return {Array} An array of values that correspond to the requested variables\n   */\n  static GetManyVariables(nameArray) {\n    const values = [];\n    for (let [k,v] of nameArray.entries()) {\n      values.push(FWI.MarkupValue('{&var:' + v + '}'));\n    }\n    return values;\n  }\n\n  /**\n   * Sets  single variable back in CM.\n   * @param {String} name The name of the variable to set\n   * @param {String} value The value of the variable to set\n   * @return {Void}\n   */\n  static SetVariable(name, value) {\n    FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');\n  }\n\n  /**\n   * Sets a single font variable back in CM.\n   * @param {String} name The name of the variable to set\n   * @param {Object} value The font dictionary object\n   * @return {Void}\n   */\n  static SetFontVariable(name, value, prefix) {\n    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());\n  }\n\n  /**\n   * Sets multiple variables back in CM.\n   * @param {Object} keyValueDict An object that defines key/value pairs to use\n   * @return {Void}\n   */\n  static SetManyVariables(keyValueDict) {\n    for (let [k, v] of keyValueDict) {\n      FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');\n    };\n  }\n\n  /**\n   * Creates a new dictionary with a font variable tempalte\n   * @return {Object} Font dictionary template\n   */\n  static CreateFontVariable() {\n\n    const font_dict = {\n        fontFamily: \"Arial\",\n        fontSize: 9.000000E+000,\n        fontStretch: null,\n        fontStyle: null,\n        fontWeight: null,\n        textDecoration: null,\n        fontColor: \"#FF000000\",\n        textAlignment: \"TopLeft\",\n        textAutoSize: false,\n        textSizeBehavior: \"Fixed\",\n        fontLeading: 0,\n        frame: {\n          type: \"\",\n          backgroundColor: \"#00424242\",\n          borderColor: \"#008BD5B5\"\n        }\n      }\n\n    return font_dict;\n  }\n\n  /**\n   * Sets the language of the build.\n   * @param {String} languageCode The language code to use\n   * @return {Void}\n   */\n  static SetLanguage(languageCode) {\n      FWI.RunScript('Player.SetLanguage(' + languageCode + ');');\n  }\n\n  /**\n   * Sets the language of the build.\n   * @param {String} languageCode The language code to use\n   * @return {Void}\n   */\n  static ToggleVariable(name) {\n      FWI.RunScript('Player.ToggleVariable(' + name + ');');\n  }\n\n  /**\n   * Plays a template\n   * @param {String} name The name of the template to play\n   * @param {String|Int} templateIndex The position of the desired template instance in the network overview\n   * @return {Void}\n   */\n  static PlayTemplate(name, templateIndex) {\n      FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');\n  }\n\n  /**\n   * Runs a shell command\n   * @param {String} command_name The main command, sometimes includes folder path\n   * @param {Array} arg_array Array of args to be submitted to the command\n   * @return {Void}\n   */\n  static Command(command_name, arg_array) {\n    let command = 'Player.Command(' + command_name;\n\n    for (let [k,v] of arg_array.entries()) {\n      command = command + ', ' + v;\n    }\n\n    command += ');';\n\n    FWI.RunScript(command);\n\n  }\n\n  /**\n   * Resets the idle timer\n   * @return {Void}\n   */\n  static ResetIdleTimer() {\n    FWI.RunScript('Player.ResetIdleTimer();');\n  }\n\n  /**\n   * Restarts the player\n   * @return {Void}\n   */\n  static Restart() {\n    FWI.RunScript('Player.Restart();');\n  }\n\n  /**\n   * Sends mail\n   * @param {Obj} o Object that contains all paramters from wiki\n   * {\n   *   to: string dest_address\n   *   cc: string cc_address,\n   *   bcc: string bcc_address,\n   *   subject: string subject,\n   *   from: string sender_address,\n   *   body: string main_message,\n   *   host: string smpt_host,\n   *   username: string smpt_username,\n   *   password: strign smpt_password\n   * }\n   * @return {Void}\n   */\n  static SendMail(o) {\n    let command = 'Player.SendMail(';\n\n    for (let [k,v] of o) {\n      command = command + ',' + k + '=' + v;\n    };\n\n    command += ');';\n\n    FWI.RunScript(command);\n  }\n\n  /**\n   * Text-to-speech\n   * @param {Obj} o Object that contains parameters from the wiki\n   * {\n   *   msg: string text_to_speak,\n   *   Volume: int volume,\n   *   Rate: int rate,\n   *   Voice: string voice\n   * }\n   * @return {Void}\n   */\n  static Speak(o) {\n    let command = 'Player.Speak(';\n\n    try {\n      command += o[msg];\n    }\n\n    catch(e) {\n      log.error(e);\n    };\n\n    for (let [k,v] of o) {\n      command = (k != 'msg' ? (command + ',' + k + '=' + v) : '');\n    };\n\n    command += ');';\n\n    FWI.RunScript(command);\n  }\n\n  /**\n   * Unsets a variable\n   * @param {String} name Variable name you wish to clear\n   * @return {Void}\n   */\n  static UnsetVariable(name) {\n    FWI.RunScript('Player.UnsetVariable(' + name + ');');\n  }\n\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/player.js",
     "access": "public",
@@ -1550,9 +1953,8 @@
     "export": false,
     "importPath": "fwi.js/src/player.js",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 3,
-    "undocument": true,
+    "description": "This method replaces illegal charecters in the font strings so they aren't\ninturpreted by javascript!",
+    "lineNumber": 7,
     "params": [
       {
         "name": "prefix",
@@ -1581,9 +1983,8 @@
     "export": false,
     "importPath": "fwi.js/src/player.js",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 13,
-    "undocument": true,
+    "description": "This adds a startsWith method to all strings to see if they start with a specific prefix.",
+    "lineNumber": 20,
     "params": [
       {
         "name": "prefix",
@@ -1610,9 +2011,8 @@
     "export": true,
     "importPath": "fwi.js/src/player.js",
     "importStyle": "{Player}",
-    "description": null,
-    "lineNumber": 17,
-    "undocument": true,
+    "description": "This is the Player class.  It will probably be the most used class.  It contains all player functions.\nIt should be noted that all methods in this class are static so there is no need for the `new` keyword.\n\nExample:\n```\nPlayer.SetVariable('foo', 'bar');\nPlayer.GetVariable('foo');\n'bar'\n```",
+    "lineNumber": 35,
     "interface": false
   },
   {
@@ -1626,7 +2026,7 @@
     "longname": "src/player.js~Player#constructor",
     "access": "public",
     "description": null,
-    "lineNumber": 18,
+    "lineNumber": 36,
     "undocument": true
   },
   {
@@ -1640,7 +2040,7 @@
     "longname": "src/player.js~Player.GetVariable",
     "access": "public",
     "description": "Retrieves the value for a single CM variable.",
-    "lineNumber": 27,
+    "lineNumber": 45,
     "params": [
       {
         "nullable": null,
@@ -1674,7 +2074,7 @@
     "longname": "src/player.js~Player.GetFontVariable",
     "access": "public",
     "description": "Retrieves the value for a single CM font variable.",
-    "lineNumber": 36,
+    "lineNumber": 54,
     "params": [
       {
         "nullable": null,
@@ -1707,7 +2107,7 @@
     "longname": "src/player.js~Player.GetManyVariables",
     "access": "public",
     "description": "Retrieves values for multiple CM variables.",
-    "lineNumber": 46,
+    "lineNumber": 64,
     "params": [
       {
         "nullable": null,
@@ -1740,7 +2140,7 @@
     "longname": "src/player.js~Player.SetVariable",
     "access": "public",
     "description": "Sets  single variable back in CM.",
-    "lineNumber": 60,
+    "lineNumber": 78,
     "params": [
       {
         "nullable": null,
@@ -1783,7 +2183,7 @@
     "longname": "src/player.js~Player.SetFontVariable",
     "access": "public",
     "description": "Sets a single font variable back in CM.",
-    "lineNumber": 70,
+    "lineNumber": 88,
     "params": [
       {
         "nullable": null,
@@ -1826,7 +2226,7 @@
     "longname": "src/player.js~Player.SetManyVariables",
     "access": "public",
     "description": "Sets multiple variables back in CM.",
-    "lineNumber": 79,
+    "lineNumber": 97,
     "params": [
       {
         "nullable": null,
@@ -1859,7 +2259,7 @@
     "longname": "src/player.js~Player.CreateFontVariable",
     "access": "public",
     "description": "Creates a new dictionary with a font variable tempalte",
-    "lineNumber": 89,
+    "lineNumber": 107,
     "return": {
       "nullable": null,
       "types": [
@@ -1881,7 +2281,7 @@
     "longname": "src/player.js~Player.SetLanguage",
     "access": "public",
     "description": "Sets the language of the build.",
-    "lineNumber": 118,
+    "lineNumber": 136,
     "params": [
       {
         "nullable": null,
@@ -1914,7 +2314,7 @@
     "longname": "src/player.js~Player.ToggleVariable",
     "access": "public",
     "description": "Sets the language of the build.",
-    "lineNumber": 127,
+    "lineNumber": 145,
     "params": [
       {
         "nullable": null,
@@ -1947,7 +2347,7 @@
     "longname": "src/player.js~Player.PlayTemplate",
     "access": "public",
     "description": "Plays a template",
-    "lineNumber": 137,
+    "lineNumber": 155,
     "params": [
       {
         "nullable": null,
@@ -1991,7 +2391,7 @@
     "longname": "src/player.js~Player.Command",
     "access": "public",
     "description": "Runs a shell command",
-    "lineNumber": 147,
+    "lineNumber": 165,
     "params": [
       {
         "nullable": null,
@@ -2034,7 +2434,7 @@
     "longname": "src/player.js~Player.ResetIdleTimer",
     "access": "public",
     "description": "Resets the idle timer",
-    "lineNumber": 164,
+    "lineNumber": 182,
     "return": {
       "nullable": null,
       "types": [
@@ -2056,7 +2456,7 @@
     "longname": "src/player.js~Player.Restart",
     "access": "public",
     "description": "Restarts the player",
-    "lineNumber": 172,
+    "lineNumber": 190,
     "return": {
       "nullable": null,
       "types": [
@@ -2078,7 +2478,7 @@
     "longname": "src/player.js~Player.SendMail",
     "access": "public",
     "description": "Sends mail",
-    "lineNumber": 192,
+    "lineNumber": 210,
     "params": [
       {
         "nullable": null,
@@ -2111,7 +2511,7 @@
     "longname": "src/player.js~Player.Speak",
     "access": "public",
     "description": "Text-to-speech",
-    "lineNumber": 215,
+    "lineNumber": 233,
     "params": [
       {
         "nullable": null,
@@ -2144,7 +2544,7 @@
     "longname": "src/player.js~Player.UnsetVariable",
     "access": "public",
     "description": "Unsets a variable",
-    "lineNumber": 240,
+    "lineNumber": 258,
     "params": [
       {
         "nullable": null,
@@ -2170,7 +2570,7 @@
     "__docId__": 113,
     "kind": "file",
     "name": "src/region.js",
-    "content": "import { Template } from \"./template.js\";\nimport { easingTypes } from \"./easing_types.js\";\n\nconst _origin_position = new WeakMap();\nconst _origin_size = new WeakMap();\n\nexport class Region {\n\n    /**\n     * The init function creates a new region object to keep track of region specific information\n     * like location, template name, region name, etc.\n     * @param {String} region_name Name of the region you want to control\n     * @param {String} template_name Name of the containing template\n     * @param {Array} origin_xy Array of the regions' starting top left coordinates, [x,y]\n     * @param {Array} origin_size Array of the regions' size [x,y]\n     * @return {Obj} New region object\n     */\n    constructor(region_name, template_name, origin_position, origin_size) {\n        this.region_name = region_name;\n        this.template_name = template_name;\n        _origin_position.set(this, origin_position);\n        _origin_size.set(this, origin_size);\n        this.current_position = _origin_position.get(this);\n        this.current_size = _origin_size.get(this);\n    }\n\n    /**\n    * Seeks to the next content item in that region\n    * @param {String} direction Direction of pagination prev|next|first\n    * @param {Bool|String} wrap Controls what happens when reach the end of the list\n    * @parm {String} regionName Name of the region you want to seek\n    * @return {Void}\n    */\n    static Seek(region_name, direction, wrap = true) {\n        FWI.RunScript('Region['+ region_name +'].Seek(\"' + direction + '\", \"' + wrap + '\");');\n    }\n\n    /*\n     * getter for the original position\n     * @return {Array} Array of original [x,y] position\n     */\n    get originPosition() {\n        return _origin_position.get(this);\n    }\n\n    /*\n     * getter for the original size\n     * @return {Array} Array of original [x,y] size\n     */\n    get originSize() {\n        return _origin_size.get(this)\n    }\n\n    /*\n     * Resets the position of the region to the original\n     * @return {Void}\n     */\n    resetPosition() {\n        Template.ClearLeft(this.region_name);\n        Template.ClearTop(this.region_name);\n        this.current_xy = this.originXY;\n    }\n\n    /*\n     * Resets the size of the region to the original\n     * @return {Void}\n     */\n    resetSize() {\n        Template.ClearHeight(this.region_name);\n        Template.ClearWidth(this.region_name);\n        this.current_size = this.originSize;\n    }\n\n    /*\n     * bound seek method with region name automatially given\n     * see Region.Seek for more\n     */\n    seek(direction, wrap = true) {\n        Region.Seek(this.region_name, direction, wrap);\n    }\n\n    /*\n     * Sets the new horizontal position of the region\n     * @param {Int} value Horizontal position in pixels from left of the screen\n     * @return {Void}\n     */\n    _moveX(value) {\n        Template.SetLeft(this.region_name, value);\n    }\n\n    /*\n     * Sets the new vertical position of the region\n     * @param {Int} value Vertical position in pixels from top of the screen\n     * @return {Void}\n     */\n    _moveY(value) {\n        Template.SetTop(this.region_name, value);\n    }\n\n    /*\n     * Sets the new width of the region\n     * @param {Int} value Width in pixels\n     * @return {Void}\n     */\n    _resizeX(value) {\n        Template.SetWidth(this.region_name, value);\n    }\n\n    /*\n     * Sets the new height of the region\n     * @param {Int} value Height in pixels\n     * @return {Void}\n     */\n    _resizeY(value) {\n        Template.SetHeight(this.region_name, value);\n    }\n\n    /**\n     * The move function moves a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_pos A list of [x,y] cordinates for the end position of the top left of the region\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    moveTo(end_pos, duration = 1000, type = 'linear') {\n        //log.info('pathTo called, calling _animateRegionInit');\n        return this._animateRegionInit(end_pos, duration, type, 'position');\n    }\n\n    /**\n     * The resize function resises a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_size A list of [x,y] cordinates for the end size\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    resize(end_size, duration = 1000, type = 'linear') {\n        return this._animateRegionInit(end_size, duration, type, 'size');\n    }\n\n    /**\n     * Intializes some variables for use in the animation and calls the main animation method\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} duration How long the animation plays in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegionInit(end_coords, duration, type, animation_type) {\n        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');\n\n        let delta_x;\n        let delta_y;\n\n        const start_time = new Date().getTime();\n        const end_time = start_time + duration;\n\n        if (animation_type == 'position') {\n            delta_x = end_coords[0] - this.current_position[0];\n            delta_y = end_coords[1] - this.current_position[1];\n        }\n\n        else if (animation_type == 'size') {\n            //log.info('in the size animation tyype chooser init');\n            delta_x = end_coords[0] - this.current_size[0];\n            delta_y = end_coords[1] - this.current_size[1];\n        };\n\n        const promise = new Promise((resolve) => {\n            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);\n        });\n        return promise;\n    }\n\n    /**\n     * Main animation loop, computes the next [x,y] values of the animation\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} cX The total delta of the X coordinate from beginning position to end position\n     * @param {Int} cY The total delta of theY coordinate from beginning position to end position\n     * @param {DateTime} start_time A datetime time object\n     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation\n     * @param {Int} d The duration of the animation in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {\n        let next_pos_x;\n        let next_pos_y;\n        let next_size_x;\n        let next_size_y;\n\n        const now = new Date().getTime();\n        const t = now - start_time;\n\n        if (now < end_time) {\n\n            //log.info('inside if loop');\n            if (animation_type == 'position') {\n                next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);\n                next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);\n\n                this._moveX(next_pos_x);\n                this._moveY(next_pos_y);\n            }\n\n            else if (animation_type == 'size') {\n                next_size_x = easingTypes[type](t, this.current_size[0], cX, d);\n                next_size_y = easingTypes[type](t, this.current_size[1], cY, d);\n\n                this._resizeX(next_size_x);\n                this._resizeY(next_size_y);\n            };\n\n            const self = this;\n\n            const callback = () => {\n                self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);\n            }\n\n            window.requestAnimationFrame(callback);\n        }\n\n        else {\n\n            if (animation_type == 'position') {\n                this._moveX(end_coords[0]);\n                this._moveY(end_coords[1]);\n                this.current_position[0] = end_coords[0];\n                this.current_position[1] = end_coords[1];\n            }\n\n            else if (animation_type == 'size') {\n                this._resizeX(end_coords[0]);\n                this._resizeY(end_coords[1]);\n                this.current_size[0] = end_coords[0];\n                this.current_size[1] = end_coords[1];\n            }\n            resolve()\n        };\n    }\n}",
+    "content": "import { Template } from \"./template.js\";\nimport { easingTypes } from \"./easing_types.js\";\n\n/**\n * These store information outside of the class for reasons\n */\nconst _origin_position = new WeakMap();\nconst _origin_size = new WeakMap();\n\n/**\n* This is the amazing region class.  Unlike it's CM counterpart there are more scrpipts to this one!\n* Of course it has the traditional region scripts, but with the addition of animations!\n*\n* Example:\n* ```\n* var flashCard = new fwi.Region('FlashCard', 'Main', [710, 390], [500, 300]);\n*\n* function sleep(ms) {\n*     return new Promise(function(resolve) {\n*         setTimeout(resolve, ms);\n*     });\n* }\n*\n* //resize events return a promise so you can chain them!\n* flashCard.resize([0, 300], 2000, 'easeOutBounce')\n*     .then(function(){ return Player.SetVariable('foo', 'bar1') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })\n*     .then(function(){ return Player.SetVariable('foo', 'bar2') })\n*     .then(function(){ return sleep(1000) })\n*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });\n* ```\n*/\nexport class Region {\n\n    /**\n     * The init function creates a new region object to keep track of region specific information\n     * like location, template name, region name, etc.\n     * @param {String} region_name Name of the region you want to control\n     * @param {String} template_name Name of the containing template\n     * @param {Array} origin_xy Array of the regions' starting top left coordinates, [x,y]\n     * @param {Array} origin_size Array of the regions' size [x,y]\n     * @return {Object} New region object\n     */\n    constructor(region_name, template_name, origin_position, origin_size) {\n        this.region_name = region_name;\n        this.template_name = template_name;\n        _origin_position.set(this, origin_position);\n        _origin_size.set(this, origin_size);\n        this.current_position = _origin_position.get(this);\n        this.current_size = _origin_size.get(this);\n    }\n\n    /**\n    * Seeks to the next content item in that region\n    * @param {String} direction Direction of pagination prev|next|first\n    * @param {Boolean} wrap Controls what happens when reach the end of the list\n    * @param {String} regionName Name of the region you want to seek\n    * @return {Void}\n    */\n    static Seek(region_name, direction, wrap = true) {\n        FWI.RunScript('Region['+ region_name +'].Seek(\"' + direction + '\", \"' + wrap + '\");');\n    }\n\n    /**\n     * Gets the original position of the top left corner of the region.\n     * @return {Array} Array of original [x,y] position\n     */\n    get originPosition() {\n        return _origin_position.get(this);\n    }\n\n    /**\n     * Gets the original size of the region.\n     * @return {Array} Array of original [x,y] size\n     */\n    get originSize() {\n        return _origin_size.get(this)\n    }\n\n    /**\n     * Resets the position of the region to the original\n     * @return {Void}\n     */\n    resetPosition() {\n        Template.ClearLeft(this.region_name);\n        Template.ClearTop(this.region_name);\n        this.current_xy = this.originXY;\n    }\n\n    /**\n     * Resets the size of the region to the original\n     * @return {Void}\n     */\n    resetSize() {\n        Template.ClearHeight(this.region_name);\n        Template.ClearWidth(this.region_name);\n        this.current_size = this.originSize;\n    }\n\n    /**\n     * bound seek method with region name automatially given\n     * see Region.Seek for more\n     */\n    seek(direction, wrap = true) {\n        Region.Seek(this.region_name, direction, wrap);\n    }\n\n    /**\n     * Sets the new horizontal position of the region\n     * @param {Int} value Horizontal position in pixels from left of the screen\n     * @return {Void}\n     */\n    _moveX(value) {\n        Template.SetLeft(this.region_name, value);\n    }\n\n    /**\n     * Sets the new vertical position of the region\n     * @param {Int} value Vertical position in pixels from top of the screen\n     * @return {Void}\n     */\n    _moveY(value) {\n        Template.SetTop(this.region_name, value);\n    }\n\n    /**\n     * Sets the new width of the region\n     * @param {Int} value Width in pixels\n     * @return {Void}\n     */\n    _resizeX(value) {\n        Template.SetWidth(this.region_name, value);\n    }\n\n    /**\n     * Sets the new height of the region\n     * @param {Int} value Height in pixels\n     * @return {Void}\n     */\n    _resizeY(value) {\n        Template.SetHeight(this.region_name, value);\n    }\n\n    /**\n     * The move function moves a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_pos A list of [x,y] cordinates for the end position of the top left of the region\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    moveTo(end_pos, duration = 1000, type = 'linear') {\n        //log.info('pathTo called, calling _animateRegionInit');\n        return this._animateRegionInit(end_pos, duration, type, 'position');\n    }\n\n    /**\n     * The resize function resises a region to a new set of xy coordinantes using predefined easing types.\n     * @param {Array} end_size A list of [x,y] cordinates for the end size\n     * @param {Int} duration How long the animation lasts in milliseconds\n     * @param {String} type What kind of easing to apply to the tween animation\n     * @return {Void}\n     */\n    resize(end_size, duration = 1000, type = 'linear') {\n        return this._animateRegionInit(end_size, duration, type, 'size');\n    }\n\n    /**\n     * Intializes some variables for use in the animation and calls the main animation method\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} duration How long the animation plays in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegionInit(end_coords, duration, type, animation_type) {\n        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');\n\n        let delta_x;\n        let delta_y;\n\n        const start_time = new Date().getTime();\n        const end_time = start_time + duration;\n\n        if (animation_type == 'position') {\n            delta_x = end_coords[0] - this.current_position[0];\n            delta_y = end_coords[1] - this.current_position[1];\n        }\n\n        else if (animation_type == 'size') {\n            //log.info('in the size animation tyype chooser init');\n            delta_x = end_coords[0] - this.current_size[0];\n            delta_y = end_coords[1] - this.current_size[1];\n        };\n\n        const promise = new Promise((resolve) => {\n            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);\n        });\n        return promise;\n    }\n\n    /**\n     * Main animation loop, computes the next [x,y] values of the animation\n     * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to\n     * @param {Int} cX The total delta of the X coordinate from beginning position to end position\n     * @param {Int} cY The total delta of theY coordinate from beginning position to end position\n     * @param {DateTime} start_time A datetime time object\n     * @param {Int|DateTime} end_time A int or daytime object that represents the end of the animation\n     * @param {Int} d The duration of the animation in milliseconds\n     * @param {String} type The easting type used for the tweening animation\n     * @return {Void}\n     */\n    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {\n        let next_pos_x;\n        let next_pos_y;\n        let next_size_x;\n        let next_size_y;\n\n        const now = new Date().getTime();\n        const t = now - start_time;\n\n        if (now < end_time) {\n\n            //log.info('inside if loop');\n            if (animation_type == 'position') {\n                next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);\n                next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);\n\n                this._moveX(next_pos_x);\n                this._moveY(next_pos_y);\n            }\n\n            else if (animation_type == 'size') {\n                next_size_x = easingTypes[type](t, this.current_size[0], cX, d);\n                next_size_y = easingTypes[type](t, this.current_size[1], cY, d);\n\n                this._resizeX(next_size_x);\n                this._resizeY(next_size_y);\n            };\n\n            const self = this;\n\n            const callback = () => {\n                self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);\n            }\n\n            window.requestAnimationFrame(callback);\n        }\n\n        else {\n\n            if (animation_type == 'position') {\n                this._moveX(end_coords[0]);\n                this._moveY(end_coords[1]);\n                this.current_position[0] = end_coords[0];\n                this.current_position[1] = end_coords[1];\n            }\n\n            else if (animation_type == 'size') {\n                this._resizeX(end_coords[0]);\n                this._resizeY(end_coords[1]);\n                this.current_size[0] = end_coords[0];\n                this.current_size[1] = end_coords[1];\n            }\n            resolve()\n        };\n    }\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/region.js",
     "access": "public",
@@ -2188,9 +2588,8 @@
     "export": false,
     "importPath": "fwi.js/src/region.js",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 4,
-    "undocument": true,
+    "description": "These store information outside of the class for reasons",
+    "lineNumber": 7,
     "type": {
       "types": [
         "*"
@@ -2210,7 +2609,7 @@
     "importPath": "fwi.js/src/region.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 5,
+    "lineNumber": 8,
     "undocument": true,
     "type": {
       "types": [
@@ -2230,9 +2629,8 @@
     "export": true,
     "importPath": "fwi.js/src/region.js",
     "importStyle": "{Region}",
-    "description": null,
-    "lineNumber": 7,
-    "undocument": true,
+    "description": "This is the amazing region class.  Unlike it's CM counterpart there are more scrpipts to this one!\nOf course it has the traditional region scripts, but with the addition of animations!\n\nExample:\n```\nvar flashCard = new fwi.Region('FlashCard', 'Main', [710, 390], [500, 300]);\n\nfunction sleep(ms) {\n    return new Promise(function(resolve) {\n        setTimeout(resolve, ms);\n    });\n}\n\n//resize events return a promise so you can chain them!\nflashCard.resize([0, 300], 2000, 'easeOutBounce')\n    .then(function(){ return Player.SetVariable('foo', 'bar1') })\n    .then(function(){ return sleep(1000) })\n    .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') })\n    .then(function(){ return sleep(1000) })\n    .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })\n    .then(function(){ return Player.SetVariable('foo', 'bar2') })\n    .then(function(){ return sleep(1000) })\n    .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });\n```",
+    "lineNumber": 36,
     "interface": false
   },
   {
@@ -2246,7 +2644,7 @@
     "longname": "src/region.js~Region#constructor",
     "access": "public",
     "description": "The init function creates a new region object to keep track of region specific information\nlike location, template name, region name, etc.",
-    "lineNumber": 18,
+    "lineNumber": 47,
     "params": [
       {
         "nullable": null,
@@ -2292,7 +2690,7 @@
     "return": {
       "nullable": null,
       "types": [
-        "Obj"
+        "Object"
       ],
       "spread": false,
       "description": "New region object"
@@ -2307,7 +2705,7 @@
     "longname": "src/region.js~Region#region_name",
     "access": "public",
     "description": null,
-    "lineNumber": 19,
+    "lineNumber": 48,
     "undocument": true,
     "type": {
       "types": [
@@ -2324,7 +2722,7 @@
     "longname": "src/region.js~Region#template_name",
     "access": "public",
     "description": null,
-    "lineNumber": 20,
+    "lineNumber": 49,
     "undocument": true,
     "type": {
       "types": [
@@ -2341,7 +2739,7 @@
     "longname": "src/region.js~Region#current_position",
     "access": "public",
     "description": null,
-    "lineNumber": 23,
+    "lineNumber": 52,
     "undocument": true,
     "type": {
       "types": [
@@ -2358,7 +2756,7 @@
     "longname": "src/region.js~Region#current_size",
     "access": "public",
     "description": null,
-    "lineNumber": 24,
+    "lineNumber": 53,
     "undocument": true,
     "type": {
       "types": [
@@ -2377,13 +2775,7 @@
     "longname": "src/region.js~Region.Seek",
     "access": "public",
     "description": "Seeks to the next content item in that region",
-    "lineNumber": 34,
-    "unknown": [
-      {
-        "tagName": "@parm",
-        "tagValue": "{String} regionName Name of the region you want to seek"
-      }
-    ],
+    "lineNumber": 63,
     "params": [
       {
         "nullable": null,
@@ -2398,13 +2790,22 @@
       {
         "nullable": null,
         "types": [
-          "Bool",
-          "String"
+          "Boolean"
         ],
         "spread": false,
         "optional": false,
         "name": "wrap",
         "description": "Controls what happens when reach the end of the list"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "regionName",
+        "description": "Name of the region you want to seek"
       }
     ],
     "return": {
@@ -2426,9 +2827,16 @@
     "static": false,
     "longname": "src/region.js~Region#originPosition",
     "access": "public",
-    "description": null,
-    "lineNumber": 42,
-    "undocument": true,
+    "description": "Gets the original position of the top left corner of the region.",
+    "lineNumber": 71,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "Array of original [x,y] position"
+    },
     "type": {
       "types": [
         "*"
@@ -2445,9 +2853,16 @@
     "static": false,
     "longname": "src/region.js~Region#originSize",
     "access": "public",
-    "description": null,
-    "lineNumber": 50,
-    "undocument": true,
+    "description": "Gets the original size of the region.",
+    "lineNumber": 79,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "Array of original [x,y] size"
+    },
     "type": {
       "types": [
         "*"
@@ -2464,11 +2879,17 @@
     "static": false,
     "longname": "src/region.js~Region#resetPosition",
     "access": "public",
-    "description": null,
-    "lineNumber": 58,
-    "undocument": true,
-    "params": [],
-    "return": null
+    "description": "Resets the position of the region to the original",
+    "lineNumber": 87,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 126,
@@ -2479,7 +2900,7 @@
     "longname": "src/region.js~Region#current_xy",
     "access": "public",
     "description": null,
-    "lineNumber": 61,
+    "lineNumber": 90,
     "undocument": true,
     "type": {
       "types": [
@@ -2497,11 +2918,17 @@
     "static": false,
     "longname": "src/region.js~Region#resetSize",
     "access": "public",
-    "description": null,
-    "lineNumber": 68,
-    "undocument": true,
-    "params": [],
-    "return": null
+    "description": "Resets the size of the region to the original",
+    "lineNumber": 97,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 129,
@@ -2513,9 +2940,8 @@
     "static": false,
     "longname": "src/region.js~Region#seek",
     "access": "public",
-    "description": null,
-    "lineNumber": 78,
-    "undocument": true,
+    "description": "bound seek method with region name automatially given\nsee Region.Seek for more",
+    "lineNumber": 107,
     "params": [
       {
         "name": "direction",
@@ -2545,18 +2971,28 @@
     "static": false,
     "longname": "src/region.js~Region#_moveX",
     "access": "private",
-    "description": null,
-    "lineNumber": 87,
-    "undocument": true,
+    "description": "Sets the new horizontal position of the region",
+    "lineNumber": 116,
     "params": [
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Int"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Horizontal position in pixels from left of the screen"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 131,
@@ -2568,18 +3004,28 @@
     "static": false,
     "longname": "src/region.js~Region#_moveY",
     "access": "private",
-    "description": null,
-    "lineNumber": 96,
-    "undocument": true,
+    "description": "Sets the new vertical position of the region",
+    "lineNumber": 125,
     "params": [
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Int"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Vertical position in pixels from top of the screen"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 132,
@@ -2591,18 +3037,28 @@
     "static": false,
     "longname": "src/region.js~Region#_resizeX",
     "access": "private",
-    "description": null,
-    "lineNumber": 105,
-    "undocument": true,
+    "description": "Sets the new width of the region",
+    "lineNumber": 134,
     "params": [
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Int"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Width in pixels"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 133,
@@ -2614,18 +3070,28 @@
     "static": false,
     "longname": "src/region.js~Region#_resizeY",
     "access": "private",
-    "description": null,
-    "lineNumber": 114,
-    "undocument": true,
+    "description": "Sets the new height of the region",
+    "lineNumber": 143,
     "params": [
       {
-        "name": "value",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Int"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "Height in pixels"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Void"
+      ],
+      "spread": false,
+      "description": ""
+    }
   },
   {
     "__docId__": 134,
@@ -2638,7 +3104,7 @@
     "longname": "src/region.js~Region#moveTo",
     "access": "public",
     "description": "The move function moves a region to a new set of xy coordinantes using predefined easing types.",
-    "lineNumber": 125,
+    "lineNumber": 154,
     "params": [
       {
         "nullable": null,
@@ -2691,7 +3157,7 @@
     "longname": "src/region.js~Region#resize",
     "access": "public",
     "description": "The resize function resises a region to a new set of xy coordinantes using predefined easing types.",
-    "lineNumber": 137,
+    "lineNumber": 166,
     "params": [
       {
         "nullable": null,
@@ -2744,7 +3210,7 @@
     "longname": "src/region.js~Region#_animateRegionInit",
     "access": "private",
     "description": "Intializes some variables for use in the animation and calls the main animation method",
-    "lineNumber": 148,
+    "lineNumber": 177,
     "params": [
       {
         "nullable": null,
@@ -2797,7 +3263,7 @@
     "longname": "src/region.js~Region#_animateRegion",
     "access": "private",
     "description": "Main animation loop, computes the next [x,y] values of the animation",
-    "lineNumber": 185,
+    "lineNumber": 214,
     "params": [
       {
         "nullable": null,
@@ -2884,7 +3350,7 @@
     "__docId__": 138,
     "kind": "file",
     "name": "src/template.js",
-    "content": "import { FWI } from \"./fwi_core.js\";\n\nexport class Template {\n  constructor() {\n\n  }\n\n  /**\n   * Plays a piece of content in a region\n   * @param {String} name The name of the variable to set\n   * @param {String} region The region of the content to play\n   * @return {Void}\n   */\n  static async PlayContent(name, region) {\n    return new Promise((resolve) => {\n      FWI.RunScript('Template.PlayContent(\"' + name + '\", \"' + region + '\");');\n      resolve()\n    })\n  }\n\n  /**\n   * Pops a command from the FIFO command stack\n   * @return {Void}\n   */\n  static PopContent() {\n    FWI.RunScript('Template.PopContent();');\n  }\n\n  /**\n   * Pushes a command to the FIFO command stack\n   * @return {Void}\n   */\n  static PushContent(content, region, params = undefined) {\n    FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');\n  }\n\n  /**\n   * Restarts the template, be careful!  If you don't have a span region\n   * set this will spawn a new process.\n   * @return {Void}\n   */\n  static Restart() {\n    FWI.RunScript('Template.Restart();');\n  }\n\n  /**\n   * Sets a region property telling it if it can resize or not.\n   * @param {String} region_name Name of the region\n   * @param {Bool} value True/False if the region can be resized\n   * @return {Void}\n   */\n  static SetCanSize(region_name, value) {\n    FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets a region property telling it if it can be draged around\n   * @param {String} region_name Name of the region\n   * @param {Boolean} value True/False if the region can be dragged\n   * @return {Void}\n   */\n  static SetCanDrag(region_name, value) {\n    FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets a region property telling it if it can be rotated by touch\n   * @param {String} region_name Name of the region\n   * @param {Boolean} value True/False if the region can be rotated\n   * @return {Void}\n   */\n  static SetCanRotate(region_name, value) {\n    FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets the top left point of the region in x axis\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the top left corner of the region in pixels in the x axis\n   * @return {Void}\n   */\n  static SetLeft(region_name, value) {\n    FWI.RunScript('Template.SetLeft('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Set the top left point of the region in the Y axis\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the top left corner of the region in pixels in the y axis\n   * @return {Void}\n   */\n  static SetTop(region_name, value) {\n    FWI.RunScript('Template.SetTop('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Sets the regions width in pixels\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the width of the region in pixels\n   * @return {Void}\n   */\n  static SetWidth(region_name, value) {\n    FWI.RunScript('Template.SetWidth('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Sets the regions height in pixels\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the height of the region in pixels\n   * @return {Void}\n   */\n  static SetHeight(region_name, value) {\n    FWI.RunScript('Template.SetHeight('+ region_name + ',' + value + ');');\n  }\n  /**\n   * Sets a regions angle in degrees\n   * @param {String} region_name Name of the region\n   * @param {Number} value Angle of the region in degrees\n   * @return {Void}\n   */\n  static SetAngle(region_name, value) {\n    FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');\n  }\n\n  /**\n   * Sets a regions X coordinante\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearLeft(region_name) {\n    FWI.RunScript('Template.ClearLeft('+ region_name + ');');\n  }\n\n  /**\n   * Resets a regions Y coordinante\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearTop(region_name) {\n    FWI.RunScript('Template.ClearTop('+ region_name + ');');\n  }\n\n  /**\n   * Resets the width of the region back to the stored original\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearWidth(region_name) {\n    FWI.RunScript('Template.ClearWidth('+ region_name + ');');\n  }\n\n  /**\n   * Resets the regions height\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearHeight(region_name) {\n    FWI.RunScript('Template.ClearHeight('+ region_name + ');');\n  }\n\n  /**\n   * Resets a regions angle\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearAngle(region_name) {\n    FWI.RunScript('Template.ClearAngle(' + region_name + ');');\n  }\n\n  /**\n   * Sets a regions Z-Index\n   * @param {String} region_name Name of the region\n   * @param {Number} value Number of the regions z-index\n   * @return {Void}\n   */\n  static SetZIndex(region_name, value) {\n    FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');\n  }\n\n  /**\n   * Resets the Z-Index\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearZIndex(region_name) {\n    FWI.RunScript('Template.ClearZIndex(' + region_name + ');');\n  }\n\n  /**\n   * Sets a regions linear velocity\n   * @param {String} region_name Name of the region\n   * @param {Number} Vx Velocity of the region in the x axis\n   * @param {Number} Vy Velocity of the region in the y axis\n   * @return {Void}\n   */\n  static SetLinearVelocity(region_name, Vx = '*', Vy = '*') {\n    FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');\n  }\n\n  /**\n   * Sets a region's angular velocity or rotation\n   * @param {String} region_name Name of the region\n   * @param {Number} omega Number of degrees per a second\n   * @return {Void}\n   */\n  static SetAngularVelocity(region_name, omega) {\n    FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');\n  }\n}",
+    "content": "import { FWI } from \"./fwi_core.js\";\n\n/**\n * This is the template class.  It contains all of the template functions you'd find in CM.\n * All methods in this class are static so you do not need to use the `new` keyword.\n *\n * Example:\n * ```\n * Template.PlayContent('Foo', 'Bar');\n * ```\n */\nexport class Template {\n  constructor() {\n\n  }\n\n  /**\n   * Plays a piece of content in a region\n   * @param {String} name The name of the variable to set\n   * @param {String} region The region of the content to play\n   * @return {Void}\n   */\n  static async PlayContent(name, region) {\n    return new Promise((resolve) => {\n      FWI.RunScript('Template.PlayContent(\"' + name + '\", \"' + region + '\");');\n      resolve()\n    })\n  }\n\n  /**\n   * Pops a command from the FIFO command stack\n   * @return {Void}\n   */\n  static PopContent() {\n    FWI.RunScript('Template.PopContent();');\n  }\n\n  /**\n   * Pushes a command to the FIFO command stack\n   * @return {Void}\n   */\n  static PushContent(content, region, params = undefined) {\n    FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');\n  }\n\n  /**\n   * Restarts the template, be careful!  If you don't have a span region\n   * set this will spawn a new process.\n   * @return {Void}\n   */\n  static Restart() {\n    FWI.RunScript('Template.Restart();');\n  }\n\n  /**\n   * Sets a region property telling it if it can resize or not.\n   * @param {String} region_name Name of the region\n   * @param {Bool} value True/False if the region can be resized\n   * @return {Void}\n   */\n  static SetCanSize(region_name, value) {\n    FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets a region property telling it if it can be draged around\n   * @param {String} region_name Name of the region\n   * @param {Boolean} value True/False if the region can be dragged\n   * @return {Void}\n   */\n  static SetCanDrag(region_name, value) {\n    FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets a region property telling it if it can be rotated by touch\n   * @param {String} region_name Name of the region\n   * @param {Boolean} value True/False if the region can be rotated\n   * @return {Void}\n   */\n  static SetCanRotate(region_name, value) {\n    FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value +');');\n  }\n\n  /**\n   * Sets the top left point of the region in x axis\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the top left corner of the region in pixels in the x axis\n   * @return {Void}\n   */\n  static SetLeft(region_name, value) {\n    FWI.RunScript('Template.SetLeft('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Set the top left point of the region in the Y axis\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the top left corner of the region in pixels in the y axis\n   * @return {Void}\n   */\n  static SetTop(region_name, value) {\n    FWI.RunScript('Template.SetTop('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Sets the regions width in pixels\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the width of the region in pixels\n   * @return {Void}\n   */\n  static SetWidth(region_name, value) {\n    FWI.RunScript('Template.SetWidth('+ region_name + ',' + value + ');');\n  }\n\n  /**\n   * Sets the regions height in pixels\n   * @param {String} region_name Name of the region\n   * @param {Number} value Value of the height of the region in pixels\n   * @return {Void}\n   */\n  static SetHeight(region_name, value) {\n    FWI.RunScript('Template.SetHeight('+ region_name + ',' + value + ');');\n  }\n  /**\n   * Sets a regions angle in degrees\n   * @param {String} region_name Name of the region\n   * @param {Number} value Angle of the region in degrees\n   * @return {Void}\n   */\n  static SetAngle(region_name, value) {\n    FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');\n  }\n\n  /**\n   * Sets a regions X coordinante\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearLeft(region_name) {\n    FWI.RunScript('Template.ClearLeft('+ region_name + ');');\n  }\n\n  /**\n   * Resets a regions Y coordinante\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearTop(region_name) {\n    FWI.RunScript('Template.ClearTop('+ region_name + ');');\n  }\n\n  /**\n   * Resets the width of the region back to the stored original\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearWidth(region_name) {\n    FWI.RunScript('Template.ClearWidth('+ region_name + ');');\n  }\n\n  /**\n   * Resets the regions height\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearHeight(region_name) {\n    FWI.RunScript('Template.ClearHeight('+ region_name + ');');\n  }\n\n  /**\n   * Resets a regions angle\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearAngle(region_name) {\n    FWI.RunScript('Template.ClearAngle(' + region_name + ');');\n  }\n\n  /**\n   * Sets a regions Z-Index\n   * @param {String} region_name Name of the region\n   * @param {Number} value Number of the regions z-index\n   * @return {Void}\n   */\n  static SetZIndex(region_name, value) {\n    FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');\n  }\n\n  /**\n   * Resets the Z-Index\n   * @param {String} region_name Name of the region\n   * @return {Void}\n   */\n  static ClearZIndex(region_name) {\n    FWI.RunScript('Template.ClearZIndex(' + region_name + ');');\n  }\n\n  /**\n   * Sets a regions linear velocity\n   * @param {String} region_name Name of the region\n   * @param {Number} Vx Velocity of the region in the x axis\n   * @param {Number} Vy Velocity of the region in the y axis\n   * @return {Void}\n   */\n  static SetLinearVelocity(region_name, Vx = '*', Vy = '*') {\n    FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');\n  }\n\n  /**\n   * Sets a region's angular velocity or rotation\n   * @param {String} region_name Name of the region\n   * @param {Number} omega Number of degrees per a second\n   * @return {Void}\n   */\n  static SetAngularVelocity(region_name, omega) {\n    FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');\n  }\n}",
     "static": true,
     "longname": "/Users/erin.oconnell/workrepos/fwi.js/src/template.js",
     "access": "public",
@@ -2902,9 +3368,8 @@
     "export": true,
     "importPath": "fwi.js/src/template.js",
     "importStyle": "{Template}",
-    "description": null,
-    "lineNumber": 3,
-    "undocument": true,
+    "description": "This is the template class.  It contains all of the template functions you'd find in CM.\nAll methods in this class are static so you do not need to use the `new` keyword.\n\nExample:\n```\nTemplate.PlayContent('Foo', 'Bar');\n```",
+    "lineNumber": 12,
     "interface": false
   },
   {
@@ -2918,7 +3383,7 @@
     "longname": "src/template.js~Template#constructor",
     "access": "public",
     "description": null,
-    "lineNumber": 4,
+    "lineNumber": 13,
     "undocument": true
   },
   {
@@ -2932,7 +3397,7 @@
     "longname": "src/template.js~Template.PlayContent",
     "access": "public",
     "description": "Plays a piece of content in a region",
-    "lineNumber": 14,
+    "lineNumber": 23,
     "params": [
       {
         "nullable": null,
@@ -2975,7 +3440,7 @@
     "longname": "src/template.js~Template.PopContent",
     "access": "public",
     "description": "Pops a command from the FIFO command stack",
-    "lineNumber": 25,
+    "lineNumber": 34,
     "return": {
       "nullable": null,
       "types": [
@@ -2997,7 +3462,7 @@
     "longname": "src/template.js~Template.PushContent",
     "access": "public",
     "description": "Pushes a command to the FIFO command stack",
-    "lineNumber": 33,
+    "lineNumber": 42,
     "return": {
       "nullable": null,
       "types": [
@@ -3041,7 +3506,7 @@
     "longname": "src/template.js~Template.Restart",
     "access": "public",
     "description": "Restarts the template, be careful!  If you don't have a span region\nset this will spawn a new process.",
-    "lineNumber": 42,
+    "lineNumber": 51,
     "return": {
       "nullable": null,
       "types": [
@@ -3063,7 +3528,7 @@
     "longname": "src/template.js~Template.SetCanSize",
     "access": "public",
     "description": "Sets a region property telling it if it can resize or not.",
-    "lineNumber": 52,
+    "lineNumber": 61,
     "params": [
       {
         "nullable": null,
@@ -3106,7 +3571,7 @@
     "longname": "src/template.js~Template.SetCanDrag",
     "access": "public",
     "description": "Sets a region property telling it if it can be draged around",
-    "lineNumber": 62,
+    "lineNumber": 71,
     "params": [
       {
         "nullable": null,
@@ -3149,7 +3614,7 @@
     "longname": "src/template.js~Template.SetCanRotate",
     "access": "public",
     "description": "Sets a region property telling it if it can be rotated by touch",
-    "lineNumber": 72,
+    "lineNumber": 81,
     "params": [
       {
         "nullable": null,
@@ -3192,7 +3657,7 @@
     "longname": "src/template.js~Template.SetLeft",
     "access": "public",
     "description": "Sets the top left point of the region in x axis",
-    "lineNumber": 82,
+    "lineNumber": 91,
     "params": [
       {
         "nullable": null,
@@ -3235,7 +3700,7 @@
     "longname": "src/template.js~Template.SetTop",
     "access": "public",
     "description": "Set the top left point of the region in the Y axis",
-    "lineNumber": 92,
+    "lineNumber": 101,
     "params": [
       {
         "nullable": null,
@@ -3278,7 +3743,7 @@
     "longname": "src/template.js~Template.SetWidth",
     "access": "public",
     "description": "Sets the regions width in pixels",
-    "lineNumber": 102,
+    "lineNumber": 111,
     "params": [
       {
         "nullable": null,
@@ -3321,7 +3786,7 @@
     "longname": "src/template.js~Template.SetHeight",
     "access": "public",
     "description": "Sets the regions height in pixels",
-    "lineNumber": 112,
+    "lineNumber": 121,
     "params": [
       {
         "nullable": null,
@@ -3364,7 +3829,7 @@
     "longname": "src/template.js~Template.SetAngle",
     "access": "public",
     "description": "Sets a regions angle in degrees",
-    "lineNumber": 121,
+    "lineNumber": 130,
     "params": [
       {
         "nullable": null,
@@ -3407,7 +3872,7 @@
     "longname": "src/template.js~Template.ClearLeft",
     "access": "public",
     "description": "Sets a regions X coordinante",
-    "lineNumber": 130,
+    "lineNumber": 139,
     "params": [
       {
         "nullable": null,
@@ -3440,7 +3905,7 @@
     "longname": "src/template.js~Template.ClearTop",
     "access": "public",
     "description": "Resets a regions Y coordinante",
-    "lineNumber": 139,
+    "lineNumber": 148,
     "params": [
       {
         "nullable": null,
@@ -3473,7 +3938,7 @@
     "longname": "src/template.js~Template.ClearWidth",
     "access": "public",
     "description": "Resets the width of the region back to the stored original",
-    "lineNumber": 148,
+    "lineNumber": 157,
     "params": [
       {
         "nullable": null,
@@ -3506,7 +3971,7 @@
     "longname": "src/template.js~Template.ClearHeight",
     "access": "public",
     "description": "Resets the regions height",
-    "lineNumber": 157,
+    "lineNumber": 166,
     "params": [
       {
         "nullable": null,
@@ -3539,7 +4004,7 @@
     "longname": "src/template.js~Template.ClearAngle",
     "access": "public",
     "description": "Resets a regions angle",
-    "lineNumber": 166,
+    "lineNumber": 175,
     "params": [
       {
         "nullable": null,
@@ -3572,7 +4037,7 @@
     "longname": "src/template.js~Template.SetZIndex",
     "access": "public",
     "description": "Sets a regions Z-Index",
-    "lineNumber": 176,
+    "lineNumber": 185,
     "params": [
       {
         "nullable": null,
@@ -3615,7 +4080,7 @@
     "longname": "src/template.js~Template.ClearZIndex",
     "access": "public",
     "description": "Resets the Z-Index",
-    "lineNumber": 185,
+    "lineNumber": 194,
     "params": [
       {
         "nullable": null,
@@ -3648,7 +4113,7 @@
     "longname": "src/template.js~Template.SetLinearVelocity",
     "access": "public",
     "description": "Sets a regions linear velocity",
-    "lineNumber": 196,
+    "lineNumber": 205,
     "params": [
       {
         "nullable": null,
@@ -3701,7 +4166,7 @@
     "longname": "src/template.js~Template.SetAngularVelocity",
     "access": "public",
     "description": "Sets a region's angular velocity or rotation",
-    "lineNumber": 206,
+    "lineNumber": 215,
     "params": [
       {
         "nullable": null,

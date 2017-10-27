@@ -43,6 +43,10 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/player.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { FWI } from &quot;./fwi_core.js&quot;;
 
+/**
+ * This method replaces illegal charecters in the font strings so they aren&apos;t
+ * inturpreted by javascript!
+ */
 String.prototype.ReplaceIllegalChars = function (prefix) {
   //This method replaces { } and , with variable names so CM can read the JSON properly
   let OutputString = this.replace(/{/g,&quot;{&amp;lb&quot;);
@@ -53,10 +57,24 @@ String.prototype.ReplaceIllegalChars = function (prefix) {
   return OutputString;
 }
 
+/**
+ * This adds a startsWith method to all strings to see if they start with a specific prefix.
+ */
 String.prototype.startsWith = function (prefix) {
     return this.slice(0, prefix.length) == prefix;
 }
 
+/**
+ * This is the Player class.  It will probably be the most used class.  It contains all player functions.
+ * It should be noted that all methods in this class are static so there is no need for the `new` keyword.
+ *
+ * Example:
+ * ```
+ * Player.SetVariable(&apos;foo&apos;, &apos;bar&apos;);
+ * Player.GetVariable(&apos;foo&apos;);
+ * &apos;bar&apos;
+ * ```
+ */
 export class Player{
   constructor() {
 

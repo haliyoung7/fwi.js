@@ -1,9 +1,38 @@
 import { Template } from "./template.js";
 import { easingTypes } from "./easing_types.js";
 
+/**
+ * These store information outside of the class for reasons
+ */
 const _origin_position = new WeakMap();
 const _origin_size = new WeakMap();
 
+/**
+* This is the amazing region class.  Unlike it's CM counterpart there are more scrpipts to this one!
+* Of course it has the traditional region scripts, but with the addition of animations!
+*
+* Example:
+* ```
+* var flashCard = new fwi.Region('FlashCard', 'Main', [710, 390], [500, 300]);
+*
+* function sleep(ms) {
+*     return new Promise(function(resolve) {
+*         setTimeout(resolve, ms);
+*     });
+* }
+*
+* //resize events return a promise so you can chain them!
+* flashCard.resize([0, 300], 2000, 'easeOutBounce')
+*     .then(function(){ return Player.SetVariable('foo', 'bar1') })
+*     .then(function(){ return sleep(1000) })
+*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') })
+*     .then(function(){ return sleep(1000) })
+*     .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })
+*     .then(function(){ return Player.SetVariable('foo', 'bar2') })
+*     .then(function(){ return sleep(1000) })
+*     .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });
+* ```
+*/
 export class Region {
 
     /**
@@ -13,7 +42,7 @@ export class Region {
      * @param {String} template_name Name of the containing template
      * @param {Array} origin_xy Array of the regions' starting top left coordinates, [x,y]
      * @param {Array} origin_size Array of the regions' size [x,y]
-     * @return {Obj} New region object
+     * @return {Object} New region object
      */
     constructor(region_name, template_name, origin_position, origin_size) {
         this.region_name = region_name;
@@ -27,31 +56,31 @@ export class Region {
     /**
     * Seeks to the next content item in that region
     * @param {String} direction Direction of pagination prev|next|first
-    * @param {Bool|String} wrap Controls what happens when reach the end of the list
-    * @parm {String} regionName Name of the region you want to seek
+    * @param {Boolean} wrap Controls what happens when reach the end of the list
+    * @param {String} regionName Name of the region you want to seek
     * @return {Void}
     */
     static Seek(region_name, direction, wrap = true) {
         FWI.RunScript('Region['+ region_name +'].Seek("' + direction + '", "' + wrap + '");');
     }
 
-    /*
-     * getter for the original position
+    /**
+     * Gets the original position of the top left corner of the region.
      * @return {Array} Array of original [x,y] position
      */
     get originPosition() {
         return _origin_position.get(this);
     }
 
-    /*
-     * getter for the original size
+    /**
+     * Gets the original size of the region.
      * @return {Array} Array of original [x,y] size
      */
     get originSize() {
         return _origin_size.get(this)
     }
 
-    /*
+    /**
      * Resets the position of the region to the original
      * @return {Void}
      */
@@ -61,7 +90,7 @@ export class Region {
         this.current_xy = this.originXY;
     }
 
-    /*
+    /**
      * Resets the size of the region to the original
      * @return {Void}
      */
@@ -71,7 +100,7 @@ export class Region {
         this.current_size = this.originSize;
     }
 
-    /*
+    /**
      * bound seek method with region name automatially given
      * see Region.Seek for more
      */
@@ -79,7 +108,7 @@ export class Region {
         Region.Seek(this.region_name, direction, wrap);
     }
 
-    /*
+    /**
      * Sets the new horizontal position of the region
      * @param {Int} value Horizontal position in pixels from left of the screen
      * @return {Void}
@@ -88,7 +117,7 @@ export class Region {
         Template.SetLeft(this.region_name, value);
     }
 
-    /*
+    /**
      * Sets the new vertical position of the region
      * @param {Int} value Vertical position in pixels from top of the screen
      * @return {Void}
@@ -97,7 +126,7 @@ export class Region {
         Template.SetTop(this.region_name, value);
     }
 
-    /*
+    /**
      * Sets the new width of the region
      * @param {Int} value Width in pixels
      * @return {Void}
@@ -106,7 +135,7 @@ export class Region {
         Template.SetWidth(this.region_name, value);
     }
 
-    /*
+    /**
      * Sets the new height of the region
      * @param {Int} value Height in pixels
      * @return {Void}
