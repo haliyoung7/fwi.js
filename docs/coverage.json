@@ -1,7 +1,7 @@
 {
-  "coverage": "90.56%",
-  "expectCount": 106,
-  "actualCount": 96,
+  "coverage": "90.65%",
+  "expectCount": 107,
+  "actualCount": 97,
   "files": {
     "src/content.js": {
       "expectCount": 35,
@@ -35,15 +35,15 @@
       ]
     },
     "src/region.js": {
-      "expectCount": 23,
-      "actualCount": 17,
+      "expectCount": 24,
+      "actualCount": 18,
       "undocumentLines": [
         8,
         48,
         49,
         52,
         53,
-        90
+        187
       ]
     },
     "src/template.js": {

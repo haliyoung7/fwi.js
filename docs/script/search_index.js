@@ -720,12 +720,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/region.js~region#current_xy",
-    "class/src/region.js~Region.html#instance-member-current_xy",
-    "src/region.js~Region#current_xy",
-    "member"
-  ],
-  [
     "src/region.js~region#moveto",
     "class/src/region.js~Region.html#instance-method-moveTo",
     "src/region.js~Region#moveTo",
@@ -742,6 +736,12 @@ window.esdocSearchIndex = [
     "class/src/region.js~Region.html#instance-get-originSize",
     "src/region.js~Region#originSize",
     "member"
+  ],
+  [
+    "src/region.js~region#regioncenter",
+    "class/src/region.js~Region.html#instance-method-regionCenter",
+    "src/region.js~Region#regionCenter",
+    "method"
   ],
   [
     "src/region.js~region#region_name",
@@ -765,6 +765,12 @@ window.esdocSearchIndex = [
     "src/region.js~region#resize",
     "class/src/region.js~Region.html#instance-method-resize",
     "src/region.js~Region#resize",
+    "method"
+  ],
+  [
+    "src/region.js~region#resizefromcenter",
+    "class/src/region.js~Region.html#instance-method-resizeFromCenter",
+    "src/region.js~Region#resizeFromCenter",
     "method"
   ],
   [
