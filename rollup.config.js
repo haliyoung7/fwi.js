@@ -51,17 +51,5 @@ export default [
             uglify()
         ],
         moduleName: 'fwi'
-    },
-    {
-        entry: 'color_manipulations/color_utils.js',
-        dest: 'dist/color_utils.js',
-        format: 'iife',
-        plugins: [
-            resolve(),
-            commonjs(),
-            builtins(),
-            globals()
-        ],
-        moduleName: 'color'
     }
 ];

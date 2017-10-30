@@ -3,10 +3,29 @@
 <head>
 <script src="../dist/polyfill.js"></script>
 <script src="../dist/fwi.browser.js"></script>
+<script src="../dist/log4javascript/log4javascript.js"></script>
 <script>
+    // Create the logger
+    var log = log4javascript.getLogger();
+
+    // Create a PopUpAppender with default options
+    var popUpAppender = new log4javascript.PopUpAppender();
+
+    // Change the desired configuration options
+    popUpAppender.setFocusPopUp(true);
+    popUpAppender.setNewestMessageAtTop(true);
+
+    // Add the appender to the logger
+    log.addAppender(popUpAppender);
+
+    // Test the logger
+    log.debug("Hello world!");
+
     var flashCard = new fwi.Region('FlashCard', 'Main', [710, 390], [500, 300]);
 
-    function sleep(ms) {
+    flashCard.resizeFromCenter([0, 0], 2000, 'easeOutBounce')
+
+/**    function sleep(ms) {
         return new Promise(function(resolve) {
             setTimeout(resolve, ms);
         });
@@ -28,8 +47,7 @@
         .then(function(){ return flashCard.resize([0, 300], 2000, 'easeOutBounce') })
         .then(function(){ return fwi.Player.SetVariable('foo', 'bar2') })
         .then(function(){ return sleep(1000) })
-        .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') });
-
+        .then(function(){ return flashCard.resize([500, 300], 2000, 'easeOutBounce') }); */
 
 </script>
 </head>

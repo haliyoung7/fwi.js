@@ -1,6 +1,7 @@
 import { Template } from "./template.js";
 import { easingTypes } from "./easing_types.js";
 
+
 /**
  * These store information outside of the class for reasons
  */
@@ -84,7 +85,7 @@ export class Region {
      * Returns the center position of a region relative to the top left of the image
      * @return {Array}
      */
-    regionCenter() {
+    get regionCenter() {
         var x1 = this.current_position[0];
         var y1 = this.current_position[1];
         var x2 = x1 + this.current_size[0];
@@ -103,7 +104,7 @@ export class Region {
     resetPosition() {
         Template.ClearLeft(this.region_name);
         Template.ClearTop(this.region_name);
-        this.current_position = _origin_position.get(this);
+        this.current_position = originPosition;
     }
 
     /**
@@ -113,8 +114,7 @@ export class Region {
     resetSize() {
         Template.ClearHeight(this.region_name);
         Template.ClearWidth(this.region_name);
-        this.current_size = _origin_size.get(this);
-
+        this.current_size = originSize;
     }
 
     /**
@@ -132,6 +132,7 @@ export class Region {
      */
     _moveX(value) {
         Template.SetLeft(this.region_name, value);
+        this.current_position[0] = value;
     }
 
     /**
@@ -141,6 +142,7 @@ export class Region {
      */
     _moveY(value) {
         Template.SetTop(this.region_name, value);
+        this.current_position[1] = value;
     }
 
     /**
@@ -150,6 +152,7 @@ export class Region {
      */
     _resizeX(value) {
         Template.SetWidth(this.region_name, value);
+        this.current_size[0] = value;
     }
 
     /**
@@ -159,6 +162,21 @@ export class Region {
      */
     _resizeY(value) {
         Template.SetHeight(this.region_name, value);
+        this.current_position[1] = value;
+    }
+
+    _resizeXCenter(deltaSize, deltaPos) {
+        Template.SetWidth(this.region_name, deltaSize);
+        Template.SetLeft(this.region_name, deltaPos);
+        this.current_size[0] = deltaSize;
+        this.current_position[0] = (deltaPos) ? deltaPos : this.current_position[0];
+    }
+
+    _resizeYCenter(deltaSize, deltaPos) {
+        Template.SetHeight(this.region_name, deltaSize);
+        Template.SetTop(this.region_name, deltaPos);
+        this.current_size[1] = deltaSize;
+        this.current_position[1] = (deltaPos) ? deltaPos : this.current_position[1];
     }
 
     /**
@@ -185,7 +203,7 @@ export class Region {
     }
 
     resizeFromCenter(end_size, duration = 1000, type = 'linear') {
-        return;
+        return this._animateRegionInit(end_size, duration, type, 'size_center');
     }
 
     /**
@@ -196,7 +214,7 @@ export class Region {
      * @return {Void}
      */
     _animateRegionInit(end_coords, duration, type, animation_type) {
-        //log.info('_animateRegionInit called, setting vars and calling _animateRegion');
+        log.info('_animateRegionInit called, setting vars and calling _animateRegion');
 
         let delta_x;
         let delta_y;
@@ -209,20 +227,25 @@ export class Region {
             delta_y = end_coords[1] - this.current_position[1];
         }
 
-        else if (animation_type == 'size') {
+        else if (animation_type == 'size' || animation_type == 'size_center') {
             //log.info('in the size animation tyype chooser init');
             delta_x = end_coords[0] - this.current_size[0];
             delta_y = end_coords[1] - this.current_size[1];
         };
 
+        const start_coords = Object.assign([],this.current_position);
+        const start_size = Object.assign([], this.current_size);
+
         const promise = new Promise((resolve) => {
-            this._animateRegion(end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);
+            this._animateRegion(start_coords, start_size, end_coords, delta_x, delta_y, start_time, end_time, duration, type, animation_type, resolve);
         });
         return promise;
     }
 
     /**
      * Main animation loop, computes the next [x,y] values of the animation
+     * @param {Array} start_size [x,y] list of the of the starting size of the region
+     * @param {Array} start_coords [x,y] list of the starting coordinates
      * @param {Array} end_coords [x,y] list of the end coordinates you want the region to move to
      * @param {Int} cX The total delta of the X coordinate from beginning position to end position
      * @param {Int} cY The total delta of theY coordinate from beginning position to end position
@@ -232,7 +255,7 @@ export class Region {
      * @param {String} type The easting type used for the tweening animation
      * @return {Void}
      */
-    _animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {
+    _animateRegion(start_coords, start_size, end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve) {
         let next_pos_x;
         let next_pos_y;
         let next_size_x;
@@ -243,47 +266,58 @@ export class Region {
 
         if (now < end_time) {
 
-            //log.info('inside if loop');
             if (animation_type == 'position') {
-                next_pos_x = easingTypes[type](t, this.current_position[0], cX, d);
-                next_pos_y = easingTypes[type](t, this.current_position[1], cY, d);
+                next_pos_x = easingTypes[type](t, start_coords[0], cX, d);
+                next_pos_y = easingTypes[type](t, start_coords[1], cY, d);
 
                 this._moveX(next_pos_x);
                 this._moveY(next_pos_y);
             }
 
             else if (animation_type == 'size') {
-                next_size_x = easingTypes[type](t, this.current_size[0], cX, d);
-                next_size_y = easingTypes[type](t, this.current_size[1], cY, d);
+                next_size_x = easingTypes[type](t, start_size[0], cX, d);
+                next_size_y = easingTypes[type](t, start_size[1], cY, d);
 
                 this._resizeX(next_size_x);
                 this._resizeY(next_size_y);
+            }
+
+            else if (animation_type == 'size_center') {
+                next_size_x = easingTypes[type](t, start_size[0], cX, d);
+                next_size_y = easingTypes[type](t, start_size[1], cY, d);
+
+                next_pos_x = start_coords[0] - ((next_size_x - start_size[0])/2);
+                next_pos_y = start_coords[1] - ((next_size_y - start_size[1])/2);
+
+                this._resizeXCenter(next_size_x, next_pos_x);
+                this._resizeYCenter(next_size_y, next_pos_y);
             };
 
             const self = this;
 
             const callback = () => {
-                self._animateRegion(end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);
+                self._animateRegion(start_coords, start_size, end_coords, cX, cY, start_time, end_time, d, type, animation_type, resolve);
             }
 
             window.requestAnimationFrame(callback);
         }
 
         else {
-
             if (animation_type == 'position') {
                 this._moveX(end_coords[0]);
                 this._moveY(end_coords[1]);
-                this.current_position[0] = end_coords[0];
-                this.current_position[1] = end_coords[1];
             }
 
             else if (animation_type == 'size') {
                 this._resizeX(end_coords[0]);
                 this._resizeY(end_coords[1]);
-                this.current_size[0] = end_coords[0];
-                this.current_size[1] = end_coords[1];
             }
+
+            else if (animation_type == 'size_center') {
+                this._resizeXCenter(end_coords[0], false);
+                this._resizeYCenter(end_coords[1], false);
+            };
+
             resolve()
         };
     }
