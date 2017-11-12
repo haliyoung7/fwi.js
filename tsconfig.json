@@ -8,6 +8,7 @@
     "include": [
         "src/player.ts",
         "src/fwi_core.ts",
-        "src/string.ts"
+        "src/string.ts",
+        "src/models/textFormatVariable.ts"
     ]
 }

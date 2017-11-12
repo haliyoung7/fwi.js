@@ -1,4 +1,5 @@
-import { FWI } from "./fwi_core.js";
+import { FWI } from "./fwi_core";
+import { IFontOptions } from "./models/textFormatVariable"
 
 /**
  * This is the Player class.  It will probably be the most used class.  It contains all player functions.
@@ -35,27 +36,27 @@ export class Player{
    * @returns {*} Dictionary of the font json
    * @memberof Player
    */
-  static GetFontVariable(name:string): any {
+  static GetFontVariable(name:string): IFontOptions {
     const font_var = Player.GetVariable(name);
     return JSON.parse(font_var);
   }
 
 
-  /**
-   * Retrieves values for multiple CM variables.
-   *
-   * @static
-   * @param {string[]} nameArray An array of variable names to collect
-   * @returns {string[]} An array of values that correspond to the requested variables
-   * @memberof Player
-   */
-  static GetManyVariables(nameArray: string[]): string[] {
-    const values = [];
-    for (let [k,v] of nameArray.entries()) {
-      values.push(FWI.MarkupValue('{&var:' + v + '}'));
-    }
-    return values;
-  }
+  // /**
+  //  * Retrieves values for multiple CM variables.
+  //  *
+  //  * @static
+  //  * @param {string[]} nameArray An array of variable names to collect
+  //  * @returns {string[]} An array of values that correspond to the requested variables
+  //  * @memberof Player
+  //  */
+  // static GetManyVariables(nameArray: string[]): string[] {
+  //   const values = [];
+  //   for (let [k,v] of nameArray.entries()) {
+  //     values.push(FWI.MarkupValue('{&var:' + v + '}'));
+  //   }
+  //   return values;
+  // }
 
   /**
    * Sets  single variable back in CM.
@@ -65,36 +66,42 @@ export class Player{
    * @param {*} value The value of the variable to set
    * @memberof Player
    */
-  static SetVariable(name: string, value: any) {
+  static SetVariable(name: string, value: any): void {
     FWI.RunScript('Player.SetVariable(' + name + ', ' + value.toString() + ');');
   }
 
   /**
    * Sets a single font variable back in CM.
-   * @param {String} name The name of the variable to set
-   * @param {Object} value The font dictionary object
-   * @return {Void}
+   *
+   * @static
+   * @param {string} name The name of the variable to set
+   * @param {*} value The font dictionary object
+   * @param {string} prefix App prefix if applicable
+   * @memberof Player
    */
-  static SetFontVariable(name, value, prefix) {
+  static SetFontVariable(name: string, value: IFontOptions, prefix: string): void {
     Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars(prefix));
   }
 
-  /**
-   * Sets multiple variables back in CM.
-   * @param {Object} keyValueDict An object that defines key/value pairs to use
-   * @return {Void}
-   */
-  static SetManyVariables(keyValueDict) {
-    for (let [k, v] of keyValueDict) {
-      FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-    };
-  }
+  // /**
+  //  * Sets multiple variables back in CM.
+  //  * @param {Object} keyValueDict An object that defines key/value pairs to use
+  //  * @return {Void}
+  //  */
+  // static SetManyVariables(keyValueDict) {
+  //   for (let [k, v] of keyValueDict) {
+  //     FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
+  //   };
+  // }
 
   /**
    * Creates a new dictionary with a font variable tempalte
-   * @return {Object} Font dictionary template
+   *
+   * @static
+   * @returns {object} Font dictionary template
+   * @memberof Player
    */
-  static CreateFontVariable() {
+  static CreateFontVariable(): IFontOptions {
 
     const font_dict = {
         fontFamily: "Arial",
@@ -109,7 +116,7 @@ export class Player{
         textSizeBehavior: "Fixed",
         fontLeading: 0,
         frame: {
-          type: "",
+          type: null,
           backgroundColor: "#00424242",
           borderColor: "#008BD5B5"
         }
@@ -123,16 +130,16 @@ export class Player{
    * @param {String} languageCode The language code to use
    * @return {Void}
    */
-  static SetLanguage(languageCode) {
+  static SetLanguage(languageCode: string): void {
       FWI.RunScript('Player.SetLanguage(' + languageCode + ');');
   }
 
   /**
    * Sets the language of the build.
-   * @param {String} languageCode The language code to use
+   * @param {String} name The language code to use
    * @return {Void}
    */
-  static ToggleVariable(name) {
+  static ToggleVariable(name: string): void  {
       FWI.RunScript('Player.ToggleVariable(' + name + ');');
   }
 
@@ -142,34 +149,34 @@ export class Player{
    * @param {String|Int} templateIndex The position of the desired template instance in the network overview
    * @return {Void}
    */
-  static PlayTemplate(name, templateIndex) {
-      FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex : '') + ');');
+  static PlayTemplate(name: string, templateIndex: number): void {
+      FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex.toString() : '') + ');');
   }
 
-  /**
-   * Runs a shell command
-   * @param {String} command_name The main command, sometimes includes folder path
-   * @param {Array} arg_array Array of args to be submitted to the command
-   * @return {Void}
-   */
-  static Command(command_name, arg_array) {
-    let command = 'Player.Command(' + command_name;
+  // /**
+  //  * Runs a shell command
+  //  * @param {String} command_name The main command, sometimes includes folder path
+  //  * @param {Array} arg_array Array of args to be submitted to the command
+  //  * @return {Void}
+  //  */
+  // static Command(command_name, arg_array) {
+  //   let command = 'Player.Command(' + command_name;
 
-    for (let [k,v] of arg_array.entries()) {
-      command = command + ', ' + v;
-    }
+  //   for (let [k,v] of arg_array.entries()) {
+  //     command = command + ', ' + v;
+  //   }
 
-    command += ');';
+  //   command += ');';
 
-    FWI.RunScript(command);
+  //   FWI.RunScript(command);
 
-  }
+  // }
 
   /**
    * Resets the idle timer
    * @return {Void}
    */
-  static ResetIdleTimer() {
+  static ResetIdleTimer(): void {
     FWI.RunScript('Player.ResetIdleTimer();');
   }
 
@@ -177,59 +184,59 @@ export class Player{
    * Restarts the player
    * @return {Void}
    */
-  static Restart() {
+  static Restart(): void {
     FWI.RunScript('Player.Restart();');
   }
 
-  /**
-   * Sends mail
-   * @param {Obj} o Object that contains all paramters from wiki
-   * {
-   *   to: string dest_address
-   *   cc: string cc_address,
-   *   bcc: string bcc_address,
-   *   subject: string subject,
-   *   from: string sender_address,
-   *   body: string main_message,
-   *   host: string smpt_host,
-   *   username: string smpt_username,
-   *   password: strign smpt_password
-   * }
-   * @return {Void}
-   */
-  static SendMail(o) {
-    let command = 'Player.SendMail(';
+  // /**
+  //  * Sends mail
+  //  * @param {Obj} o Object that contains all paramters from wiki
+  //  * {
+  //  *   to: string dest_address
+  //  *   cc: string cc_address,
+  //  *   bcc: string bcc_address,
+  //  *   subject: string subject,
+  //  *   from: string sender_address,
+  //  *   body: string main_message,
+  //  *   host: string smpt_host,
+  //  *   username: string smpt_username,
+  //  *   password: strign smpt_password
+  //  * }
+  //  * @return {Void}
+  //  */
+  // static SendMail(o) {
+  //   let command = 'Player.SendMail(';
 
-    for (let [k,v] of o) {
-      command = command + ',' + k + '=' + v;
-    };
+  //   for (let [k,v] of o) {
+  //     command = command + ',' + k + '=' + v;
+  //   };
 
-    command += ');';
+  //   command += ');';
 
-    FWI.RunScript(command);
-  }
+  //   FWI.RunScript(command);
+  // }
 
-  /**
-   * Text-to-speech
-   * @param {Obj} o Object that contains parameters from the wiki
-   * {
-   *   msg: string text_to_speak,
-   *   Volume: int volume,
-   *   Rate: int rate,
-   *   Voice: string voice
-   * }
-   * @return {Void}
-   */
-  static Speak(o) {
-    return
-  }
+  // /**
+  //  * Text-to-speech
+  //  * @param {Obj} o Object that contains parameters from the wiki
+  //  * {
+  //  *   msg: string text_to_speak,
+  //  *   Volume: int volume,
+  //  *   Rate: int rate,
+  //  *   Voice: string voice
+  //  * }
+  //  * @return {Void}
+  //  */
+  // static Speak(o) {
+  //   return
+  // }
 
   /**
    * Unsets a variable
    * @param {String} name Variable name you wish to clear
    * @return {Void}
    */
-  static UnsetVariable(name) {
+  static UnsetVariable(name: string): void {
     FWI.RunScript('Player.UnsetVariable(' + name + ');');
   }
 
