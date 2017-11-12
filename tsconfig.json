@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "system",
+        "sourceMap": false,
+        "outFile": "dist/index.js"
+    },
+    "include": [
+        "src/player.ts",
+        "src/fwi_core.ts",
+        "src/string.ts"
+    ]
+}

@@ -1,27 +1,6 @@
 import { FWI } from "./fwi_core.js";
 
 /**
- * This method replaces illegal charecters in the font strings so they aren't
- * inturpreted by javascript!
- */
-String.prototype.ReplaceIllegalChars = function (prefix) {
-  //This method replaces { } and , with variable names so CM can read the JSON properly
-  let OutputString = this.replace(/{/g,"{&lb");
-  OutputString = OutputString.replace(/}/g,"&rb}");
-  OutputString = OutputString.replace(/,/g,`{&var:${prefix}_comma}`);
-  OutputString = OutputString.replace(/{&lb/g,"{&lb}");
-  OutputString = OutputString.replace(/&rb}/g,"{&rb}");
-  return OutputString;
-}
-
-/**
- * This adds a startsWith method to all strings to see if they start with a specific prefix.
- */
-String.prototype.startsWith = function (prefix) {
-    return this.slice(0, prefix.length) == prefix;
-}
-
-/**
  * This is the Player class.  It will probably be the most used class.  It contains all player functions.
  * It should be noted that all methods in this class are static so there is no need for the `new` keyword.
  *
@@ -33,35 +12,44 @@ String.prototype.startsWith = function (prefix) {
  * ```
  */
 export class Player{
-  constructor() {
 
-  }
+  constructor() {  }
 
   /**
    * Retrieves the value for a single CM variable.
-   * @param {String} name A variable name to collect
-   * @return {Number|String} An appropriately casted value from the variable
+   *
+   * @static
+   * @param {string} name A variable name to collect
+   * @returns {string} An appropriately casted value from the variable
+   * @memberof Player
    */
-  static GetVariable(name) {
+  static GetVariable(name: string): string {
     return FWI.MarkupValue('{&var:' + name + '}') != '' ? FWI.MarkupValue('{&var:' + name + '}') : false;
   };
 
   /**
    * Retrieves the value for a single CM font variable.
-   * @param {String} name A variable name to collect
-   * @return {Object} Dictionary of the font json
+   *
+   * @static
+   * @param {string} name A variable name to collect
+   * @returns {*} Dictionary of the font json
+   * @memberof Player
    */
-  static GetFontVariable(name) {
+  static GetFontVariable(name:string): any {
     const font_var = Player.GetVariable(name);
     return JSON.parse(font_var);
   }
 
+
   /**
    * Retrieves values for multiple CM variables.
-   * @param {Array} nameArray An array of variable names to collect
-   * @return {Array} An array of values that correspond to the requested variables
+   *
+   * @static
+   * @param {string[]} nameArray An array of variable names to collect
+   * @returns {string[]} An array of values that correspond to the requested variables
+   * @memberof Player
    */
-  static GetManyVariables(nameArray) {
+  static GetManyVariables(nameArray: string[]): string[] {
     const values = [];
     for (let [k,v] of nameArray.entries()) {
       values.push(FWI.MarkupValue('{&var:' + v + '}'));
@@ -71,12 +59,14 @@ export class Player{
 
   /**
    * Sets  single variable back in CM.
-   * @param {String} name The name of the variable to set
-   * @param {String} value The value of the variable to set
-   * @return {Void}
+   *
+   * @static
+   * @param {string} name The name of the variable to set
+   * @param {*} value The value of the variable to set
+   * @memberof Player
    */
-  static SetVariable(name, value) {
-    FWI.RunScript('Player.SetVariable(' + name + ', ' + value + ');');
+  static SetVariable(name: string, value: any) {
+    FWI.RunScript('Player.SetVariable(' + name + ', ' + value.toString() + ');');
   }
 
   /**
@@ -86,7 +76,7 @@ export class Player{
    * @return {Void}
    */
   static SetFontVariable(name, value, prefix) {
-    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars());
+    Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars(prefix));
   }
 
   /**
@@ -231,23 +221,7 @@ export class Player{
    * @return {Void}
    */
   static Speak(o) {
-    let command = 'Player.Speak(';
-
-    try {
-      command += o[msg];
-    }
-
-    catch(e) {
-      log.error(e);
-    };
-
-    for (let [k,v] of o) {
-      command = (k != 'msg' ? (command + ',' + k + '=' + v) : '');
-    };
-
-    command += ');';
-
-    FWI.RunScript(command);
+    return
   }
 
   /**

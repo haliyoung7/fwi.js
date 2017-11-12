@@ -1,19 +1,20 @@
 {
-  "name": "fwi.js",
-  "version": "0.1.0",
-  "description": "This is a javascript interface for use inside of Four Winds Interactive's Content Player (c) 2017",
-  "main": "./dist/fwi.common.js",
-  "module": "./dist/fwi.es.js",
-  "browser": "./dist/fwi.browser.js",
+  "name": "fwi",
+  "version": "0.0.1",
+  "description": "Typescript for Content Player Javascript integration",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fourwindsinteractive/fwi.js.git"
   },
   "keywords": [
-    "fwi",
-    "four",
-    "winds",
-    "interactive"
+    "fwi"
   ],
   "author": "Erin O'Connell",
   "license": "MIT",
@@ -21,25 +22,8 @@
     "url": "https://github.com/fourwindsinteractive/fwi.js/issues"
   },
   "homepage": "https://github.com/fourwindsinteractive/fwi.js#readme",
-  "dependencies": {
-    "babel-polyfill": "^6.26.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-remove-strict-mode": "0.0.2",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "esdoc": "^1.0.3",
-    "esdoc-standard-plugin": "^1.0.0",
-    "rollup": "^0.47.6",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-commonjs": "^8.2.4",
-    "rollup-plugin-multi-entry": "^2.0.1",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.1.0",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1",
-    "xml-js": "^1.5.1"
+    "typescript": "^2.6.1"
   }
 }
