@@ -113,10 +113,35 @@ System.register("models/TextFormatVariable", [], function (exports_3, context_3)
         }
     };
 });
-System.register("player", ["fwi_core", "models/TextFormatVariable"], function (exports_4, context_4) {
+System.register("interfaces/IEmailMessage", [], function (exports_4, context_4) {
     "use strict";
     var __moduleName = context_4 && context_4.id;
-    var fwi_core_1, TextFormatVariable_1, Player;
+    return {
+        setters: [],
+        execute: function () {
+        }
+    };
+});
+System.register("models/EmailMessage", [], function (exports_5, context_5) {
+    "use strict";
+    var __moduleName = context_5 && context_5.id;
+    var EmailMessage;
+    return {
+        setters: [],
+        execute: function () {
+            EmailMessage = /** @class */ (function () {
+                function EmailMessage() {
+                }
+                return EmailMessage;
+            }());
+            exports_5("EmailMessage", EmailMessage);
+        }
+    };
+});
+System.register("player", ["fwi_core", "models/TextFormatVariable", "models/EmailMessage"], function (exports_6, context_6) {
+    "use strict";
+    var __moduleName = context_6 && context_6.id;
+    var fwi_core_1, TextFormatVariable_1, EmailMessage_1, Player;
     return {
         setters: [
             function (fwi_core_1_1) {
@@ -124,6 +149,9 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
             },
             function (TextFormatVariable_1_1) {
                 TextFormatVariable_1 = TextFormatVariable_1_1;
+            },
+            function (EmailMessage_1_1) {
+                EmailMessage_1 = EmailMessage_1_1;
             }
         ],
         execute: function () {
@@ -216,8 +244,10 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
                 };
                 /**
                  * Sets multiple variables back in CM.
-                 * @param {Object} keyValueDict An object that defines key/value pairs to use
-                 * @return {Void}
+                 *
+                 * @static
+                 * @param {{ [s: string]: string; }} keyValueDict An object that defines key/value pairs to use
+                 * @memberof Player
                  */
                 Player.SetManyVariables = function (keyValueDict) {
                     Object.keys(keyValueDict).forEach(function (key) {
@@ -229,7 +259,7 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
                  * Creates a new dictionary with a font variable tempalte
                  *
                  * @static
-                 * @returns {object} Font dictionary template
+                 * @returns {TextFormatVariable} Font dictionary template
                  * @memberof Player
                  */
                 Player.CreateFontVariable = function () {
@@ -263,20 +293,33 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
                 Player.PlayTemplate = function (name, templateIndex) {
                     fwi_core_1.fwi.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex.toString() : '') + ');');
                 };
-                // /**
-                //  * Runs a shell command
-                //  * @param {String} command_name The main command, sometimes includes folder path
-                //  * @param {Array} arg_array Array of args to be submitted to the command
-                //  * @return {Void}
-                //  */
-                // static Command(command_name, arg_array) {
-                //   let command = 'Player.Command(' + command_name;
-                //   for (let [k,v] of arg_array.entries()) {
-                //     command = command + ', ' + v;
-                //   }
-                //   command += ');';
-                //   FWI.RunScript(command);
-                // }
+                /**
+                 * Runs a shell command
+                 *
+                 * @static
+                 * @param {string} command_name The main command, sometimes includes folder path
+                 * @param {string[]} arg_array Array of args to be submitted to the command
+                 * @memberof Player
+                 */
+                Player.Command = function (command_name, arg_array) {
+                    var command = 'Player.Command(' + command_name;
+                    try {
+                        for (var _a = __values(arg_array.entries()), _b = _a.next(); !_b.done; _b = _a.next()) {
+                            var _c = __read(_b.value, 2), k = _c[0], v = _c[1];
+                            command = command + ', ' + v;
+                        }
+                    }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                    finally {
+                        try {
+                            if (_b && !_b.done && (_d = _a.return)) _d.call(_a);
+                        }
+                        finally { if (e_2) throw e_2.error; }
+                    }
+                    command += ');';
+                    fwi_core_1.fwi.RunScript(command);
+                    var e_2, _d;
+                };
                 /**
                  * Resets the idle timer
                  * @return {Void}
@@ -291,29 +334,35 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
                 Player.Restart = function () {
                     fwi_core_1.fwi.RunScript('Player.Restart();');
                 };
+                /**
+                 * Creates a new dictionary with a font variable tempalte
+                 *
+                 * @static
+                 * @returns {TextFormatVariable} Font dictionary template
+                 * @memberof Player
+                 */
+                Player.CreateEmailMessage = function () {
+                    var email = new EmailMessage_1.EmailMessage();
+                    return email;
+                };
                 // /**
                 //  * Sends mail
-                //  * @param {Obj} o Object that contains all paramters from wiki
-                //  * {
-                //  *   to: string dest_address
-                //  *   cc: string cc_address,
-                //  *   bcc: string bcc_address,
-                //  *   subject: string subject,
-                //  *   from: string sender_address,
-                //  *   body: string main_message,
-                //  *   host: string smpt_host,
-                //  *   username: string smpt_username,
-                //  *   password: strign smpt_password
-                //  * }
-                //  * @return {Void}
+                //  *
+                //  * @static
+                //  * @param {EmailMessage} o Object that contains all paramters from wiki
+                //  * @memberof Player
                 //  */
-                // static SendMail(o) {
+                // static SendMail(o: EmailMessage): void {
                 //   let command = 'Player.SendMail(';
                 //   for (let [k,v] of o) {
                 //     command = command + ',' + k + '=' + v;
                 //   };
                 //   command += ');';
-                //   FWI.RunScript(command);
+                //   Object.keys(o).forEach((key) => {
+                //     let value = o[key];
+                //     fwi.RunScript('Player.SetVariable(' + key + ',' + value + ');');
+                //   })
+                //   fwi.RunScript(command);
                 // }
                 // /**
                 //  * Text-to-speech
@@ -339,7 +388,7 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
                 };
                 return Player;
             }());
-            exports_4("Player", Player);
+            exports_6("Player", Player);
         }
     };
 });
