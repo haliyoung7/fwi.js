@@ -11,8 +11,9 @@
     "include": [
         "src/player.ts",
         "src/fwi_core.ts",
-        "src/string.ts",
-        "src/interfaces/ITextFormatVariable.ts",
-        "src/models/TextFormatVariable.ts"
+        "src/models/TextFormatVariable.ts",
+        "src/utils/string.ts",
+        "src/models/EmailMessage.ts",
+        "src/template.ts"
     ]
 }

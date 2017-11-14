@@ -24,6 +24,41 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 /**
  * This method replaces illegal charecters in the font strings so they aren't
  * inturpreted by javascript!
@@ -43,7 +78,7 @@ String.prototype.ReplaceIllegalChars = function (prefix) {
 String.prototype.startsWith = function (prefix) {
     return this.slice(0, prefix.length) == prefix;
 };
-System.register("fwi_core", ["./string"], function (exports_1, context_1) {
+System.register("fwi_core", ["./utils/string"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var fwi;
@@ -404,6 +439,224 @@ System.register("player", ["fwi_core", "models/TextFormatVariable", "models/Emai
                 return Player;
             }());
             exports_6("Player", Player);
+        }
+    };
+});
+System.register("template", ["fwi_core"], function (exports_7, context_7) {
+    "use strict";
+    var __moduleName = context_7 && context_7.id;
+    var fwi_core_js_1, Template;
+    return {
+        setters: [
+            function (fwi_core_js_1_1) {
+                fwi_core_js_1 = fwi_core_js_1_1;
+            }
+        ],
+        execute: function () {
+            /**
+             * This is the template class.  It contains all of the template functions you'd find in CM.
+             * All methods in this class are static so you do not need to use the `new` keyword.
+             *
+             * Example:
+             * ```
+             * Template.PlayContent('Foo', 'Bar');
+             * ```
+             */
+            Template = /** @class */ (function () {
+                function Template() {
+                }
+                /**
+                 * Plays a piece of content in a region
+                 * @param {String} name The name of the variable to set
+                 * @param {String} region The region of the content to play
+                 * @return {Void}
+                 */
+                Template.PlayContent = function (name, region) {
+                    return __awaiter(this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            return [2 /*return*/, new Promise(function (resolve) {
+                                    fwi_core_js_1.fwi.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
+                                    resolve();
+                                })];
+                        });
+                    });
+                };
+                /**
+                 * Pops a command from the FIFO command stack
+                 * @return {Void}
+                 */
+                Template.PopContent = function () {
+                    fwi_core_js_1.fwi.RunScript('Template.PopContent();');
+                };
+                /**
+                 * Pushes a command to the FIFO command stack
+                 * @return {Void}
+                 */
+                Template.PushContent = function (content, region, params) {
+                    if (params === void 0) { params = undefined; }
+                    fwi_core_js_1.fwi.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
+                };
+                /**
+                 * Restarts the template, be careful!  If you don't have a span region
+                 * set this will spawn a new process.
+                 * @return {Void}
+                 */
+                Template.Restart = function () {
+                    fwi_core_js_1.fwi.RunScript('Template.Restart();');
+                };
+                /**
+                 * Sets a region property telling it if it can resize or not.
+                 * @param {String} region_name Name of the region
+                 * @param {Bool} value True/False if the region can be resized
+                 * @return {Void}
+                 */
+                Template.SetCanSize = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetCanSize(' + region_name + ', ' + value + ');');
+                };
+                /**
+                 * Sets a region property telling it if it can be draged around
+                 * @param {String} region_name Name of the region
+                 * @param {Boolean} value True/False if the region can be dragged
+                 * @return {Void}
+                 */
+                Template.SetCanDrag = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetCanDrag(' + region_name + ', ' + value + ');');
+                };
+                /**
+                 * Sets a region property telling it if it can be rotated by touch
+                 * @param {String} region_name Name of the region
+                 * @param {Boolean} value True/False if the region can be rotated
+                 * @return {Void}
+                 */
+                Template.SetCanRotate = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetCanRotate(' + region_name + ', ' + value + ');');
+                };
+                /**
+                 * Sets the top left point of the region in x axis
+                 * @param {String} region_name Name of the region
+                 * @param {Number} value Value of the top left corner of the region in pixels in the x axis
+                 * @return {Void}
+                 */
+                Template.SetLeft = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetLeft(' + region_name + ',' + value + ');');
+                };
+                /**
+                 * Set the top left point of the region in the Y axis
+                 * @param {String} region_name Name of the region
+                 * @param {Number} value Value of the top left corner of the region in pixels in the y axis
+                 * @return {Void}
+                 */
+                Template.SetTop = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetTop(' + region_name + ',' + value + ');');
+                };
+                /**
+                 * Sets the regions width in pixels
+                 * @param {String} region_name Name of the region
+                 * @param {Number} value Value of the width of the region in pixels
+                 * @return {Void}
+                 */
+                Template.SetWidth = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetWidth(' + region_name + ',' + value + ');');
+                };
+                /**
+                 * Sets the regions height in pixels
+                 * @param {String} region_name Name of the region
+                 * @param {Number} value Value of the height of the region in pixels
+                 * @return {Void}
+                 */
+                Template.SetHeight = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetHeight(' + region_name + ',' + value + ');');
+                };
+                /**
+                 * Sets a regions angle in degrees
+                 * @param {String} region_name Name of the region
+                 * @param {Number} value Angle of the region in degrees
+                 * @return {Void}
+                 */
+                Template.SetAngle = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
+                };
+                /**
+                 * Sets a regions X coordinante
+                 * @param {String} region_name Name of the region
+                 * @return {Void}
+                 */
+                Template.ClearLeft = function (region_name) {
+                    fwi_core_js_1.fwi.RunScript('Template.ClearLeft(' + region_name + ');');
+                };
+                /**
+                 * Resets a regions Y coordinante
+                 * @param {String} region_name Name of the region
+                 * @return {Void}
+                 */
+                Template.ClearTop = function (region_name) {
+                    fwi_core_js_1.fwi.RunScript('Template.ClearTop(' + region_name + ');');
+                };
+                /**
+                 * Resets the width of the region back to the stored original
+                 * @param {String} region_name Name of the region
+                 * @return {Void}
+                 */
+                Template.ClearWidth = function (region_name) {
+                    fwi_core_js_1.fwi.RunScript('Template.ClearWidth(' + region_name + ');');
+                };
+                /**
+                 * Resets the regions height
+                 * @param {String} region_name Name of the region
+                 * @return {Void}
+                 */
+                Template.ClearHeight = function (region_name) {
+                    fwi_core_js_1.fwi.RunScript('Template.ClearHeight(' + region_name + ');');
+                };
+                /**
+                 * Resets a regions angle
+                 * @param {String} region_name Name of the region
+                 * @return {Void}
+                 */
+                Template.ClearAngle = function (region_name) {
+                    fwi_core_js_1.fwi.RunScript('Template.ClearAngle(' + region_name + ');');
+                };
+                /**
+                 * Sets a regions Z-Index
+                 * @param {String} region_name Name of the region
+                 * @param {Number} value Number of the regions z-index
+                 * @return {Void}
+                 */
+                Template.SetZIndex = function (region_name, value) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
+                };
+                /**
+                 * Resets the Z-Index
+                 * @param {String} region_name Name of the region
+                 * @return {Void}
+                 */
+                Template.ClearZIndex = function (region_name) {
+                    fwi_core_js_1.fwi.RunScript('Template.ClearZIndex(' + region_name + ');');
+                };
+                /**
+                 * Sets a regions linear velocity
+                 * @param {String} region_name Name of the region
+                 * @param {Number} Vx Velocity of the region in the x axis
+                 * @param {Number} Vy Velocity of the region in the y axis
+                 * @return {Void}
+                 */
+                Template.SetLinearVelocity = function (region_name, Vx, Vy) {
+                    if (Vx === void 0) { Vx = '*'; }
+                    if (Vy === void 0) { Vy = '*'; }
+                    fwi_core_js_1.fwi.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
+                };
+                /**
+                 * Sets a region's angular velocity or rotation
+                 * @param {String} region_name Name of the region
+                 * @param {Number} omega Number of degrees per a second
+                 * @return {Void}
+                 */
+                Template.SetAngularVelocity = function (region_name, omega) {
+                    fwi_core_js_1.fwi.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
+                };
+                return Template;
+            }());
+            exports_7("Template", Template);
         }
     };
 });
