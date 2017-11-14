@@ -660,3 +660,315 @@ System.register("template", ["fwi_core"], function (exports_7, context_7) {
         }
     };
 });
+System.register("content", ["fwi_core"], function (exports_8, context_8) {
+    "use strict";
+    var __moduleName = context_8 && context_8.id;
+    var fwi_core_js_2, _content_name, _region_name, Content;
+    return {
+        setters: [
+            function (fwi_core_js_2_1) {
+                fwi_core_js_2 = fwi_core_js_2_1;
+            }
+        ],
+        execute: function () {
+            /**
+             * These are here to store information about multiple content and regions names
+             */
+            _content_name = new WeakMap();
+            _region_name = new WeakMap();
+            /**
+             * This is the content class it can be used in two ways.  You can access the static methods if you just need
+             * a one off operation, or you can create a content item to execute multiple operations on it.
+             *
+             * Example:
+             * ```
+             * var item = new Content('Places_Live_Data', 'Live_Data_Region);
+             *
+             * item.getDetails()
+             *
+             * item.play()
+             * ```
+             * or
+             * ```
+             * var url_contents = Content.Url('https://example.com');
+             * ```
+             */
+            Content = /** @class */ (function () {
+                /**
+                 * Constructor that accespts the content items name and the region the content item is playing in.
+                 * @param {String} name Name of the content item
+                 * @param {String} region_name Name of the region the content item resides in
+                 * @return {Void}
+                 */
+                function Content(name, region_name) {
+                    _content_name.set(this, name);
+                    _region_name.set(this, region_name);
+                }
+                Object.defineProperty(Content.prototype, "name", {
+                    /**
+                     * Returns the name of the content item
+                     * @return {String}
+                     */
+                    get: function () {
+                        return _content_name.get(this);
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Content.prototype, "region_name", {
+                    /**
+                     * Returns the name of the content item
+                     * @return {String}
+                     */
+                    get: function () {
+                        return _region_name.get(this);
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                /**
+                 * Returns the content items details, in the case of the live data, it's the data itself.
+                 * @param {String} name Name of the content item
+                 * @return {String}
+                 */
+                Content.GetDetails = function (name) {
+                    return fwi_core_js_2.fwi.GetUrl('content://' + name);
+                };
+                /**
+                 * Prints the regions content item
+                 * @param {String} region_name Name of the region.
+                 * @param {String} parameters Printing parameters
+                 * @return {Void}
+                 */
+                Content.Print = function (region_name, parameters) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
+                };
+                /**
+                 * Play the next item in the region
+                 * @param {String} region_name Name of the region
+                 * @param {String} direction Forward/Backward
+                 * @param {Boolean} wrap True/False if it should wrap when it reaches the start/end.
+                 * @return {Void}
+                 */
+                Content.Seek = function (region_name, direction, wrap) {
+                    if (wrap === void 0) { wrap = true; }
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
+                };
+                /**
+                 * Sets arguments on currently playing content items
+                 * @param {String} region_name Name of the region
+                 * @param {Object} o Object that contains a single object of key pair values for content arguments.
+                 * @return {Void}
+                 */
+                Content.SetArgument = function (region_name, o) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].SetArgument(' + o.keys[0] + ', ' + o.values[0] + ');');
+                };
+                /**
+                 * Shows the route on a wayfinding contnet item
+                 * @param {String} region name Name of the content item
+                 * @param {Object} o Single key pair object that takes a Location=Location type thing
+                 * @return {Void}
+                 */
+                Content.ShowRoute = function (region_name, o) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].ShowRoute(' + o.keys[0] + '=' + o.values[0] + ');');
+                };
+                /**
+                 * Gets the contents of a provided URL.  Blocking operation, CM will freeze while it gets the url contents.
+                 * @param {String} url www.gooogle.com or www.example.com
+                 * @return {Void}
+                 */
+                Content.Url = function (url) {
+                    return fwi_core_js_2.fwi.RunScript('Content.Url(' + url + ');');
+                };
+                /**
+                 * Gets the contents of a provided URL.  Non-blocking operation.  Will return contents to variable once operation is complete.
+                 * @param {String} url Name of the content item
+                 * @return {Void}
+                 */
+                Content.UrlAsync = function (url) {
+                    return fwi_core_js_2.fwi.RunScript('Content.UrlAsync(' + url + ');');
+                };
+                /**
+                 * Pauses a video if it is playing in a region.
+                 * @param {String} region_name Name of the region that contains the video
+                 * @return {Void}
+                 */
+                Content.Pause = function (region_name) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].Pause();');
+                };
+                /**
+                 * Plays a video if it is playing in a region.
+                 * @param {String} region_name Name of the region that contains the video
+                 * @return {Void}
+                 */
+                Content.Play = function (region_name) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].Play();');
+                };
+                /**
+                 * Seeks by a  a particular part of a video if it is playing in a region.
+                 * @param {String} region_name Name of the region that contains the video
+                 * @param {String} value Timecode value to seek through the video by.
+                 * @return {Void}
+                 */
+                Content.SeekBy = function (region_name, value) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
+                };
+                /**
+                 * Seeks to a  a particular part of a video if it is playing in a region.
+                 * @param {String} region_name Name of the region that contains the video
+                 * @param {String} value Timecode value to seek through the video too.
+                 * @return {Void}
+                 */
+                Content.SeekTo = function (region_name, value) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
+                };
+                /**
+                 * Resumes a paused video if it is playing in a region.
+                 * @param {String} region_name Name of the region that contains the video
+                 * @return {Void}
+                 */
+                Content.Resume = function (region_name) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].Resume();');
+                };
+                /**
+                 * Sets the left right balance of the audio in a video
+                 * @param {String} region_name Name of the region that contains the video
+                 * @param {Number} balance Number representing the left right balance.
+                 * @return {Void}
+                 */
+                Content.SetBalance = function (region_name, balance) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
+                };
+                /**
+                 * Sets the audio for a video.
+                 * @param {String} region_name Name of the region that contains the video
+                 * @param {Number} volume Number representing the volume
+                 * @return {Void}
+                 */
+                Content.SetVolume = function (region_name, volume) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
+                };
+                /**
+                 * Stops a video in a region if it's scheduled
+                 * @param {String} region_name Name of the region that contains the video
+                 * @return {Void}
+                 */
+                Content.Stop = function (region_name) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].Stop();');
+                };
+                /**
+                 * Highlights one or multiple rows in live data
+                 * @param {String} region_name Name of the region that contains the video
+                 * @param {String} row_list Comma seperated list of rows to highlight.
+                 * @return {Void}
+                 */
+                Content.HighlightRows = function (region_name, row_list) {
+                    fwi_core_js_2.fwi.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
+                };
+                /**
+                 * Returns the content items details, in the case of the live data, it's the data itself.
+                 * @return {String}
+                 */
+                Content.prototype.getDetails = function () {
+                    return Content.GetDetails(this.name);
+                };
+                /**
+                 * Prints the regions content item
+                 * @param {String} parameters Printing parameters
+                 * @return {Void}
+                 */
+                Content.prototype.print = function (parameters) {
+                    Content.Print(this.region_name, parameters);
+                };
+                /**
+                 * Play the next item in the region
+                 * @param {String} direction Forward/Backward
+                 * @param {Boolean} wrap True/False if it should wrap when it reaches the start/end.
+                 * @return {Void}
+                 */
+                Content.prototype.seek = function (direction, wrap) {
+                    if (wrap === void 0) { wrap = true; }
+                    Content.Seek(this.region_name, direction, wrap);
+                };
+                /**
+                 * Sets arguments on currently playing content items
+                 * @param {Object} o Object that contains a single object of key pair values for content arguments.
+                 * @return {Void}
+                 */
+                Content.prototype.setArgument = function (o) {
+                    Content.SetArgument(this.region_name, o);
+                };
+                /**
+                 * Shows the route on a wayfinding contnet item
+                 * @param {Object} o Single key pair object that takes a Location=Location type thing
+                 * @return {Void}
+                 */
+                Content.prototype.showRoute = function (o) {
+                    Content.ShowRoute(this.region_name, o);
+                };
+                /**
+                 * Pauses a video if it is playing in a region.
+                 * @return {Void}
+                 */
+                Content.prototype.pause = function () {
+                    Content.Pause(this.region_name);
+                };
+                /**
+                 * Plays a video if it is playing in a region.
+                 * @return {Void}
+                 */
+                Content.prototype.play = function () {
+                    Content.Play(this.region_name);
+                };
+                /**
+                 * Seeks by a  a particular part of a video if it is playing in a region.
+                 * @param {String} value Timecode value to seek through the video by.
+                 * @return {Void}
+                 */
+                Content.prototype.seekBy = function (value) {
+                    Content.SeekBy(this.region_name, value);
+                };
+                /**
+                 * Seeks to a  a particular part of a video if it is playing in a region.
+                 * @param {String} value Timecode value to seek through the video too.
+                 * @return {Void}
+                 */
+                Content.prototype.seekTo = function (value) {
+                    Content.SeekTo(this.region_name, value);
+                };
+                /**
+                 * Resumes a paused video if it is playing in a region.
+                 * @return {Void}
+                 */
+                Content.prototype.resume = function () {
+                    Content.Resume(this.region_name);
+                };
+                /**
+                 * Sets the left right balance of the audio in a video
+                 * @param {Number} balance Number representing the left right balance.
+                 * @return {Void}
+                 */
+                Content.prototype.setBalance = function (balance) {
+                    Content.SetBalance(this.region_name, balance);
+                };
+                /**
+                 * Sets the audio for a video.
+                 * @param {Number} volume Number representing the volume
+                 * @return {Void}
+                 */
+                Content.prototype.setVolume = function (volume) {
+                    Content.SetVolume(this.region_name, volume);
+                };
+                /**
+                 * Stops a video in a region if it's scheduled
+                 * @return {Void}
+                 */
+                Content.prototype.stop = function () {
+                    Content.Stop(this.region_name);
+                };
+                return Content;
+            }());
+            exports_8("Content", Content);
+        }
+    };
+});

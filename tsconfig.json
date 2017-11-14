@@ -14,6 +14,7 @@
         "src/models/TextFormatVariable.ts",
         "src/utils/string.ts",
         "src/models/EmailMessage.ts",
-        "src/template.ts"
+        "src/template.ts",
+        "src/content.ts"
     ]
 }
