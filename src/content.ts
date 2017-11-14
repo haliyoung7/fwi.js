@@ -1,4 +1,4 @@
-import { FWI } from "./fwi_core.js";
+import { fwi } from "./fwi_core.js";
 
 /**
  * These are here to store information about multiple content and regions names
@@ -58,7 +58,7 @@ export class Content {
    * @return {String}
    */
 	static GetDetails(name) {
-		return FWI.GetUrl('content://' + name);
+		return fwi.GetUrl('content://' + name);
 	}
 
   /**
@@ -68,7 +68,7 @@ export class Content {
    * @return {Void}
    */
 	static Print(region_name, parameters) {
-		FWI.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
+		fwi.RunScript('Content[' + region_name + '].Print(' + parameters + ');');
 	}
 
   /**
@@ -79,7 +79,7 @@ export class Content {
    * @return {Void}
    */
 	static Seek(region_name, direction, wrap = true) {
-		FWI.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
+		fwi.RunScript('Content[' + region_name + '].Seek(' + direction + ', ' + wrap + ');');
 	}
 
   /**
@@ -89,7 +89,7 @@ export class Content {
    * @return {Void}
    */
 	static SetArgument(region_name, o) {
-    FWI.RunScript('Content[' + region_name + '].SetArgument(' + o.keys[0] + ', ' + o.values[0] + ');');
+    fwi.RunScript('Content[' + region_name + '].SetArgument(' + o.keys[0] + ', ' + o.values[0] + ');');
 	}
 
   /**
@@ -99,7 +99,7 @@ export class Content {
    * @return {Void}
    */
 	static ShowRoute(region_name, o) {
-		FWI.RunScript('Content[' + region_name + '].ShowRoute(' + o.keys[0] + '=' + o.values[0] + ');');
+		fwi.RunScript('Content[' + region_name + '].ShowRoute(' + o.keys[0] + '=' + o.values[0] + ');');
 	}
 
   /**
@@ -108,7 +108,7 @@ export class Content {
    * @return {Void}
    */
 	static Url(url) {
-		return FWI.RunScript('Content.Url(' + url + ');');
+		return fwi.RunScript('Content.Url(' + url + ');');
 	}
 
   /**
@@ -117,7 +117,7 @@ export class Content {
    * @return {Void}
    */
 	static UrlAsync(url) {
-		return FWI.RunScript('Content.UrlAsync(' + url + ');');
+		return fwi.RunScript('Content.UrlAsync(' + url + ');');
 	}
 
   /**
@@ -126,7 +126,7 @@ export class Content {
    * @return {Void}
    */
 	static Pause(region_name) {
-		FWI.RunScript('Content[' + region_name + '].Pause();');
+		fwi.RunScript('Content[' + region_name + '].Pause();');
 	}
 
   /**
@@ -135,7 +135,7 @@ export class Content {
    * @return {Void}
    */
 	static Play(region_name) {
-		FWI.RunScript('Content[' + region_name + '].Play();');
+		fwi.RunScript('Content[' + region_name + '].Play();');
 	}
 
   /**
@@ -145,7 +145,7 @@ export class Content {
    * @return {Void}
    */
 	static SeekBy(region_name, value) {
-		FWI.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
+		fwi.RunScript('Content[' + region_name + '].SeekBy(' + value + ');');
 	}
 
   /**
@@ -155,7 +155,7 @@ export class Content {
    * @return {Void}
    */
 	static SeekTo(region_name, value) {
-		FWI.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
+		fwi.RunScript('Content[' + region_name + '].SeekTo(' + value + ');');
 	}
 
   /**
@@ -164,7 +164,7 @@ export class Content {
    * @return {Void}
    */
 	static Resume(region_name) {
-		FWI.RunScript('Content[' + region_name + '].Resume();');
+		fwi.RunScript('Content[' + region_name + '].Resume();');
 	}
 
   /**
@@ -174,7 +174,7 @@ export class Content {
    * @return {Void}
    */
 	static SetBalance(region_name, balance) {
-		FWI.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
+		fwi.RunScript('Content[' + region_name + '].SetBalance(' + balance + ');');
 	}
 
   /**
@@ -184,7 +184,7 @@ export class Content {
    * @return {Void}
    */
 	static SetVolume(region_name, volume) {
-		FWI.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
+		fwi.RunScript('Content[' + region_name + '].SetVolume(' + volume + ');');
 	}
 
   /**
@@ -193,7 +193,7 @@ export class Content {
    * @return {Void}
    */
 	static Stop(region_name) {
-		FWI.RunScript('Content[' + region_name + '].Stop();');
+		fwi.RunScript('Content[' + region_name + '].Stop();');
 	}
 
   /**
@@ -203,7 +203,7 @@ export class Content {
    * @return {Void}
    */
 	static HighlightRows(region_name, row_list) {
-		FWI.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
+		fwi.RunScript('Content[' + region_name + '].HighlightRows(' + row_list + ');');
 	}
 
   /**
