@@ -3,12 +3,16 @@
         "target": "es5",
         "module": "system",
         "sourceMap": false,
-        "outFile": "dist/index.js"
+        "lib": ["es7", "dom"],
+        "outFile": "dist/index.js",
+        "downlevelIteration": true
+        //"outDir": "./build"
     },
     "include": [
         "src/player.ts",
         "src/fwi_core.ts",
         "src/string.ts",
-        "src/models/textFormatVariable.ts"
+        "src/interfaces/ITextFormatVariable.ts",
+        "src/models/TextFormatVariable.ts"
     ]
 }

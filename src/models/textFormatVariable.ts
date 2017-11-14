@@ -1,20 +1,25 @@
-interface IFontFrame {
-    type: string | null;
-    backgroundColor: string;
-    borderColor: string;
-}
+import { IFontOptions } from "../interfaces/ITextFormatVariable"
 
-export interface IFontOptions {
-    fontFamily: string;
-    fontSize: number;
-    fontStretch: string | null;
-    fontWeight: string | null;
-    textDecoration: string | null;
-    fontColor: string;
-    textAlignment: string;
-    textAutoSize: boolean;
-    textSizeBehavior: string;
-    fontLeading: number;
-    frame: IFontFrame | object | null;
-}
+export class TextFormatVariable implements IFontOptions {
 
+    constructor(
+        public fontFamily: string = 'Arial',
+        public fontSize: number = 9.000000E+00,
+        public fontStretch: null = null,
+        public fontStyle: null = null,
+        public fontWeight: null = null,
+        public textDecoration: null = null,
+        public fontColor: string = '#FF000000',
+        public textAlignment: string = 'TopLeft',
+        public textAutoSize: boolean = false,
+        public textSizeBehavior: string = 'Fixed',
+        public fontLeading: number = 0,
+        public frame: object = {
+            type: null,
+            backgroundColor: "#00424242",
+            borderColor: "#008BD5B5"
+        }
+    ) {
+
+    }
+}

@@ -1,5 +1,5 @@
-import { FWI } from "./fwi_core";
-import { IFontOptions } from "./models/textFormatVariable"
+import { fwi } from "./fwi_core";
+import { TextFormatVariable } from "./models/TextFormatVariable"
 
 /**
  * This is the Player class.  It will probably be the most used class.  It contains all player functions.
@@ -25,7 +25,7 @@ export class Player{
    * @memberof Player
    */
   static GetVariable(name: string): string {
-    return FWI.MarkupValue('{&var:' + name + '}') != '' ? FWI.MarkupValue('{&var:' + name + '}') : false;
+    return fwi.MarkupValue('{&var:' + name + '}') != '' ? fwi.MarkupValue('{&var:' + name + '}') : false;
   };
 
   /**
@@ -33,30 +33,30 @@ export class Player{
    *
    * @static
    * @param {string} name A variable name to collect
-   * @returns {*} Dictionary of the font json
+   * @returns {TextFormatVariable} Dictionary of the font json
    * @memberof Player
    */
-  static GetFontVariable(name:string): IFontOptions {
+  static GetFontVariable(name:string): TextFormatVariable {
     const font_var = Player.GetVariable(name);
-    return JSON.parse(font_var);
+    return JSON.parse(font_var) as TextFormatVariable;
   }
 
 
-  // /**
-  //  * Retrieves values for multiple CM variables.
-  //  *
-  //  * @static
-  //  * @param {string[]} nameArray An array of variable names to collect
-  //  * @returns {string[]} An array of values that correspond to the requested variables
-  //  * @memberof Player
-  //  */
-  // static GetManyVariables(nameArray: string[]): string[] {
-  //   const values = [];
-  //   for (let [k,v] of nameArray.entries()) {
-  //     values.push(FWI.MarkupValue('{&var:' + v + '}'));
-  //   }
-  //   return values;
-  // }
+  /**
+   * Retrieves values for multiple CM variables.
+   *
+   * @static
+   * @param {string[]} nameArray An array of variable names to collect
+   * @returns {string[]} An array of values that correspond to the requested variables
+   * @memberof Player
+   */
+  static GetManyVariables(nameArray: string[]): string[] {
+    const values: string[] = [];
+    for (let [k,v] of nameArray.entries()) {
+      values.push(fwi.MarkupValue('{&var:' + v + '}'));
+    }
+    return values;
+  }
 
   /**
    * Sets  single variable back in CM.
@@ -67,7 +67,7 @@ export class Player{
    * @memberof Player
    */
   static SetVariable(name: string, value: any): void {
-    FWI.RunScript('Player.SetVariable(' + name + ', ' + value.toString() + ');');
+    fwi.RunScript('Player.SetVariable(' + name + ', ' + value.toString() + ');');
   }
 
   /**
@@ -75,11 +75,11 @@ export class Player{
    *
    * @static
    * @param {string} name The name of the variable to set
-   * @param {*} value The font dictionary object
+   * @param {TextFormatVariable} value The font dictionary object
    * @param {string} prefix App prefix if applicable
    * @memberof Player
    */
-  static SetFontVariable(name: string, value: IFontOptions, prefix: string): void {
+  static SetFontVariable(name: string, value: TextFormatVariable, prefix: string): void {
     Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars(prefix));
   }
 
@@ -101,28 +101,9 @@ export class Player{
    * @returns {object} Font dictionary template
    * @memberof Player
    */
-  static CreateFontVariable(): IFontOptions {
-
-    const font_dict = {
-        fontFamily: "Arial",
-        fontSize: 9.000000E+000,
-        fontStretch: null,
-        fontStyle: null,
-        fontWeight: null,
-        textDecoration: null,
-        fontColor: "#FF000000",
-        textAlignment: "TopLeft",
-        textAutoSize: false,
-        textSizeBehavior: "Fixed",
-        fontLeading: 0,
-        frame: {
-          type: null,
-          backgroundColor: "#00424242",
-          borderColor: "#008BD5B5"
-        }
-      }
-
-    return font_dict;
+  static CreateFontVariable(): TextFormatVariable {
+    const tfv: TextFormatVariable = new TextFormatVariable()
+    return tfv;
   }
 
   /**
@@ -131,7 +112,7 @@ export class Player{
    * @return {Void}
    */
   static SetLanguage(languageCode: string): void {
-      FWI.RunScript('Player.SetLanguage(' + languageCode + ');');
+      fwi.RunScript('Player.SetLanguage(' + languageCode + ');');
   }
 
   /**
@@ -140,17 +121,19 @@ export class Player{
    * @return {Void}
    */
   static ToggleVariable(name: string): void  {
-      FWI.RunScript('Player.ToggleVariable(' + name + ');');
+      fwi.RunScript('Player.ToggleVariable(' + name + ');');
   }
 
   /**
    * Plays a template
-   * @param {String} name The name of the template to play
-   * @param {String|Int} templateIndex The position of the desired template instance in the network overview
-   * @return {Void}
+   *
+   * @static
+   * @param {string} name The name of the template to play
+   * @param {number} templateIndex The position of the desired template instance in the network overview
+   * @memberof Player
    */
   static PlayTemplate(name: string, templateIndex: number): void {
-      FWI.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex.toString() : '') + ');');
+      fwi.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex.toString() : '') + ');');
   }
 
   // /**
@@ -177,7 +160,7 @@ export class Player{
    * @return {Void}
    */
   static ResetIdleTimer(): void {
-    FWI.RunScript('Player.ResetIdleTimer();');
+    fwi.RunScript('Player.ResetIdleTimer();');
   }
 
   /**
@@ -185,7 +168,7 @@ export class Player{
    * @return {Void}
    */
   static Restart(): void {
-    FWI.RunScript('Player.Restart();');
+    fwi.RunScript('Player.Restart();');
   }
 
   // /**
@@ -237,7 +220,7 @@ export class Player{
    * @return {Void}
    */
   static UnsetVariable(name: string): void {
-    FWI.RunScript('Player.UnsetVariable(' + name + ');');
+    fwi.RunScript('Player.UnsetVariable(' + name + ');');
   }
 
 }
