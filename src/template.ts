@@ -1,4 +1,4 @@
-import { FWI } from "./fwi_core.js";
+import { fwi } from "./fwi_core.js";
 
 /**
  * This is the template class.  It contains all of the template functions you'd find in CM.
@@ -22,7 +22,7 @@ export class Template {
    */
   static async PlayContent(name, region) {
     return new Promise((resolve) => {
-      FWI.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
+      fwi.RunScript('Template.PlayContent("' + name + '", "' + region + '");');
       resolve()
     })
   }
@@ -32,7 +32,7 @@ export class Template {
    * @return {Void}
    */
   static PopContent() {
-    FWI.RunScript('Template.PopContent();');
+    fwi.RunScript('Template.PopContent();');
   }
 
   /**
@@ -40,7 +40,7 @@ export class Template {
    * @return {Void}
    */
   static PushContent(content, region, params = undefined) {
-    FWI.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
+    fwi.RunScript('Template.PushContent(' + content + ', ' + region + (params != undefined ? ', ' + params : '') + ');');
   }
 
   /**
@@ -49,7 +49,7 @@ export class Template {
    * @return {Void}
    */
   static Restart() {
-    FWI.RunScript('Template.Restart();');
+    fwi.RunScript('Template.Restart();');
   }
 
   /**
@@ -59,7 +59,7 @@ export class Template {
    * @return {Void}
    */
   static SetCanSize(region_name, value) {
-    FWI.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');
+    fwi.RunScript('Template.SetCanSize(' + region_name + ', ' + value +');');
   }
 
   /**
@@ -69,7 +69,7 @@ export class Template {
    * @return {Void}
    */
   static SetCanDrag(region_name, value) {
-    FWI.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');
+    fwi.RunScript('Template.SetCanDrag(' + region_name + ', ' + value +');');
   }
 
   /**
@@ -79,7 +79,7 @@ export class Template {
    * @return {Void}
    */
   static SetCanRotate(region_name, value) {
-    FWI.RunScript('Template.SetCanRotate(' + region_name + ', ' + value +');');
+    fwi.RunScript('Template.SetCanRotate(' + region_name + ', ' + value +');');
   }
 
   /**
@@ -89,7 +89,7 @@ export class Template {
    * @return {Void}
    */
   static SetLeft(region_name, value) {
-    FWI.RunScript('Template.SetLeft('+ region_name + ',' + value + ');');
+    fwi.RunScript('Template.SetLeft('+ region_name + ',' + value + ');');
   }
 
   /**
@@ -99,7 +99,7 @@ export class Template {
    * @return {Void}
    */
   static SetTop(region_name, value) {
-    FWI.RunScript('Template.SetTop('+ region_name + ',' + value + ');');
+    fwi.RunScript('Template.SetTop('+ region_name + ',' + value + ');');
   }
 
   /**
@@ -109,7 +109,7 @@ export class Template {
    * @return {Void}
    */
   static SetWidth(region_name, value) {
-    FWI.RunScript('Template.SetWidth('+ region_name + ',' + value + ');');
+    fwi.RunScript('Template.SetWidth('+ region_name + ',' + value + ');');
   }
 
   /**
@@ -119,7 +119,7 @@ export class Template {
    * @return {Void}
    */
   static SetHeight(region_name, value) {
-    FWI.RunScript('Template.SetHeight('+ region_name + ',' + value + ');');
+    fwi.RunScript('Template.SetHeight('+ region_name + ',' + value + ');');
   }
   /**
    * Sets a regions angle in degrees
@@ -128,7 +128,7 @@ export class Template {
    * @return {Void}
    */
   static SetAngle(region_name, value) {
-    FWI.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
+    fwi.RunScript('Template.SetAngle(' + region_name + ', ' + value + ');');
   }
 
   /**
@@ -137,7 +137,7 @@ export class Template {
    * @return {Void}
    */
   static ClearLeft(region_name) {
-    FWI.RunScript('Template.ClearLeft('+ region_name + ');');
+    fwi.RunScript('Template.ClearLeft('+ region_name + ');');
   }
 
   /**
@@ -146,7 +146,7 @@ export class Template {
    * @return {Void}
    */
   static ClearTop(region_name) {
-    FWI.RunScript('Template.ClearTop('+ region_name + ');');
+    fwi.RunScript('Template.ClearTop('+ region_name + ');');
   }
 
   /**
@@ -155,7 +155,7 @@ export class Template {
    * @return {Void}
    */
   static ClearWidth(region_name) {
-    FWI.RunScript('Template.ClearWidth('+ region_name + ');');
+    fwi.RunScript('Template.ClearWidth('+ region_name + ');');
   }
 
   /**
@@ -164,7 +164,7 @@ export class Template {
    * @return {Void}
    */
   static ClearHeight(region_name) {
-    FWI.RunScript('Template.ClearHeight('+ region_name + ');');
+    fwi.RunScript('Template.ClearHeight('+ region_name + ');');
   }
 
   /**
@@ -173,7 +173,7 @@ export class Template {
    * @return {Void}
    */
   static ClearAngle(region_name) {
-    FWI.RunScript('Template.ClearAngle(' + region_name + ');');
+    fwi.RunScript('Template.ClearAngle(' + region_name + ');');
   }
 
   /**
@@ -183,7 +183,7 @@ export class Template {
    * @return {Void}
    */
   static SetZIndex(region_name, value) {
-    FWI.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
+    fwi.RunScript('Template.SetZIndex(' + region_name + ', ' + value + ');');
   }
 
   /**
@@ -192,7 +192,7 @@ export class Template {
    * @return {Void}
    */
   static ClearZIndex(region_name) {
-    FWI.RunScript('Template.ClearZIndex(' + region_name + ');');
+    fwi.RunScript('Template.ClearZIndex(' + region_name + ');');
   }
 
   /**
@@ -203,7 +203,7 @@ export class Template {
    * @return {Void}
    */
   static SetLinearVelocity(region_name, Vx = '*', Vy = '*') {
-    FWI.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
+    fwi.RunScript('Template.SetLinearVelocity(' + region_name + ', ' + Vx + ', ' + Vy + ');');
   }
 
   /**
@@ -213,6 +213,6 @@ export class Template {
    * @return {Void}
    */
   static SetAngularVelocity(region_name, omega) {
-    FWI.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
+    fwi.RunScript('Template.SetAngularVelocity(' + region_name + ', ' + omega + ');');
   }
 }
