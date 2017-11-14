@@ -12,9 +12,9 @@ import { TextFormatVariable } from "./models/TextFormatVariable"
  * 'bar'
  * ```
  */
-export class Player{
+export class Player {
 
-  constructor() {  }
+  constructor() { }
 
   /**
    * Retrieves the value for a single CM variable.
@@ -36,7 +36,7 @@ export class Player{
    * @returns {TextFormatVariable} Dictionary of the font json
    * @memberof Player
    */
-  static GetFontVariable(name:string): TextFormatVariable {
+  static GetFontVariable(name: string): TextFormatVariable {
     const font_var = Player.GetVariable(name);
     return JSON.parse(font_var) as TextFormatVariable;
   }
@@ -52,7 +52,7 @@ export class Player{
    */
   static GetManyVariables(nameArray: string[]): string[] {
     const values: string[] = [];
-    for (let [k,v] of nameArray.entries()) {
+    for (let [k, v] of nameArray.entries()) {
       values.push(fwi.MarkupValue('{&var:' + v + '}'));
     }
     return values;
@@ -83,22 +83,25 @@ export class Player{
     Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars(prefix));
   }
 
-  // /**
-  //  * Sets multiple variables back in CM.
-  //  * @param {Object} keyValueDict An object that defines key/value pairs to use
-  //  * @return {Void}
-  //  */
-  // static SetManyVariables(keyValueDict) {
-  //   for (let [k, v] of keyValueDict) {
-  //     FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-  //   };
-  // }
+  /**
+   * Sets multiple variables back in CM.
+   *
+   * @static
+   * @param {{ [s: string]: string; }} keyValueDict An object that defines key/value pairs to use
+   * @memberof Player
+   */
+  static SetManyVariables(keyValueDict: { [s: string]: string; }): void {
+    Object.keys(keyValueDict).forEach((key) => {
+      let value = keyValueDict[key];
+      fwi.RunScript('Player.SetVariable(' + key + ',' + value + ');');
+    })
+  }
 
   /**
    * Creates a new dictionary with a font variable tempalte
    *
    * @static
-   * @returns {object} Font dictionary template
+   * @returns {TextFormatVariable} Font dictionary template
    * @memberof Player
    */
   static CreateFontVariable(): TextFormatVariable {
