@@ -43,15 +43,13 @@ String.prototype.ReplaceIllegalChars = function (prefix) {
 String.prototype.startsWith = function (prefix) {
     return this.slice(0, prefix.length) == prefix;
 };
-System.register("fwi_core", ["./string", "./fwi_core.d"], function (exports_1, context_1) {
+System.register("fwi_core", ["./string"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var fwi;
     return {
         setters: [
             function (_1) {
-            },
-            function (_2) {
             }
         ],
         execute: function () {
@@ -216,16 +214,17 @@ System.register("player", ["fwi_core", "models/TextFormatVariable"], function (e
                 Player.SetFontVariable = function (name, value, prefix) {
                     Player.SetVariable(name, JSON.stringify(value).ReplaceIllegalChars(prefix));
                 };
-                // /**
-                //  * Sets multiple variables back in CM.
-                //  * @param {Object} keyValueDict An object that defines key/value pairs to use
-                //  * @return {Void}
-                //  */
-                // static SetManyVariables(keyValueDict) {
-                //   for (let [k, v] of keyValueDict) {
-                //     FWI.RunScript('Player.SetVariable(' + k + ',' + v + ');');
-                //   };
-                // }
+                /**
+                 * Sets multiple variables back in CM.
+                 * @param {Object} keyValueDict An object that defines key/value pairs to use
+                 * @return {Void}
+                 */
+                Player.SetManyVariables = function (keyValueDict) {
+                    Object.keys(keyValueDict).forEach(function (key) {
+                        var value = keyValueDict[key];
+                        fwi_core_1.fwi.RunScript('Player.SetVariable(' + key + ',' + value + ');');
+                    });
+                };
                 /**
                  * Creates a new dictionary with a font variable tempalte
                  *
