@@ -1,5 +1,5 @@
-import { Template } from "./template.js";
-import { easingTypes } from "./easing_types.js";
+import { Template } from "./template";
+import { easingTypes } from "./models/easing_types";
 
 
 /**
