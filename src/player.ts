@@ -1,5 +1,6 @@
 import { fwi } from "./fwi_core";
 import { TextFormatVariable } from "./models/TextFormatVariable"
+import { EmailMessage } from "./models/EmailMessage";
 
 /**
  * This is the Player class.  It will probably be the most used class.  It contains all player functions.
@@ -139,24 +140,26 @@ export class Player {
       fwi.RunScript('Player.PlayTemplate(' + name + (templateIndex ? ', ' + templateIndex.toString() : '') + ');');
   }
 
-  // /**
-  //  * Runs a shell command
-  //  * @param {String} command_name The main command, sometimes includes folder path
-  //  * @param {Array} arg_array Array of args to be submitted to the command
-  //  * @return {Void}
-  //  */
-  // static Command(command_name, arg_array) {
-  //   let command = 'Player.Command(' + command_name;
+  /**
+   * Runs a shell command
+   *
+   * @static
+   * @param {string} command_name The main command, sometimes includes folder path
+   * @param {string[]} arg_array Array of args to be submitted to the command
+   * @memberof Player
+   */
+  static Command(command_name: string, arg_array: string[]): void {
+    let command = 'Player.Command(' + command_name;
 
-  //   for (let [k,v] of arg_array.entries()) {
-  //     command = command + ', ' + v;
-  //   }
+    for (let [k,v] of arg_array.entries()) {
+      command = command + ', ' + v;
+    }
 
-  //   command += ');';
+    command += ');';
 
-  //   FWI.RunScript(command);
+    fwi.RunScript(command);
 
-  // }
+  }
 
   /**
    * Resets the idle timer
@@ -174,33 +177,36 @@ export class Player {
     fwi.RunScript('Player.Restart();');
   }
 
-  // /**
-  //  * Sends mail
-  //  * @param {Obj} o Object that contains all paramters from wiki
-  //  * {
-  //  *   to: string dest_address
-  //  *   cc: string cc_address,
-  //  *   bcc: string bcc_address,
-  //  *   subject: string subject,
-  //  *   from: string sender_address,
-  //  *   body: string main_message,
-  //  *   host: string smpt_host,
-  //  *   username: string smpt_username,
-  //  *   password: strign smpt_password
-  //  * }
-  //  * @return {Void}
-  //  */
-  // static SendMail(o) {
-  //   let command = 'Player.SendMail(';
+  /**
+   * Creates a new dictionary with a font variable tempalte
+   *
+   * @static
+   * @returns {TextFormatVariable} Font dictionary template
+   * @memberof Player
+   */
+  static CreateEmailMessage(): EmailMessage {
+    const email: EmailMessage = new EmailMessage();
+    return email;
+  }
 
-  //   for (let [k,v] of o) {
-  //     command = command + ',' + k + '=' + v;
-  //   };
+  /**
+   * Sends mail
+   *
+   * @static
+   * @param {EmailMessage} o Object that contains all paramters from wiki
+   * @memberof Player
+   */
+  static SendMail(o: EmailMessage): void {
+    let command = 'Player.SendMail(';
 
-  //   command += ');';
+    for (let [k,v] of o) {
+      command = command + ',' + k + '=' + v;
+    };
 
-  //   FWI.RunScript(command);
-  // }
+    command += ');';
+
+    fwi.RunScript(command);
+  }
 
   // /**
   //  * Text-to-speech
