@@ -15,6 +15,7 @@
         "src/utils/string.ts",
         "src/models/EmailMessage.ts",
         "src/template.ts",
-        "src/content.ts"
+        "src/content.ts",
+        "src/models/easing_types.ts"
     ]
 }
