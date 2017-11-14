@@ -189,24 +189,29 @@ export class Player {
     return email;
   }
 
-  /**
-   * Sends mail
-   *
-   * @static
-   * @param {EmailMessage} o Object that contains all paramters from wiki
-   * @memberof Player
-   */
-  static SendMail(o: EmailMessage): void {
-    let command = 'Player.SendMail(';
+  // /**
+  //  * Sends mail
+  //  *
+  //  * @static
+  //  * @param {EmailMessage} o Object that contains all paramters from wiki
+  //  * @memberof Player
+  //  */
+  // static SendMail(o: EmailMessage): void {
+  //   let command = 'Player.SendMail(';
 
-    for (let [k,v] of o) {
-      command = command + ',' + k + '=' + v;
-    };
+  //   for (let [k,v] of o) {
+  //     command = command + ',' + k + '=' + v;
+  //   };
 
-    command += ');';
+  //   command += ');';
 
-    fwi.RunScript(command);
-  }
+  //   Object.keys(o).forEach((key) => {
+  //     let value = o[key];
+  //     fwi.RunScript('Player.SetVariable(' + key + ',' + value + ');');
+  //   })
+
+  //   fwi.RunScript(command);
+  // }
 
   // /**
   //  * Text-to-speech
