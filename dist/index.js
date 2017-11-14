@@ -130,7 +130,22 @@ System.register("models/EmailMessage", [], function (exports_5, context_5) {
         setters: [],
         execute: function () {
             EmailMessage = /** @class */ (function () {
-                function EmailMessage() {
+                function EmailMessage(to, cc, bcc, subject, from, body, host, username, password) {
+                    if (to === void 0) { to = ''; }
+                    if (from === void 0) { from = ''; }
+                    if (body === void 0) { body = ''; }
+                    if (host === void 0) { host = ''; }
+                    if (username === void 0) { username = ''; }
+                    if (password === void 0) { password = ''; }
+                    this.to = to;
+                    this.cc = cc;
+                    this.bcc = bcc;
+                    this.subject = subject;
+                    this.from = from;
+                    this.body = body;
+                    this.host = host;
+                    this.username = username;
+                    this.password = password;
                 }
                 return EmailMessage;
             }());
