@@ -1,0 +1,91 @@
+{
+  "?xml": {
+    "@version": "1.0",
+    "@encoding": "utf-8"
+  },
+  "ListResponse": {
+    "NumberReturned": "13",
+    "Items": {
+      "Row": [
+        {
+          "OwnerRole": "-",
+          "CloseMonth": "$53,755.00",
+          "SumofProfessionalServices": "$716.73",
+          "AverageProfessionalServices": "75"
+        },
+        {
+          "OwnerRole": "Education Team",
+          "CloseMonth": "$1,115,890.29",
+          "SumofProfessionalServices": "$5,313.76",
+          "AverageProfessionalServices": "210"
+        },
+        {
+          "OwnerRole": "Enterprise 1",
+          "CloseMonth": "$3,472,592.52",
+          "SumofProfessionalServices": "$14,349.56",
+          "AverageProfessionalServices": "242"
+        },
+        {
+          "OwnerRole": "Enterprise 2",
+          "CloseMonth": "$1,007,604.80",
+          "SumofProfessionalServices": "$7,633.37",
+          "AverageProfessionalServices": "132"
+        },
+        {
+          "OwnerRole": "Ex-Sales Employees",
+          "CloseMonth": "$1,303,513.90",
+          "SumofProfessionalServices": "$11,434.33",
+          "AverageProfessionalServices": "114"
+        },
+        {
+          "OwnerRole": "Hospitality Manager",
+          "CloseMonth": "$452,372.50",
+          "SumofProfessionalServices": "$8,870.05",
+          "AverageProfessionalServices": "51"
+        },
+        {
+          "OwnerRole": "Hospitality Team",
+          "CloseMonth": "$2,765,652.98",
+          "SumofProfessionalServices": "$9,249.68",
+          "AverageProfessionalServices": "299"
+        },
+        {
+          "OwnerRole": "International Team",
+          "CloseMonth": "$679,155.00",
+          "SumofProfessionalServices": "$15,092.33",
+          "AverageProfessionalServices": "45"
+        },
+        {
+          "OwnerRole": "NA Partner/LATAM Team",
+          "CloseMonth": "$55,431.10",
+          "SumofProfessionalServices": "$2,217.24",
+          "AverageProfessionalServices": "25"
+        },
+        {
+          "OwnerRole": "Professional Services",
+          "CloseMonth": "$36,907.50",
+          "SumofProfessionalServices": "$18,453.75",
+          "AverageProfessionalServices": "2"
+        },
+        {
+          "OwnerRole": "Project Manager",
+          "CloseMonth": "$378,433.75",
+          "SumofProfessionalServices": "$1,356.39",
+          "AverageProfessionalServices": "279"
+        },
+        {
+          "OwnerRole": "Sales Manager",
+          "CloseMonth": "$13,685.00",
+          "SumofProfessionalServices": "$4,561.67",
+          "AverageProfessionalServices": "3"
+        },
+        {
+          "OwnerRole": "TOTAL",
+          "CloseMonth": "$11,334,994.34",
+          "SumofProfessionalServices": "$7,674.34",
+          "AverageProfessionalServices": "1,477"
+        }
+      ]
+    }
+  }
+}
